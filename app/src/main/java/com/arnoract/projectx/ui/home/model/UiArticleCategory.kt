@@ -1,0 +1,14 @@
+package com.arnoract.projectx.ui.home.model
+
+enum class UiArticleCategory {
+    WORK_LIFE_BALANCE,
+    SOCIAL_ISSUES,
+    SELF_IMPROVEMENT,
+    SUPERSTITIONS_AND_BELIEFS,
+    POSITIVE_THINKING,
+    RELATIONSHIPS,
+    VIDEO_GAMES,
+    PRODUCTIVITY,
+    COMMUNICATION_SKILLS,
+    SOCIETY,
+}

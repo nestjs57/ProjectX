@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">ProjectX</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <string name="coming_soon_label">เร็วๆนี้</string>
+    <string name="recommended_label">แนะนำ</string>
+
+    <string name="no_category_label">ไม่มีหมวดหมู่</string>
+    <string name="work_life_balance_label">สมดุล งาน ชีวิต</string>
+    <string name="positive_thinking_label">คิดบวก</string>
+    <string name="social_issues_label">ปัญหาสังคม</string>
+    <string name="self_improve_label">พัฒนาตนเอง</string>
+    <string name="superstitions_and_beliefs_label">ความเชื่อ</string>
+    <string name="relationship_label">ความสัมพันธ์</string>
+    <string name="video_games_label">วิดิโอเกม</string>
+    <string name="productivity_label">ประสิทธิภาพการทำงาน</string>
+    <string name="communication_skills_label">ทักษะการสื่อสาร</string>
+    <string name="society_label">สังคม</string>
+
+</resources>
