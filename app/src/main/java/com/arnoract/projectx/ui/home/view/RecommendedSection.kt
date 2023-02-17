@@ -11,7 +11,7 @@ fun RecommendedSection(models: List<UiArticleVerticalItem>) {
     LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
         models.forEachIndexed { _, uiArticleVerticalItem ->
             item {
-                BookVerticalItem(uiArticleVerticalItem) {
+                ArticleVerticalItem(uiArticleVerticalItem) {
 
                 }
             }

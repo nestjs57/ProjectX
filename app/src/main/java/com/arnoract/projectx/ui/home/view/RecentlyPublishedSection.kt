@@ -9,18 +9,18 @@ import com.arnoract.projectx.base.Route
 import com.arnoract.projectx.ui.home.model.UiArticleVerticalItem
 
 @Composable
-fun ComingSoonSection(
+fun RecentlyPublishedSection(
     navHostController: NavHostController,
-    models: List<UiArticleVerticalItem>,
+    models: List<UiArticleVerticalItem>
 ) {
     LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-        models.forEachIndexed { _, uiArticleVerticalItem ->
+        models.forEachIndexed { _, uiArticleHorizontalItem ->
             item {
-                ArticleVerticalItem(uiArticleVerticalItem) {
+                ArticleVerticalItem(uiArticleHorizontalItem) {
                     navHostController.navigate(
                         Route.readers.replace(
                             "{id}",
-                            uiArticleVerticalItem.id
+                            uiArticleHorizontalItem.id
                         )
                     )
                 }

@@ -2,8 +2,9 @@
     <string name="app_name">ProjectX</string>
     <string name="title_activity_main">MainActivity</string>
 
-    <string name="coming_soon_label">เร็วๆนี้</string>
-    <string name="recommended_label">แนะนำ</string>
+    <string name="coming_soon_label">จะเผยแพร่เร็วๆนี้</string>
+    <string name="recommended_label">แนะนำสำหรับเริ่มต้นอ่านครั้งแรก</string>
+    <string name="public_last_label">เผยแพร่่ล่าสุด</string>
 
     <string name="no_category_label">ไม่มีหมวดหมู่</string>
     <string name="work_life_balance_label">สมดุล งาน ชีวิต</string>

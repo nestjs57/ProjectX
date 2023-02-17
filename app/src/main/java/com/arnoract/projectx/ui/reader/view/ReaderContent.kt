@@ -55,7 +55,7 @@ fun ReaderContent(
                 .weight(1f)
                 .fillMaxWidth()
                 .fillMaxHeight()
-                .padding(top = 60.dp, start = 16.dp, end = 16.dp, bottom = 16.dp),
+                .padding(top = 40.dp, start = 16.dp, end = 16.dp, bottom = 16.dp),
         ) {
             item {
                 TitleSection(titleTh, titleEn)
@@ -94,7 +94,7 @@ fun ReaderContent(
                     )
                     Text(
                         text = vocabulary,
-                        color = colorResource(id = R.color.blue_mrt),
+                        color = colorResource(id = R.color.purple_500),
                         fontSize = 22.sp,
                         fontWeight = FontWeight.Bold
                     )
@@ -123,7 +123,7 @@ fun ReaderContent(
                     .clickable {
 
                     }
-                    .background(colorResource(id = R.color.blue_mrt))
+                    .background(colorResource(id = R.color.purple_500))
                     .weight(1f), contentAlignment = Alignment.Center
             ) {
                 Text(
@@ -141,7 +141,7 @@ fun ReaderContent(
                     .clickable {
 
                     }
-                    .background(colorResource(id = R.color.blue_mrt))
+                    .background(colorResource(id = R.color.purple_500))
                     .weight(1f), contentAlignment = Alignment.Center
             ) {
                 Text(
@@ -203,7 +203,7 @@ private fun ParagraphSection(
     onTranslate: (UiParagraph?) -> Unit
 ) {
     FlowRow(
-        modifier = Modifier.padding(top = 24.dp),
+        modifier = Modifier.padding(top = 8.dp),
         crossAxisSpacing = 8.dp,
         mainAxisSpacing = 4.dp
     ) {
@@ -218,7 +218,7 @@ private fun ParagraphSection(
                 modifier = Modifier
                     .clip(RoundedCornerShape(4.dp))
                     .background(
-                        if (uiParagraph.isSelected) colorResource(id = R.color.blue_mrt) else colorResource(
+                        if (uiParagraph.isSelected) colorResource(id = R.color.purple_500) else colorResource(
                             id = R.color.white
                         )
                     )

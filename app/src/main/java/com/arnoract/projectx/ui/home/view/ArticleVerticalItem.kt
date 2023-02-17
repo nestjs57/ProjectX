@@ -31,7 +31,7 @@ import com.arnoract.projectx.ui.home.model.UiArticleVerticalItem
 import com.arnoract.projectx.ui.home.model.mapper.UiArticleCategoryToCategoryLabelMapper
 
 @Composable
-fun BookVerticalItem(model: UiArticleVerticalItem, onClickedItem: () -> Unit) {
+fun ArticleVerticalItem(model: UiArticleVerticalItem, onClickedItem: () -> Unit) {
     Column(modifier = Modifier
         .width(115.dp)
         .clip(RoundedCornerShape(6.dp))
@@ -72,7 +72,7 @@ fun BookVerticalItem(model: UiArticleVerticalItem, onClickedItem: () -> Unit) {
 @Preview(showBackground = true)
 @Composable
 private fun BookVerticalItemPreView() {
-    BookVerticalItem(
+    ArticleVerticalItem(
         UiArticleVerticalItem(
             id = "id",
             imageUrl = "imageUrl",

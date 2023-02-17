@@ -36,7 +36,7 @@ fun CategorySection(modifier: Modifier = Modifier, categories: List<UiArticleCat
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
-                    .padding(end = 8.dp, bottom = 16.dp)
+                    .padding(end = 8.dp)
                     .clip(RoundedCornerShape(6.dp))
                     .height(66.dp)
                     .width(130.dp)
