@@ -17,4 +17,15 @@
     <string name="communication_skills_label">ทักษะการสื่อสาร</string>
     <string name="society_label">สังคม</string>
 
+    <string name="work_life_balance_category_label">สมดุล\nงาน ชีวิต</string>
+    <string name="social_issues_category_label">ปัญหา\nสังคม</string>
+    <string name="self_improves_category_label">พัฒนา\nตนเอง</string>
+    <string name="superstitions_and_beliefs_category_label">ความเชื่อ</string>
+    <string name="positive_thinking_category_label">คิดบวก</string>
+    <string name="relationship_category_label">ความ\nสัมพันธ์</string>
+    <string name="video_games_category_label">วิดิโอ\nเกม</string>
+    <string name="productivity_category_label">ประสิทธิภาพ\nการทำงาน</string>
+    <string name="communication_skills_category_label">ทักษะ\nการสื่อสาร</string>
+    <string name="society_category_label">สังคม</string>
+
 </resources>

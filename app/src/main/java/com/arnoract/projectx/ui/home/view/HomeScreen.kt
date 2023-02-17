@@ -11,7 +11,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.arnoract.projectx.R
 import com.arnoract.projectx.ui.home.model.UiHomeState
@@ -24,7 +24,7 @@ fun HomeScreen(navHostController: NavHostController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .padding(dimensionResource(id = R.dimen.space_large))
+            .padding(top = 16.dp, bottom = 56.dp, start = 16.dp, end = 16.dp)
             .background(colorResource(id = R.color.white))
     ) {
         val uiHomeState by viewModel.uiHomeState.observeAsState()

@@ -35,4 +35,17 @@
     <color name="status_bar_color">#154B4F</color>
     <color name="primary">#FF6347</color>
     <color name="opposite_primary">#154B4F</color>
+
+    <color name="bg_category_work_life_balance">#D4E09B</color>
+    <color name="bg_category_social_issues">#F6F4D2</color>
+    <color name="bg_category_self_improvement">#CBDFBD</color>
+    <color name="bg_category_beliefs">#F19C79</color>
+    <color name="bg_category_positive_thinking">#A44A3F</color>
+    <color name="bg_category_relation_ships">#264653</color>
+    <color name="bg_category_video_games">#2A9D8F</color>
+    <color name="bg_category_productivity">#E9C46A</color>
+    <color name="bg_category_communication_skills">#F4A261</color>
+    <color name="bg_category_society">#E76F51</color>
+
+
 </resources>
