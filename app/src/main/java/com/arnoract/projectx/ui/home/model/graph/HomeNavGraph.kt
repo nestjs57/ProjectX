@@ -23,6 +23,9 @@ fun HomeNavGraph(navController: NavHostController) {
         composable(route = BottomBarScreen.Profile.route) {
 
         }
+        composable(route = BottomBarScreen.Favorite.route) {
+
+        }
         composable(route = BottomBarScreen.Settings.route) {
             ProfileScreen()
         }

@@ -4,6 +4,8 @@ import com.arnoract.projectx.domain.main.GetStationsUseCase
 import com.arnoract.projectx.domain.usecase.article.GetArticleByIdUseCase
 import com.arnoract.projectx.domain.usecase.article.GetArticlesUseCase
 import com.arnoract.projectx.domain.usecase.profile.GetProfileUseCase
+import com.arnoract.projectx.domain.usecase.profile.LoginWithGoogleUseCase
+import com.arnoract.projectx.domain.usecase.profile.SignOutWithGoogleUseCase
 import org.koin.dsl.module
 
 val useCaseModule = module {
@@ -11,4 +13,6 @@ val useCaseModule = module {
     factory { GetArticlesUseCase(get()) }
     factory { GetArticleByIdUseCase(get()) }
     factory { GetProfileUseCase(get()) }
+    factory { LoginWithGoogleUseCase(get()) }
+    factory { SignOutWithGoogleUseCase(get()) }
 }

@@ -23,88 +23,25 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.arnoract.projectx.BuildConfig
 import com.arnoract.projectx.R
-import com.arnoract.projectx.ui.profile.ProfileViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 
 @Composable
-fun NonLoginContent() {
+fun NonLoginContent(onClickedSignIn: (String) -> Unit) {
     Column(
         modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 64.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Box(
-            modifier = Modifier
-                .height(56.dp)
-                .fillMaxWidth(),
-            contentAlignment = Alignment.CenterStart
-        ) {
-            Text(
-                text = "เกี่ยวกับเรา",
-                fontSize = 18.sp,
-                modifier = Modifier
-                    .wrapContentWidth()
-                    .wrapContentHeight(),
-                fontWeight = FontWeight.Bold,
-            )
-        }
-        Spacer(
-            modifier = Modifier
-                .height(1.dp)
-                .fillMaxWidth()
-                .background(colorResource(id = R.color.gray300))
-        )
-        Box(
-            modifier = Modifier
-                .height(56.dp)
-                .fillMaxWidth(),
-            contentAlignment = Alignment.CenterStart
-        ) {
-            Text(
-                text = "ติดต่อเรา",
-                fontSize = 18.sp,
-                modifier = Modifier
-                    .wrapContentWidth()
-                    .wrapContentHeight(),
-                fontWeight = FontWeight.Bold,
-            )
-        }
-
-        Spacer(
-            modifier = Modifier
-                .background(colorResource(id = R.color.gray300))
-                .height(1.dp)
-                .fillMaxWidth()
-        )
-        Box(
-            modifier = Modifier
-                .height(56.dp)
-                .fillMaxWidth(),
-            contentAlignment = Alignment.CenterStart
-        ) {
-            Text(
-                text = "ข้อความจากนักเขียน",
-                fontSize = 18.sp,
-                modifier = Modifier
-                    .wrapContentWidth()
-                    .wrapContentHeight(),
-                fontWeight = FontWeight.Bold,
-            )
-        }
-        Spacer(
-            modifier = Modifier
-                .padding(bottom = 16.dp)
-                .background(colorResource(id = R.color.gray300))
-                .height(1.dp)
-                .fillMaxWidth()
-        )
+       InformationContent()
 
         val context = LocalContext.current
         val token = stringResource(R.string.default_web_client_id)
-        val launcher = registerGoogleActivityResultLauncher()
-
+        val launcher = registerGoogleActivityResultLauncher(){
+            onClickedSignIn(it)
+        }
         Box(
             modifier = Modifier
                 .height(48.dp)
@@ -131,7 +68,7 @@ fun NonLoginContent() {
                     color = colorResource(id = R.color.white)
                 )
                 Text(
-                    text = "เข้าสู่ระบบด้วย",
+                    text = stringResource(id = R.string.sign_in_with_label),
                     modifier = Modifier,
                     fontSize = 16.sp,
                     color = colorResource(id = R.color.white),
@@ -164,12 +101,12 @@ fun NonLoginContent() {
 }
 
 @Composable
-private fun registerGoogleActivityResultLauncher(): ManagedActivityResultLauncher<Intent, ActivityResult> {
+private fun registerGoogleActivityResultLauncher(onClickedSignIn: (String) -> Unit): ManagedActivityResultLauncher<Intent, ActivityResult> {
     return rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) {
         val task = GoogleSignIn.getSignedInAccountFromIntent(it.data)
         try {
             val account = task.getResult(ApiException::class.java)!!
-            //viewModel.signInWithGoogleToken(account.idToken ?: "")
+            onClickedSignIn(account.idToken ?: "")
         } catch (e: ApiException) {
 
         }
@@ -179,5 +116,7 @@ private fun registerGoogleActivityResultLauncher(): ManagedActivityResultLaunche
 @Preview(showBackground = true)
 @Composable
 fun NonLoginContentPreview() {
-    NonLoginContent()
+    NonLoginContent() {
+
+    }
 }

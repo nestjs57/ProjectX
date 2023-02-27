@@ -1,9 +1,7 @@
 package com.arnoract.projectx.ui.home.view
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.*
 import androidx.compose.ui.graphics.vector.ImageVector
 
 sealed class BottomBarScreen(
@@ -19,10 +17,15 @@ sealed class BottomBarScreen(
 
     object Profile : BottomBarScreen(
         route = "search",
-        title = "ค้นหา",
+        title = "หมวดหมู่",
         icon = Icons.Default.Search
     )
 
+    object Favorite : BottomBarScreen(
+        route = "favorite",
+        title = "ชื่นชอบ",
+        icon = Icons.Default.FavoriteBorder
+    )
     object Settings : BottomBarScreen(
         route = "profile",
         title = "ผู้ใช้",

@@ -12,6 +12,6 @@ val mainModule = module {
         ReaderViewModel(id, get(), get())
     }
     viewModel {
-        ProfileViewModel(get(), get())
+        ProfileViewModel(get(), get(), get(), get())
     }
 }

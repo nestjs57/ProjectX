@@ -8,23 +8,29 @@ import com.arnoract.projectx.core.CoroutinesDispatcherProvider
 import com.arnoract.projectx.core.successOrThrow
 import com.arnoract.projectx.domain.exception.UnAuthorizeException
 import com.arnoract.projectx.domain.usecase.profile.GetProfileUseCase
+import com.arnoract.projectx.domain.usecase.profile.LoginWithGoogleUseCase
+import com.arnoract.projectx.domain.usecase.profile.SignOutWithGoogleUseCase
 import com.arnoract.projectx.ui.profile.model.UiProfileState
 import com.arnoract.projectx.ui.profile.model.mapper.UserToUiUserMapper
-import com.google.firebase.auth.AuthCredential
-import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class ProfileViewModel(
     private val getProfileUseCase: GetProfileUseCase,
+    private val loginWithGoogleUseCase: LoginWithGoogleUseCase,
+    private val signOutWithGoogleUseCase: SignOutWithGoogleUseCase,
     private val coroutinesDispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel() {
 
     private val _profileState = MutableLiveData<UiProfileState?>()
     val profileState: LiveData<UiProfileState?>
         get() = _profileState
+
+    private val _error = MutableSharedFlow<String>()
+    val error: MutableSharedFlow<String>
+        get() = _error
 
     init {
         getProfile()
@@ -41,26 +47,37 @@ class ProfileViewModel(
             } catch (e: UnAuthorizeException) {
                 _profileState.value = UiProfileState.NonLogin
             } catch (e: Exception) {
-
+                _error.emit(e.message ?: "Unknown Error.")
             }
         }
     }
 
-
     fun signInWithGoogleToken(token: String) {
-        val credential = GoogleAuthProvider.getCredential(token, null)
-        signWithCredential(credential)
+        _profileState.value = UiProfileState.Loading
+        viewModelScope.launch {
+            try {
+                withContext(coroutinesDispatcherProvider.io) {
+                    loginWithGoogleUseCase.invoke(token).successOrThrow()
+                }
+                getProfile()
+            } catch (e: Exception) {
+                _error.emit(e.message ?: "Unknown Error.")
+            }
+        }
     }
 
-    private fun signWithCredential(credential: AuthCredential) = viewModelScope.launch {
-        try {
-            Firebase.auth.signInWithCredential(credential)
-                .addOnCompleteListener { task ->
-                    print("")
+    fun signOutWithGoogle() {
+        _profileState.value = UiProfileState.Loading
+        viewModelScope.launch {
+            delay(1000)
+            try {
+                withContext(coroutinesDispatcherProvider.io) {
+                    signOutWithGoogleUseCase.invoke(Unit).successOrThrow()
                 }
-        } catch (e: Exception) {
-//            _error.value = e.localizedMessage ?: "Unknown error"
-            print("")
+                getProfile()
+            } catch (e: Exception) {
+                _error.emit(e.message ?: "Unknown Error.")
+            }
         }
     }
 }
