@@ -1,10 +1,13 @@
 package com.arnoract.projectx.ui.reader.view
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -16,6 +19,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -24,8 +28,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.arnoract.projectx.R
 import com.arnoract.projectx.ui.reader.model.UiParagraph
+import com.arnoract.projectx.ui.util.HighlightText
 import com.google.accompanist.flowlayout.FlowRow
+import kotlinx.coroutines.launch
 
+@SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun ReaderContent(
     titleTh: String,
@@ -72,7 +79,10 @@ fun ReaderContent(
                 var translate: String by remember {
                     mutableStateOf("")
                 }
-                var note: String by remember {
+                var example: String by remember {
+                    mutableStateOf("")
+                }
+                var exampleTranslate: String by remember {
                     mutableStateOf("")
                 }
                 Column {
@@ -83,7 +93,8 @@ fun ReaderContent(
                         onTranslate = {
                             vocabulary = if (it?.vocabulary == null) "" else "${it.vocabulary} : "
                             translate = it?.translate ?: ""
-                            note = it?.note ?: ""
+                            example = it?.example ?: ""
+                            exampleTranslate = it?.example_translate ?: ""
                         })
                     Spacer(
                         modifier = Modifier
@@ -104,7 +115,46 @@ fun ReaderContent(
                         fontSize = 22.sp,
                         fontWeight = FontWeight.Bold
                     )
-                    Text(text = note)
+                    Text(if (translate.isBlank()) "" else "ตัวอย่างประโยค:")
+
+                    val coroutineScope = rememberCoroutineScope()
+                    val lazyListState = rememberLazyListState()
+                    coroutineScope.launch {
+                        lazyListState.animateScrollToItem(0)
+                    }
+
+                    Box(modifier = Modifier, contentAlignment = Alignment.CenterEnd) {
+                        LazyRow(
+                            state = lazyListState,
+                            modifier = Modifier.fillMaxSize()
+                        ) {
+                            item {
+                                Column {
+                                    HighlightText(
+                                        text = example,
+                                        keyword = vocabulary.replace(":", "").trim()
+                                    )
+                                    HighlightText(exampleTranslate, translate)
+                                }
+                            }
+                            item {
+                                Spacer(modifier = Modifier.width(40.dp))
+                            }
+                        }
+                        Box(
+                            modifier = Modifier
+                                .width(50.dp)
+                                .height(50.dp)
+                                .background(
+                                    brush = Brush.horizontalGradient(
+                                        colors = listOf(
+                                            colorResource(id = R.color.transparent),
+                                            colorResource(id = R.color.white)
+                                        )
+                                    )
+                                )
+                        )
+                    }
                 }
             }
         }
@@ -224,7 +274,6 @@ private fun ParagraphSection(
                     )
                     .padding(horizontal = 4.dp)
             ) {
-
                 val textDecoration = if (uiParagraph.translate.isNotBlank()) {
                     if (uiParagraph.isSelected) {
                         TextDecoration.None

@@ -13,6 +13,8 @@ object ParagraphToUiParagraphMapper : Mapper<Paragraph?, UiParagraph> {
             vocabulary = from?.vocabulary ?: "",
             translate = from?.translate ?: "",
             note = from?.note ?: "",
+            example = from?.example ?: "",
+            example_translate = from?.example_translate ?: ""
         )
     }
 }

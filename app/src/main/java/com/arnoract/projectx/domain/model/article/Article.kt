@@ -23,4 +23,6 @@ data class Paragraph(
     val vocabulary: String,
     val translate: String,
     val note: String,
+    val example: String,
+    val example_translate: String
 )
