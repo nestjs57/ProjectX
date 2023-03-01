@@ -11,7 +11,7 @@ import com.arnoract.projectx.ui.reader.view.ReaderScreen
 
 
 fun NavGraphBuilder.categoryNavGraph(navController: NavHostController) {
-    navigation(route = GRAPH.READER, startDestination = Route.readers) {
+    navigation(route = GRAPH.CATEGORY, startDestination = Route.category_detail) {
         composable(route = Route.category_detail) {
             val id = it.arguments?.getString("categoryId") ?: ""
             CategoryDetailScreen(id, navController)

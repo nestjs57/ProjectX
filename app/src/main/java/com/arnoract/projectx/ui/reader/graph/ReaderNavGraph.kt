@@ -6,7 +6,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.arnoract.projectx.base.Route
 import com.arnoract.projectx.ui.GRAPH
-import com.arnoract.projectx.ui.category.view.CategoryDetailScreen
 import com.arnoract.projectx.ui.reader.view.ReaderScreen
 
 fun NavGraphBuilder.readerNavGraph(navController: NavHostController) {
