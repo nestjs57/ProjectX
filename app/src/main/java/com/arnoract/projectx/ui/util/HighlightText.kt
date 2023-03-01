@@ -20,7 +20,7 @@ fun HighlightText(text: String, keyword: String) {
     if (startIndex >= 0) {
         annotatedText.withStyle(
             style = SpanStyle(
-                color = colorResource(id = R.color.pink_apl),
+                color = colorResource(id = R.color.highlight_text),
                 fontWeight = FontWeight.Bold
             )
         ) {

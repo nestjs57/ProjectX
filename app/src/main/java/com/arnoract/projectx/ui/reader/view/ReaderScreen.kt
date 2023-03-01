@@ -9,7 +9,9 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.navigation.NavHostController
+import com.arnoract.projectx.R
 import com.arnoract.projectx.ui.reader.model.UiReaderState
 import com.arnoract.projectx.ui.reader.viewmodel.ReaderViewModel
 import org.koin.androidx.compose.getViewModel
@@ -25,7 +27,7 @@ fun ReaderScreen(id: String, navController: NavHostController) {
     when (val state: UiReaderState? = uiState) {
         UiReaderState.Loading -> {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator()
+                CircularProgressIndicator(color = colorResource(id = R.color.purple_500))
             }
         }
         is UiReaderState.Success -> {

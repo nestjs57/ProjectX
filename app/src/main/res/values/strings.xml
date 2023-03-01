@@ -34,6 +34,17 @@
     <string name="communication_skills_category_label">ทักษะ\nการสื่อสาร</string>
     <string name="society_category_label">สังคม</string>
 
+    <string name="work_life_balance_category_one_line_label">สมดุล งาน ชีวิต</string>
+    <string name="social_issues_category_one_line_label">ปัญหาสังคม</string>
+    <string name="self_improves_category_one_line_label">พัฒนาตนเอง</string>
+    <string name="superstitions_and_beliefs_category_one_line_label">ความเชื่อ</string>
+    <string name="positive_thinking_category_one_line_label">คิดบวก</string>
+    <string name="relationship_category_one_line_label">ความสัมพันธ์</string>
+    <string name="video_games_category_one_line_label">วิดิโอเกม</string>
+    <string name="productivity_category_one_line_label">ประสิทธิภาพการทำงาน</string>
+    <string name="communication_skills_category_one_line_label">ทักษะการสื่อสาร</string>
+    <string name="society_category_one_line_label">สังคม</string>
+
     <string name="about_us_label">เกี่ยวกับเรา</string>
     <string name="contact_us_label">ติดต่อเรา</string>
     <string name="message_from_writer">ข้อความจากนักเขียน</string>
@@ -44,5 +55,6 @@
     <string name="example_sentence_with_colon_label">ตัวอย่างประโยค:</string>
     <string name="previous_label">ก่อนหน้า</string>
     <string name="next_label">ถัดไป</string>
+    <string name="read_finish_label">อ่านจบแล้ว</string>
 
 </resources>

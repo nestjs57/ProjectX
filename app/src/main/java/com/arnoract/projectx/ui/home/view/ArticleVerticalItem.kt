@@ -2,7 +2,7 @@
 
 package com.arnoract.projectx.ui.home.view
 
-import androidx.compose.foundation.Image
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -24,7 +25,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.annotation.ExperimentalCoilApi
-import coil.compose.rememberImagePainter
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.arnoract.projectx.R
 import com.arnoract.projectx.ui.home.model.UiArticleCategory
 import com.arnoract.projectx.ui.home.model.UiArticleVerticalItem
@@ -38,17 +40,16 @@ fun ArticleVerticalItem(model: UiArticleVerticalItem, onClickedItem: () -> Unit)
         .clickable {
             onClickedItem()
         }) {
-        val painter =
-            rememberImagePainter(data = model.imageUrl)
-        Image(
-            painter = painter,
+        AsyncImage(
+            model = ImageRequest.Builder(LocalContext.current).data(model.imageUrl)
+                .crossfade(true).build(),
             contentDescription = null,
+            contentScale = ContentScale.Crop,
             modifier = Modifier
                 .width(115.dp)
                 .height(175.dp)
                 .clip(RoundedCornerShape(10.dp))
-                .background(colorResource(id = R.color.red_orange)),
-            contentScale = ContentScale.Crop
+                .background(colorResource(id = R.color.gray300))
         )
         Text(
             text = model.titleTh,

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#b794f6</color>
-    <color name="purple_500">#6002EE</color>
-    <color name="purple_700">#3d00e0</color>
+    <color name="purple_100">#EBC7E6</color>
+    <color name="purple_200">#BFACE2</color>
+    <color name="purple_500">#645CBB</color>
+    <color name="purple_700">#A084DC</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="blue_light">#F9FAFF</color>
@@ -46,6 +47,9 @@
     <color name="bg_category_productivity">#E9C46A</color>
     <color name="bg_category_communication_skills">#F4A261</color>
     <color name="bg_category_society">#E76F51</color>
+
+    <color name="highlight_text">#EB455F</color>
+    <color name="read_finish_button">#A0D995</color>
 
 
 </resources>

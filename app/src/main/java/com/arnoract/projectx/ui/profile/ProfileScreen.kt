@@ -10,7 +10,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.window.Dialog
+import com.arnoract.projectx.R
 import com.arnoract.projectx.base.OnEvent
 import com.arnoract.projectx.ui.profile.model.UiProfileState
 import com.arnoract.projectx.ui.profile.view.LoggedInContent
@@ -26,7 +28,7 @@ fun ProfileScreen() {
     when (val state: UiProfileState = profileState ?: return) {
         UiProfileState.Loading -> {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator()
+                CircularProgressIndicator(color = colorResource(id = R.color.purple_500))
             }
         }
         UiProfileState.NonLogin -> {

@@ -1,4 +1,4 @@
-package com.arnoract.projectx.ui.reader.graph
+package com.arnoract.projectx.ui.category.graph
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -9,12 +9,12 @@ import com.arnoract.projectx.ui.GRAPH
 import com.arnoract.projectx.ui.category.view.CategoryDetailScreen
 import com.arnoract.projectx.ui.reader.view.ReaderScreen
 
-fun NavGraphBuilder.readerNavGraph(navController: NavHostController) {
+
+fun NavGraphBuilder.categoryNavGraph(navController: NavHostController) {
     navigation(route = GRAPH.READER, startDestination = Route.readers) {
-        composable(route = Route.readers) {
-            val id = it.arguments?.getString("id") ?: ""
-            ReaderScreen(id = id, navController)
+        composable(route = Route.category_detail) {
+            val id = it.arguments?.getString("categoryId") ?: ""
+            CategoryDetailScreen(id, navController)
         }
     }
 }
-

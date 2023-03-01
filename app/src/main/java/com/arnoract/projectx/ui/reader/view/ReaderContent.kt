@@ -217,19 +217,32 @@ fun ReaderContent(
                     .height(48.dp)
                     .clip(RoundedCornerShape(6.dp))
                     .clickable {
-                        if (isLastParagraph)
-                            return@clickable
-                        onClickedNextParagraph()
+                        if (isLastParagraph) {
+
+                        } else {
+                            onClickedNextParagraph()
+                        }
                     }
-                    .background(colorResource(id = if (isLastParagraph) R.color.gray500 else R.color.purple_500))
+                    .background(colorResource(id = if (isLastParagraph) R.color.read_finish_button else R.color.purple_500))
                     .weight(1f), contentAlignment = Alignment.Center
             ) {
-                Text(
-                    text = stringResource(id = R.string.next_label),
-                    modifier = Modifier,
-                    fontSize = 16.sp,
-                    color = colorResource(id = R.color.white),
-                )
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    if (isLastParagraph) {
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_check_circle),
+                            modifier = Modifier
+                                .size(20.dp),
+                            contentDescription = null,
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                    }
+                    Text(
+                        text = stringResource(id = if (isLastParagraph) R.string.read_finish_label else R.string.next_label),
+                        modifier = Modifier,
+                        fontSize = 16.sp,
+                        color = colorResource(id = R.color.white),
+                    )
+                }
             }
         }
     }

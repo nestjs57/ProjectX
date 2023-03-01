@@ -1,8 +1,10 @@
 package com.arnoract.projectx.ui.home.view
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -22,10 +24,20 @@ import com.arnoract.projectx.R
 import com.arnoract.projectx.ui.home.model.UiArticleCategory
 
 @Composable
-fun CategorySection(modifier: Modifier = Modifier, categories: List<UiArticleCategory>) {
-    LazyRow(modifier = modifier.fillMaxSize()) {
+fun CategorySection(
+    modifier: Modifier = Modifier,
+    categories: List<UiArticleCategory>,
+    onClickedCateGory: (Int) -> Unit
+) {
+    LazyVerticalGrid(
+        modifier = Modifier.fillMaxSize(),
+        columns = GridCells.Fixed(2),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(
+            8.dp
+        )
+    ) {
         items(categories.size) { index ->
-
             val colorBackground by remember {
                 mutableStateOf(getColorTitle(categories[index]))
             }
@@ -36,7 +48,6 @@ fun CategorySection(modifier: Modifier = Modifier, categories: List<UiArticleCat
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
-                    .padding(end = 8.dp)
                     .clip(RoundedCornerShape(6.dp))
                     .height(66.dp)
                     .width(130.dp)
@@ -44,6 +55,9 @@ fun CategorySection(modifier: Modifier = Modifier, categories: List<UiArticleCat
                         colorResource(id = colorBackground)
                     )
                     .padding(horizontal = 16.dp)
+                    .clickable {
+                        onClickedCateGory(categories[index].value)
+                    }
             ) {
                 Text(
                     text = getTitle(categories[index]),
@@ -55,6 +69,7 @@ fun CategorySection(modifier: Modifier = Modifier, categories: List<UiArticleCat
             }
         }
     }
+
 }
 
 @Composable

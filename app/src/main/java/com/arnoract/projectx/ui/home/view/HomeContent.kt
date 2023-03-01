@@ -33,20 +33,6 @@ fun HomeContent(
             value = stringResource(id = R.string.recommended_label)
         )
         RecommendedSection(recommendedItem)
-//        CategorySection(categories = listOf(
-//            UiArticleCategory.WORK_LIFE_BALANCE,
-//            UiArticleCategory.SOCIAL_ISSUES,
-//            UiArticleCategory.SELF_IMPROVEMENT,
-//            UiArticleCategory.SUPERSTITIONS_AND_BELIEFS,
-//            UiArticleCategory.POSITIVE_THINKING
-//        ), modifier = Modifier.padding(top = 16.dp , bottom = 8.dp))
-//        CategorySection(categories = listOf(
-//            UiArticleCategory.RELATIONSHIPS,
-//            UiArticleCategory.VIDEO_GAMES,
-//            UiArticleCategory.PRODUCTIVITY,
-//            UiArticleCategory.COMMUNICATION_SKILLS,
-//            UiArticleCategory.SOCIETY
-//        ), modifier = Modifier.padding(top = 4.dp))
         ContentTitleSection(
             modifier = Modifier.padding(vertical = dimensionResource(id = R.dimen.space_normal)),
             value = stringResource(id = R.string.public_last_label)

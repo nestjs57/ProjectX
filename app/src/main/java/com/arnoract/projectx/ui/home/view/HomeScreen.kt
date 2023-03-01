@@ -31,7 +31,7 @@ fun HomeScreen(navHostController: NavHostController) {
         when (val state: UiHomeState? = uiHomeState) {
             is UiHomeState.Loading -> {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    CircularProgressIndicator()
+                    CircularProgressIndicator(color = colorResource(id = R.color.purple_500))
                 }
             }
             is UiHomeState.Success -> {

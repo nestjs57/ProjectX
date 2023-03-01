@@ -15,18 +15,18 @@ sealed class BottomBarScreen(
         icon = Icons.Default.Home
     )
 
-    object Profile : BottomBarScreen(
-        route = "search",
+    object Category : BottomBarScreen(
+        route = "category",
         title = "หมวดหมู่",
         icon = Icons.Default.Search
     )
 
     object Favorite : BottomBarScreen(
         route = "favorite",
-        title = "บทเรียน",
+        title = "ชื่นชอบ",
         icon = Icons.Default.FavoriteBorder
     )
-    object Settings : BottomBarScreen(
+    object Profile : BottomBarScreen(
         route = "profile",
         title = "ผู้ใช้",
         icon = Icons.Default.Person
