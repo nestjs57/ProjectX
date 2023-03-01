@@ -8,6 +8,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import com.arnoract.projectx.ui.reader.model.UiReaderState
 import com.arnoract.projectx.ui.reader.viewmodel.ReaderViewModel
@@ -20,6 +21,7 @@ fun ReaderScreen(id: String, navController: NavHostController) {
         parameters = { parametersOf(id) }
     )
     val uiState by viewModel.uiReaderState.observeAsState()
+    val context = LocalContext.current
     when (val state: UiReaderState? = uiState) {
         UiReaderState.Loading -> {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -43,6 +45,9 @@ fun ReaderScreen(id: String, navController: NavHostController) {
                 },
                 onClickedBack = {
                     navController.popBackStack()
+                },
+                onTextSpeech = {
+                    viewModel.onTextSpeech(context, it)
                 }
             )
         }

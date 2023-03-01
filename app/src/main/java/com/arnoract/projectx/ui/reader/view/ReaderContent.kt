@@ -1,6 +1,7 @@
 package com.arnoract.projectx.ui.reader.view
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -21,6 +22,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
@@ -42,12 +45,14 @@ fun ReaderContent(
     onClickedSelectVocabulary: (UiParagraph) -> Unit,
     onClickedNextParagraph: () -> Unit,
     onClickedPreviousParagraph: () -> Unit,
+    onTextSpeech: (String) -> Unit,
     onClickedBack: () -> Unit
 ) {
 
-    val paragraphNumber: Int by remember {
+    var paragraphNumber: Int by remember {
         mutableStateOf(currentParagraphSelected)
     }
+    paragraphNumber = currentParagraphSelected
 
     Column {
         ToolBar(paragraphNumber, uiParagraph.size, onClickedBack)
@@ -103,19 +108,34 @@ fun ReaderContent(
                             .fillMaxWidth()
                             .background(colorResource(id = R.color.gray500))
                     )
-                    Text(
-                        text = vocabulary,
-                        color = colorResource(id = R.color.purple_500),
-                        fontSize = 22.sp,
-                        fontWeight = FontWeight.Bold
-                    )
+                    if (vocabulary.isNotBlank()) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.clickable {
+                                onTextSpeech(vocabulary)
+                            }) {
+                            Image(
+                                painter = painterResource(id = R.drawable.ic_volume_up),
+                                modifier = Modifier
+                                    .size(22.dp),
+                                contentDescription = null,
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                text = vocabulary,
+                                color = colorResource(id = R.color.purple_500),
+                                fontSize = 22.sp,
+                                fontWeight = FontWeight.Bold,
+                            )
+                        }
+                    }
                     Text(
                         text = translate,
                         color = colorResource(id = R.color.black),
                         fontSize = 22.sp,
                         fontWeight = FontWeight.Bold
                     )
-                    Text(if (translate.isBlank()) "" else "ตัวอย่างประโยค:")
+                    Text(if (translate.isBlank()) "" else stringResource(id = R.string.example_sentence_with_colon_label))
 
                     val coroutineScope = rememberCoroutineScope()
                     val lazyListState = rememberLazyListState()
@@ -130,10 +150,14 @@ fun ReaderContent(
                         ) {
                             item {
                                 Column {
-                                    HighlightText(
-                                        text = example,
-                                        keyword = vocabulary.replace(":", "").trim()
-                                    )
+                                    Box(modifier = Modifier.clickable {
+                                        onTextSpeech(example)
+                                    }) {
+                                        HighlightText(
+                                            text = example,
+                                            keyword = vocabulary.replace(":", "").trim()
+                                        )
+                                    }
                                     HighlightText(exampleTranslate, translate)
                                 }
                             }
@@ -159,6 +183,8 @@ fun ReaderContent(
             }
         }
 
+        val isFirstParagraph = paragraphNumber < 1
+        val isLastParagraph = paragraphNumber == uiParagraph.size.minus(1)
         Row(
             modifier = Modifier
                 .padding(16.dp)
@@ -171,13 +197,15 @@ fun ReaderContent(
                     .height(48.dp)
                     .clip(RoundedCornerShape(6.dp))
                     .clickable {
-
+                        if (isFirstParagraph)
+                            return@clickable
+                        onClickedPreviousParagraph()
                     }
-                    .background(colorResource(id = R.color.purple_500))
+                    .background(colorResource(id = if (isFirstParagraph) R.color.gray500 else R.color.purple_500))
                     .weight(1f), contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = "ก่อนหน้า",
+                    text = stringResource(id = R.string.previous_label),
                     modifier = Modifier,
                     fontSize = 16.sp,
                     color = colorResource(id = R.color.white),
@@ -189,13 +217,15 @@ fun ReaderContent(
                     .height(48.dp)
                     .clip(RoundedCornerShape(6.dp))
                     .clickable {
-
+                        if (isLastParagraph)
+                            return@clickable
+                        onClickedNextParagraph()
                     }
-                    .background(colorResource(id = R.color.purple_500))
+                    .background(colorResource(id = if (isLastParagraph) R.color.gray500 else R.color.purple_500))
                     .weight(1f), contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = "ถัดไป",
+                    text = stringResource(id = R.string.next_label),
                     modifier = Modifier,
                     fontSize = 16.sp,
                     color = colorResource(id = R.color.white),

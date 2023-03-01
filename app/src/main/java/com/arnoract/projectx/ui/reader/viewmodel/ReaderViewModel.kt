@@ -1,5 +1,7 @@
 package com.arnoract.projectx.ui.reader.viewmodel
 
+import android.content.Context
+import android.speech.tts.TextToSpeech
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -13,6 +15,7 @@ import com.arnoract.projectx.ui.reader.model.mapper.ParagraphToUiParagraphMapper
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.*
 
 class ReaderViewModel(
     private val id: String,
@@ -24,6 +27,8 @@ class ReaderViewModel(
     private val _uiReaderState = MutableLiveData<UiReaderState>()
     val uiReaderState: LiveData<UiReaderState>
         get() = _uiReaderState
+
+    private var textToSpeech: TextToSpeech? = null
 
     init {
         viewModelScope.launch {
@@ -71,10 +76,46 @@ class ReaderViewModel(
     }
 
     fun onClickedNextParagraph() {
-
+        if (_uiReaderState.value is UiReaderState.Success) {
+            val data = (_uiReaderState.value as UiReaderState.Success)
+            _uiReaderState.value = UiReaderState.Success(
+                titleTh = data.titleTh,
+                titleEn = data.titleEn,
+                uiParagraph = data.uiParagraph,
+                currentParagraphSelected = data.currentParagraphSelected.plus(1)
+            )
+        }
     }
 
     fun onClickedPreviousParagraph() {
+        if (_uiReaderState.value is UiReaderState.Success) {
+            val data = (_uiReaderState.value as UiReaderState.Success)
+            _uiReaderState.value = UiReaderState.Success(
+                titleTh = data.titleTh,
+                titleEn = data.titleEn,
+                uiParagraph = data.uiParagraph,
+                currentParagraphSelected = data.currentParagraphSelected.minus(1)
+            )
+        }
+    }
 
+    fun onTextSpeech(context: Context, word: String) {
+        if (word.isBlank()) return
+        textToSpeech = TextToSpeech(
+            context
+        ) {
+            if (it == TextToSpeech.SUCCESS) {
+                textToSpeech?.let { txtToSpeech ->
+                    txtToSpeech.language = Locale.ENGLISH
+                    txtToSpeech.setSpeechRate(1.0f)
+                    txtToSpeech.speak(
+                        word,
+                        TextToSpeech.QUEUE_ADD,
+                        null,
+                        null
+                    )
+                }
+            }
+        }
     }
 }

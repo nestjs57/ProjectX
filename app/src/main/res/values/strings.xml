@@ -41,5 +41,8 @@
     <string name="sign_out_label">ออกจากระบบ</string>
     <string name="close_label">ปิด</string>
     <string name="title_error_label">เกิดข้อผิดพลาดบางอย่าง</string>
+    <string name="example_sentence_with_colon_label">ตัวอย่างประโยค:</string>
+    <string name="previous_label">ก่อนหน้า</string>
+    <string name="next_label">ถัดไป</string>
 
 </resources>

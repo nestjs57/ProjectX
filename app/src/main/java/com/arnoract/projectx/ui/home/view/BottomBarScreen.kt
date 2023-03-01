@@ -23,7 +23,7 @@ sealed class BottomBarScreen(
 
     object Favorite : BottomBarScreen(
         route = "favorite",
-        title = "ชื่นชอบ",
+        title = "บทเรียน",
         icon = Icons.Default.FavoriteBorder
     )
     object Settings : BottomBarScreen(
