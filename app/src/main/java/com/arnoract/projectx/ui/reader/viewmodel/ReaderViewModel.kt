@@ -23,7 +23,6 @@ class ReaderViewModel(
     private val coroutinesDispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel() {
 
-
     private val _uiReaderState = MutableLiveData<UiReaderState>()
     val uiReaderState: LiveData<UiReaderState>
         get() = _uiReaderState

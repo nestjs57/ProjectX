@@ -1,5 +1,6 @@
 package com.arnoract.projectx
 
+import com.arnoract.projectx.ui.category.viewmodel.CategoryDetailViewModel
 import com.arnoract.projectx.ui.home.viewmodel.HomeViewModel
 import com.arnoract.projectx.ui.profile.ProfileViewModel
 import com.arnoract.projectx.ui.reader.viewmodel.ReaderViewModel
@@ -13,5 +14,8 @@ val mainModule = module {
     }
     viewModel {
         ProfileViewModel(get(), get(), get(), get())
+    }
+    viewModel { (categoryId: String) ->
+        CategoryDetailViewModel(categoryId, get(), get())
     }
 }

@@ -11,11 +11,12 @@ import com.arnoract.projectx.R
 
 @Composable
 fun HighlightText(text: String, keyword: String) {
-    if (!text.lowercase().contains(keyword.lowercase())) {
+    val srtKeyword = keyword.lowercase().replace(",", "").replace(".", "")
+    if (!text.lowercase().contains(srtKeyword)) {
         Text(text)
         return
     }
-    val startIndex = text.lowercase().indexOf(keyword.lowercase())
+    val startIndex = text.lowercase().indexOf(srtKeyword)
     val annotatedText = AnnotatedString.Builder(text.substring(0, startIndex))
     if (startIndex >= 0) {
         annotatedText.withStyle(
@@ -24,9 +25,9 @@ fun HighlightText(text: String, keyword: String) {
                 fontWeight = FontWeight.Bold
             )
         ) {
-            append(text.substring(startIndex , startIndex+ keyword.length))
+            append(text.substring(startIndex, startIndex + srtKeyword.length))
         }
     }
-    annotatedText.append(text.substring(startIndex + keyword.length))
+    annotatedText.append(text.substring(startIndex + srtKeyword.length))
     Text(text = annotatedText.toAnnotatedString())
 }

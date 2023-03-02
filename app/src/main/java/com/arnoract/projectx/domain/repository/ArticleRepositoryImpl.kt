@@ -23,4 +23,13 @@ class ArticleRepositoryImpl(private val db: FirebaseFirestore) : ArticleReposito
             result.documents.firstOrNull()?.toObject<NetworkArticle>()?.copy(id = id)
         )
     }
+
+    override suspend fun getArticleByCategoryId(categoryId: String): List<Article> {
+        val result = db.collection("articles").get().await()
+        return result.documents.map {
+            it.toObject<NetworkArticle>()?.copy(id = it.id)
+        }.filter { it?.category == categoryId.toInt() }.map {
+            NetworkArticleToArticleMapper.map(it)
+        }
+    }
 }

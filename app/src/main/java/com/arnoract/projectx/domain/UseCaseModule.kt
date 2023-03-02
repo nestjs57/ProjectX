@@ -1,6 +1,7 @@
 package com.arnoract.projectx.domain
 
 import com.arnoract.projectx.domain.main.GetStationsUseCase
+import com.arnoract.projectx.domain.usecase.article.GetArticleByCategoryIdUseCase
 import com.arnoract.projectx.domain.usecase.article.GetArticleByIdUseCase
 import com.arnoract.projectx.domain.usecase.article.GetArticlesUseCase
 import com.arnoract.projectx.domain.usecase.profile.GetProfileUseCase
@@ -15,4 +16,5 @@ val useCaseModule = module {
     factory { GetProfileUseCase(get()) }
     factory { LoginWithGoogleUseCase(get()) }
     factory { SignOutWithGoogleUseCase(get()) }
+    factory { GetArticleByCategoryIdUseCase(get()) }
 }
