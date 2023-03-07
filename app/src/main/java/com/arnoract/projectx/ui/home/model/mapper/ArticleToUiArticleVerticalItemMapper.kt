@@ -13,23 +13,7 @@ object ArticleToUiArticleVerticalItemMapper : Mapper<Article, UiArticleVerticalI
             imageUrl = from.imageUrl,
             titleTh = from.titleTh,
             titleEn = from.titleEn,
-            category = articleCategoryMapper(from.category)
+            category = ArticleCategoryToUiArticleCategoryMapper.map(from.category),
         )
-    }
-
-    private fun articleCategoryMapper(category: ArticleCategory?): UiArticleCategory? {
-        return when (category) {
-            ArticleCategory.WORK_LIFE_BALANCE -> UiArticleCategory.WORK_LIFE_BALANCE
-            ArticleCategory.SOCIAL_ISSUES -> UiArticleCategory.SOCIAL_ISSUES
-            ArticleCategory.SELF_IMPROVEMENT -> UiArticleCategory.SELF_IMPROVEMENT
-            ArticleCategory.SUPERSTITIONS_AND_BELIEFS -> UiArticleCategory.SUPERSTITIONS_AND_BELIEFS
-            ArticleCategory.POSITIVE_THINKING -> UiArticleCategory.POSITIVE_THINKING
-            ArticleCategory.RELATIONSHIPS -> UiArticleCategory.RELATIONSHIPS
-            ArticleCategory.VIDEO_GAMES -> UiArticleCategory.VIDEO_GAMES
-            ArticleCategory.PRODUCTIVITY -> UiArticleCategory.PRODUCTIVITY
-            ArticleCategory.COMMUNICATION_SKILLS -> UiArticleCategory.COMMUNICATION_SKILLS
-            ArticleCategory.SOCIETY -> UiArticleCategory.SOCIETY
-            else -> null
-        }
     }
 }
