@@ -24,6 +24,7 @@ import com.arnoract.projectx.R
 import com.arnoract.projectx.ui.category.mapper.CategoryIdToStringCategoryMapper
 import com.arnoract.projectx.ui.category.model.UiCategoryDetailState
 import com.arnoract.projectx.ui.category.viewmodel.CategoryDetailViewModel
+import com.arnoract.projectx.ui.home.view.ArticleHorizontalItem
 import org.koin.androidx.compose.getViewModel
 import org.koin.core.parameter.parametersOf
 
@@ -36,22 +37,7 @@ fun CategoryDetailScreen(categoryId: String, navController: NavHostController) {
     val uiState by viewModel.uiCategoryDetailState.observeAsState()
 
     Column() {
-        Row(
-            modifier = Modifier
-                .height(56.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            IconButton(onClick = { navController.popBackStack() }) {
-                Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "Menu Btn")
-            }
-            Text(
-                text = stringResource(id = CategoryIdToStringCategoryMapper.map(categoryId)),
-                fontSize = 18.sp,
-                modifier = Modifier,
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center,
-            )
-        }
+        Header(navController, categoryId)
         when (val state: UiCategoryDetailState? = uiState) {
             is UiCategoryDetailState.Loading -> {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -61,7 +47,13 @@ fun CategoryDetailScreen(categoryId: String, navController: NavHostController) {
             is UiCategoryDetailState.Success -> {
                 LazyColumn(modifier = Modifier.padding(16.dp)) {
                     state.data.forEach {
-                        item { Text(text = it.titleTh) }
+                        item {
+                            ArticleHorizontalItem(
+                                it
+                            ) {
+
+                            }
+                        }
                     }
                 }
             }
@@ -75,5 +67,24 @@ fun CategoryDetailScreen(categoryId: String, navController: NavHostController) {
             }
         }
     }
+}
 
+@Composable
+private fun Header(navController: NavHostController, categoryId: String) {
+    Row(
+        modifier = Modifier
+            .height(56.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        IconButton(onClick = { navController.popBackStack() }) {
+            Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "Menu Btn")
+        }
+        Text(
+            text = stringResource(id = CategoryIdToStringCategoryMapper.map(categoryId)),
+            fontSize = 18.sp,
+            modifier = Modifier,
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center,
+        )
+    }
 }

@@ -8,6 +8,7 @@ import com.arnoract.projectx.core.CoroutinesDispatcherProvider
 import com.arnoract.projectx.core.successOr
 import com.arnoract.projectx.domain.usecase.article.GetArticleByCategoryIdUseCase
 import com.arnoract.projectx.ui.category.model.UiCategoryDetailState
+import com.arnoract.projectx.ui.home.model.mapper.ArticleToUiArticleHorizontalItemMapper
 import com.arnoract.projectx.ui.home.model.mapper.ArticleToUiArticleVerticalItemMapper
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -36,7 +37,7 @@ class CategoryDetailViewModel(
                 } else {
                     _uiCategoryDetailState.value = UiCategoryDetailState.Success(
                         data = result.map {
-                            ArticleToUiArticleVerticalItemMapper.map(it)
+                            ArticleToUiArticleHorizontalItemMapper.map(it)
                         },
                     )
                 }
