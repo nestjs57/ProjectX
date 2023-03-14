@@ -11,6 +11,7 @@ import com.arnoract.projectx.ui.home.view.BottomBarScreen
 import com.arnoract.projectx.ui.home.view.HomeScreen
 import com.arnoract.projectx.ui.profile.ProfileScreen
 import com.arnoract.projectx.ui.reader.graph.readerNavGraph
+import com.arnoract.projectx.ui.reading.view.ReadingScreen
 
 @Composable
 fun HomeNavGraph(navController: NavHostController) {
@@ -25,8 +26,8 @@ fun HomeNavGraph(navController: NavHostController) {
         composable(route = BottomBarScreen.Category.route) {
             CategoryScreen(navController)
         }
-        composable(route = BottomBarScreen.Favorite.route) {
-
+        composable(route = BottomBarScreen.Reading.route) {
+            ReadingScreen(navController)
         }
         composable(route = BottomBarScreen.Profile.route) {
             ProfileScreen()

@@ -52,6 +52,8 @@ android {
     }
 }
 
+apply plugin: 'kotlin-kapt'
+
 dependencies {
 
     implementation 'androidx.core:core-ktx:1.9.0'
@@ -60,8 +62,11 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.databinding:databinding-compiler-common:7.4.1'
     implementation 'androidx.databinding:viewbinding:7.4.1'
+    implementation 'androidx.room:room-runtime:2.3.0'
     implementation 'androidx.room:room-common:2.5.0'
     implementation 'androidx.room:room-ktx:2.5.0'
+    kapt "androidx.room:room-compiler:2.5.0"
+    kapt 'android.arch.persistence.room:compiler:1.1.1'
     implementation 'androidx.navigation:navigation-runtime-ktx:2.5.3'
     implementation 'com.google.android.gms:play-services-maps:18.1.0'
     implementation 'com.google.android.libraries.places:places:3.0.0'

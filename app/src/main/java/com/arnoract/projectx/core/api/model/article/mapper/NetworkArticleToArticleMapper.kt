@@ -3,7 +3,6 @@ package com.arnoract.projectx.core.api.model.article.mapper
 import com.arnoract.projectx.core.Mapper
 import com.arnoract.projectx.core.api.model.article.NetworkArticle
 import com.arnoract.projectx.domain.model.article.Article
-import com.arnoract.projectx.domain.model.article.ArticleCategory
 import com.arnoract.projectx.domain.model.article.Paragraph
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -23,7 +22,7 @@ object NetworkArticleToArticleMapper : Mapper<NetworkArticle?, Article> {
 
         return Article(
             id = from?.id,
-            category = categoryMapper(from?.category),
+            category = IntCategoryToArticleCategoryMapper.map(from?.category),
             imageUrl = from?.imageUrl ?: "",
             titleTh = from?.titleTh ?: "",
             titleEn = from?.titleEn ?: "",
@@ -36,22 +35,6 @@ object NetworkArticleToArticleMapper : Mapper<NetworkArticle?, Article> {
             viewCount = from?.viewCount ?: 0,
             paragraphs = paragraphs
         )
-    }
-
-    private fun categoryMapper(category: Int?): ArticleCategory? {
-        return when (category) {
-            1 -> ArticleCategory.WORK_LIFE_BALANCE
-            2 -> ArticleCategory.SOCIAL_ISSUES
-            3 -> ArticleCategory.SELF_IMPROVEMENT
-            4 -> ArticleCategory.SUPERSTITIONS_AND_BELIEFS
-            5 -> ArticleCategory.POSITIVE_THINKING
-            6 -> ArticleCategory.RELATIONSHIPS
-            7 -> ArticleCategory.VIDEO_GAMES
-            8 -> ArticleCategory.PRODUCTIVITY
-            9 -> ArticleCategory.COMMUNICATION_SKILLS
-            10 -> ArticleCategory.SOCIETY
-            else -> null
-        }
     }
 
     private fun <T : Any?> String.toArrayClass(): ArrayList<T> {

@@ -7,8 +7,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.arnoract.projectx.core.CoroutinesDispatcherProvider
+import com.arnoract.projectx.core.successOr
 import com.arnoract.projectx.core.successOrThrow
 import com.arnoract.projectx.domain.usecase.article.GetArticleByIdUseCase
+import com.arnoract.projectx.domain.usecase.article.GetCurrentParagraphFromDbUseCase
+import com.arnoract.projectx.domain.usecase.article.SetCurrentParagraphToDbUseCase
 import com.arnoract.projectx.ui.reader.model.UiParagraph
 import com.arnoract.projectx.ui.reader.model.UiReaderState
 import com.arnoract.projectx.ui.reader.model.mapper.ParagraphToUiParagraphMapper
@@ -20,6 +23,8 @@ import java.util.*
 class ReaderViewModel(
     private val id: String,
     private val getArticleByIdUseCase: GetArticleByIdUseCase,
+    private val getCurrentParagraphFromDbUseCase: GetCurrentParagraphFromDbUseCase,
+    private val setCurrentParagraphToDbUseCase: SetCurrentParagraphToDbUseCase,
     private val coroutinesDispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel() {
 
@@ -37,10 +42,14 @@ class ReaderViewModel(
                 val result = withContext(coroutinesDispatcherProvider.io) {
                     getArticleByIdUseCase.invoke(id).successOrThrow()
                 }
+                val currentParagraphDb = withContext(coroutinesDispatcherProvider.io) {
+                    getCurrentParagraphFromDbUseCase.invoke(id).successOr(0)
+                }
                 delay(1000)
                 _uiReaderState.value = UiReaderState.Success(
                     titleTh = result.titleTh,
                     titleEn = result.titleEn,
+                    currentParagraphSelected = currentParagraphDb,
                     uiParagraph = result.paragraphs?.map { param ->
                         param.map { ParagraphToUiParagraphMapper.map(it) }
                     } ?: listOf()
@@ -83,6 +92,7 @@ class ReaderViewModel(
                 uiParagraph = data.uiParagraph,
                 currentParagraphSelected = data.currentParagraphSelected.plus(1)
             )
+            setCurrentProgress(data.currentParagraphSelected.plus(1))
         }
     }
 
@@ -95,6 +105,23 @@ class ReaderViewModel(
                 uiParagraph = data.uiParagraph,
                 currentParagraphSelected = data.currentParagraphSelected.minus(1)
             )
+            setCurrentProgress(data.currentParagraphSelected.minus(1))
+        }
+    }
+
+    private fun setCurrentProgress(progress: Int) {
+        viewModelScope.launch {
+            try {
+                withContext(coroutinesDispatcherProvider.io) {
+                    setCurrentParagraphToDbUseCase.invoke(
+                        SetCurrentParagraphToDbUseCase.Params(
+                            id, progress
+                        )
+                    ).successOrThrow()
+                }
+            } catch (e: Exception) {
+
+            }
         }
     }
 

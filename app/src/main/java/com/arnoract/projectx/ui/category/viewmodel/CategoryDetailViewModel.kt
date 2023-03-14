@@ -9,8 +9,8 @@ import com.arnoract.projectx.core.successOr
 import com.arnoract.projectx.domain.usecase.article.GetArticleByCategoryIdUseCase
 import com.arnoract.projectx.ui.category.model.UiCategoryDetailState
 import com.arnoract.projectx.ui.home.model.mapper.ArticleToUiArticleHorizontalItemMapper
-import com.arnoract.projectx.ui.home.model.mapper.ArticleToUiArticleVerticalItemMapper
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -23,6 +23,9 @@ class CategoryDetailViewModel(
     private val _uiCategoryDetailState = MutableLiveData<UiCategoryDetailState?>()
     val uiCategoryDetailState: LiveData<UiCategoryDetailState?>
         get() = _uiCategoryDetailState
+
+    private val _navigateToReader = MutableSharedFlow<String>()
+    val navigateToReader: MutableSharedFlow<String> get() = _navigateToReader
 
     init {
         viewModelScope.launch {
@@ -43,6 +46,22 @@ class CategoryDetailViewModel(
                 }
             } catch (e: Exception) {
 
+            }
+        }
+    }
+
+    fun onNavigateToReader(articleId: String) {
+        viewModelScope.launch {
+            _navigateToReader.emit(articleId)
+            if (_uiCategoryDetailState.value is UiCategoryDetailState.Success) {
+                val model = _uiCategoryDetailState.value as UiCategoryDetailState.Success
+                _uiCategoryDetailState.value = model.copy(data = model.data.map {
+                    if (it.id == articleId) {
+                        it.copy(viewCount = it.viewCount.plus(1))
+                    } else {
+                        it
+                    }
+                })
             }
         }
     }

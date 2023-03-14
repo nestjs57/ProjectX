@@ -2,6 +2,7 @@ package com.arnoract.projectx.ui.home.view
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
@@ -25,13 +26,16 @@ import coil.request.ImageRequest
 import com.arnoract.projectx.R
 import com.arnoract.projectx.ui.home.model.UiArticleCategory
 import com.arnoract.projectx.ui.home.model.UiArticleHorizontalItem
-import com.arnoract.projectx.ui.home.model.UiArticleVerticalItem
 import com.arnoract.projectx.ui.home.model.mapper.UiArticleCategoryToCategoryLabelMapper
 import com.arnoract.projectx.util.FormatUtils.formatNumberWithOrWithOutDecimal
 
 @Composable
-fun ArticleHorizontalItem(model: UiArticleHorizontalItem, onClickedItem: () -> Unit) {
-    Row(modifier = Modifier.padding(bottom = 16.dp)) {
+fun ArticleHorizontalItem(model: UiArticleHorizontalItem, onClickedItem: (String) -> Unit) {
+    Row(modifier = Modifier
+        .padding(bottom = 16.dp)
+        .clickable {
+            onClickedItem(model.id)
+        }) {
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current).data(model.imageUrl)
                 .crossfade(true).build(),
@@ -74,7 +78,7 @@ fun ArticleHorizontalItem(model: UiArticleHorizontalItem, onClickedItem: () -> U
                 overflow = TextOverflow.Ellipsis,
             )
             Spacer(modifier = Modifier.height(1.dp))
-            Row() {
+            Row {
                 Box(
                     modifier = Modifier, contentAlignment = Alignment.CenterStart
                 ) {

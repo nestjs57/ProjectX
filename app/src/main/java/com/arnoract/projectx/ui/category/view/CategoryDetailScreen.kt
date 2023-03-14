@@ -21,6 +21,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.arnoract.projectx.R
+import com.arnoract.projectx.base.OnEvent
+import com.arnoract.projectx.base.Route
 import com.arnoract.projectx.ui.category.mapper.CategoryIdToStringCategoryMapper
 import com.arnoract.projectx.ui.category.model.UiCategoryDetailState
 import com.arnoract.projectx.ui.category.viewmodel.CategoryDetailViewModel
@@ -36,7 +38,16 @@ fun CategoryDetailScreen(categoryId: String, navController: NavHostController) {
     )
     val uiState by viewModel.uiCategoryDetailState.observeAsState()
 
-    Column() {
+    OnEvent(event = viewModel.navigateToReader, onEvent = {
+        navController.navigate(
+            Route.readers.replace(
+                "{id}",
+                it
+            )
+        )
+    })
+
+    Column {
         Header(navController, categoryId)
         when (val state: UiCategoryDetailState? = uiState) {
             is UiCategoryDetailState.Loading -> {
@@ -51,7 +62,7 @@ fun CategoryDetailScreen(categoryId: String, navController: NavHostController) {
                             ArticleHorizontalItem(
                                 it
                             ) {
-
+                                viewModel.onNavigateToReader(it)
                             }
                         }
                     }
