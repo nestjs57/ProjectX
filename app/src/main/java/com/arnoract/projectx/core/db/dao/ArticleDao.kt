@@ -24,5 +24,5 @@ abstract class ArticleDao : BaseDao<ArticleEntity>() {
     abstract suspend fun deleteById(id: String)
 
     @Query("UPDATE article SET currentParagraph = :progress WHERE id = :id")
-    abstract suspend fun updateProgressById(id: String, progress: Int)
+    abstract suspend fun updateCurrentParagraphById(id: String, progress: Int)
 }

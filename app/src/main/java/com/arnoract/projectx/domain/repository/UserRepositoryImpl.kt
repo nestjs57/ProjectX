@@ -1,5 +1,6 @@
 package com.arnoract.projectx.domain.repository
 
+import com.arnoract.projectx.core.db.dao.ArticleDao
 import com.arnoract.projectx.domain.model.profile.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
@@ -10,7 +11,8 @@ import kotlinx.coroutines.tasks.await
 
 class UserRepositoryImpl(
     private val auth: FirebaseAuth,
-    private val db: FirebaseFirestore
+    private val db: FirebaseFirestore,
+    private val articleDao: ArticleDao
 ) : UserRepository {
     override suspend fun getIsLogin(): Boolean {
         return Firebase.auth.currentUser != null
@@ -38,6 +40,7 @@ class UserRepositoryImpl(
     }
 
     override suspend fun signOut() {
+        articleDao.delete()
         auth.signOut()
     }
 }

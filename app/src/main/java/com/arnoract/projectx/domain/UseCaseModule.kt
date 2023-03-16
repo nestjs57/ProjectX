@@ -10,8 +10,9 @@ import org.koin.dsl.module
 val useCaseModule = module {
     factory { GetStationsUseCase(get()) }
     factory { GetArticlesUseCase(get()) }
-    factory { GetArticleByIdUseCase(get()) }
+    factory { GetArticleByIdUseCase(get(), get()) }
     factory { GetProfileUseCase(get()) }
+    factory { GetIsLoginUseCase(get()) }
     factory { LoginWithGoogleUseCase(get()) }
     factory { SignOutWithGoogleUseCase(get()) }
     factory { GetArticleByCategoryIdUseCase(get()) }

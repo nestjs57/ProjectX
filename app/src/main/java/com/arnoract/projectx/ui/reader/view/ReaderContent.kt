@@ -15,7 +15,6 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -217,27 +216,15 @@ fun ReaderContent(
                     .height(48.dp)
                     .clip(RoundedCornerShape(6.dp))
                     .clickable {
-                        if (isLastParagraph) {
-
-                        } else {
-                            onClickedNextParagraph()
-                        }
+                        if (isLastParagraph) return@clickable
+                        onClickedNextParagraph()
                     }
-                    .background(colorResource(id = if (isLastParagraph) R.color.read_finish_button else R.color.purple_500))
+                    .background(colorResource(id = if (isLastParagraph) R.color.gray500 else R.color.purple_500))
                     .weight(1f), contentAlignment = Alignment.Center
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    if (isLastParagraph) {
-                        Image(
-                            painter = painterResource(id = R.drawable.ic_check_circle),
-                            modifier = Modifier
-                                .size(20.dp),
-                            contentDescription = null,
-                        )
-                        Spacer(modifier = Modifier.width(8.dp))
-                    }
                     Text(
-                        text = stringResource(id = if (isLastParagraph) R.string.read_finish_label else R.string.next_label),
+                        text = stringResource(id = R.string.next_label),
                         modifier = Modifier,
                         fontSize = 16.sp,
                         color = colorResource(id = R.color.white),
@@ -269,7 +256,7 @@ private fun ToolBar(paragraphNumber: Int, uiParagraphSize: Int, onClickedBack: (
             textAlign = TextAlign.Center,
         )
         IconButton(onClick = { }) {
-            Icon(imageVector = Icons.Filled.FavoriteBorder, contentDescription = "Menu Btn")
+            //Icon(imageVector = Icons.Filled.FavoriteBorder, contentDescription = "Menu Btn")
         }
     }
 }

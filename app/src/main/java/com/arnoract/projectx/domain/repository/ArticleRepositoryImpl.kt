@@ -30,10 +30,6 @@ class ArticleRepositoryImpl(private val db: FirebaseFirestore, private val artic
             result.documents.firstOrNull()?.toObject<NetworkArticle>()?.copy(id = id)
         )
         db.collection("articles").document(id).update("viewCount", model.viewCount.plus(1))
-        val entity = articleDao.findById(id)
-        if (entity == null) {
-            articleDao.insert(ArticleToArticleEntityMapper(progress = 0).map(model))
-        }
         return model.copy(viewCount = model.viewCount.plus(1))
     }
 
@@ -52,7 +48,7 @@ class ArticleRepositoryImpl(private val db: FirebaseFirestore, private val artic
     }
 
     override suspend fun setCurrentParagraphToDb(id: String, progress: Int) {
-        articleDao.updateProgressById(id, progress)
+        articleDao.updateCurrentParagraphById(id, progress)
     }
 
     override fun observeReadingArticles(): Flow<List<ReadingArticle>> {
@@ -61,6 +57,19 @@ class ArticleRepositoryImpl(private val db: FirebaseFirestore, private val artic
             it.map { entity ->
                 ArticleEntityToArticleMapper.map(entity)
             }
+        }
+    }
+
+    override suspend fun createReadingArticleToDb(model: Article) {
+        val entity = articleDao.findById(model.id ?: "")
+        if (entity == null) {
+            articleDao.insert(ArticleToArticleEntityMapper(progress = 0).map(model))
+        } else {
+            articleDao.update(
+                ArticleToArticleEntityMapper(progress = entity.currentParagraph).map(
+                    model
+                )
+            )
         }
     }
 }

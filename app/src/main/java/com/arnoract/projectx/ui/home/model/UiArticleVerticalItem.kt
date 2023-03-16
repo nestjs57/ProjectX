@@ -4,6 +4,7 @@ data class UiArticleVerticalItem(
     val id: String,
     val imageUrl: String,
     val titleTh: String,
-    val titleEn : String,
-    val category: UiArticleCategory?
+    val titleEn: String,
+    val category: UiArticleCategory?,
+    val progress: String? = null,
 )

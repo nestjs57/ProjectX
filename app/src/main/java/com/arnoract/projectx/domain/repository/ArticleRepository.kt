@@ -16,4 +16,6 @@ interface ArticleRepository {
     suspend fun setCurrentParagraphToDb(id: String, progress: Int)
 
     fun observeReadingArticles(): Flow<List<ReadingArticle>>
+
+    suspend fun createReadingArticleToDb(model: Article)
 }

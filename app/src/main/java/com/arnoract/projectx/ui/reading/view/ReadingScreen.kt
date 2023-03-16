@@ -1,9 +1,29 @@
 package com.arnoract.projectx.ui.reading.view
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.arnoract.projectx.R
+import com.arnoract.projectx.ui.home.view.BottomBarScreen
+import com.arnoract.projectx.ui.reading.model.UiReadingArticleState
 import com.arnoract.projectx.ui.reading.viewmodel.ReadingViewModel
 import org.koin.androidx.compose.getViewModel
 
@@ -11,5 +31,88 @@ import org.koin.androidx.compose.getViewModel
 fun ReadingScreen(navController: NavHostController) {
     val viewModel = getViewModel<ReadingViewModel>()
 
-    val data by viewModel.uiData.observeAsState()
+    val uiState by viewModel.uiReadingState.observeAsState()
+
+    when (val state = uiState) {
+        is UiReadingArticleState.Loading -> {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                CircularProgressIndicator(color = colorResource(id = R.color.purple_500))
+            }
+        }
+        is UiReadingArticleState.Success -> {
+            ReadingContent(state.data, navController)
+        }
+        is UiReadingArticleState.NonLogin -> {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 64.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_freelancer_amico),
+                        modifier = Modifier
+                            .size(250.dp),
+                        contentDescription = null,
+                    )
+                    Text(
+                        text = stringResource(id = R.string.look_likes_no_login_label),
+                        fontSize = 20.sp,
+                        overflow = TextOverflow.Ellipsis,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Box(
+                        modifier = Modifier
+                            .height(48.dp)
+                            .width(150.dp)
+                            .clip(RoundedCornerShape(6.dp))
+                            .clickable {
+                                navController.navigate(BottomBarScreen.Profile.route) {
+                                    launchSingleTop = true
+                                }
+                            }
+                            .background(colorResource(id = R.color.purple_500)),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.go_to_profile_page_label),
+                            modifier = Modifier,
+                            fontSize = 16.sp,
+                            color = colorResource(id = R.color.white),
+                        )
+                    }
+                }
+            }
+        }
+        is UiReadingArticleState.Empty -> {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 64.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_kids_reading_amico),
+                        modifier = Modifier
+                            .size(250.dp),
+                        contentDescription = null,
+                    )
+                    Text(
+                        text = stringResource(id = R.string.empty_reading_label),
+                        fontSize = 20.sp,
+                        overflow = TextOverflow.Ellipsis,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
+        }
+        else -> {}
+    }
 }

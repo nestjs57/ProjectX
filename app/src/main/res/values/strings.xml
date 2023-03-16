@@ -49,6 +49,7 @@
     <string name="contact_us_label">ติดต่อเรา</string>
     <string name="message_from_writer">ข้อความจากนักเขียน</string>
     <string name="sign_in_with_label">เข้าสู่ระบบด้วย</string>
+    <string name="sign_in_label">เข้าสู่ระบบ</string>
     <string name="sign_out_label">ออกจากระบบ</string>
     <string name="close_label">ปิด</string>
     <string name="title_error_label">เกิดข้อผิดพลาดบางอย่าง</string>
@@ -56,5 +57,8 @@
     <string name="previous_label">ก่อนหน้า</string>
     <string name="next_label">ถัดไป</string>
     <string name="read_finish_label">อ่านจบแล้ว</string>
+    <string name="look_likes_no_login_label">ดูเหมือนว่าคุณจะยังไม่ได้เข้าสู่ระบบ</string>
+    <string name="go_to_profile_page_label">ไปยังหน้าผู้ใช้</string>
+    <string name="empty_reading_label">ดูเหมือนว่าบทความที่กำลังอ่าน\nของคุณจะว่างเปล่า</string>
 
 </resources>
