@@ -33,7 +33,7 @@ fun HomeContent(
             icon = painterResource(id = R.drawable.ic_like),
             value = stringResource(id = R.string.recommended_label)
         )
-        RecommendedSection(recommendedItem)
+        RecommendedSection(navHostController, recommendedItem)
         ContentTitleSection(
             modifier = Modifier.padding(vertical = dimensionResource(id = R.dimen.space_normal)),
             icon = painterResource(id = R.drawable.ic_rocket),

@@ -37,77 +37,82 @@ fun ArticleVerticalItem(
     modifier: Modifier = Modifier,
     onClickedItem: () -> Unit
 ) {
-    Column(modifier = modifier
-        .width(95.dp)
-        .clip(RoundedCornerShape(6.dp))
-        .clickable {
-            onClickedItem()
-        }) {
-        Box(modifier = Modifier) {
-            AsyncImage(
-                model = ImageRequest.Builder(LocalContext.current).data(model.imageUrl)
-                    .crossfade(true).build(),
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .width(95.dp)
-                    .height(155.dp)
-                    .clip(RoundedCornerShape(10.dp))
-                    .background(colorResource(id = R.color.gray300))
-            )
-            val isComplete = model.progress == "100"
-            if (model.progress != null) {
-                Card(
-                    shape = RoundedCornerShape(100.dp),
+    Box(modifier = Modifier) {
+        Column(modifier = modifier
+            .width(95.dp)
+            .clip(RoundedCornerShape(6.dp))
+            .clickable {
+                if (!model.isBlock) {
+                    onClickedItem()
+                }
+            }) {
+            Box(modifier = Modifier.alpha(if (model.isBlock) 0.6f else 1f)) {
+                AsyncImage(
+                    model = ImageRequest.Builder(LocalContext.current).data(model.imageUrl)
+                        .crossfade(true).build(),
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
                     modifier = Modifier
-                        .padding(6.dp)
-                        .align(Alignment.BottomEnd)
-                        .width(25.dp)
-                        .height(25.dp),
-                    elevation = 10.dp,
-                    backgroundColor = if (isComplete) colorResource(id = R.color.green_sukhumvit) else MaterialTheme.colors.surface,
-                ) {
-                    Box {
-                        if (isComplete) {
-                            Image(
-                                painter = painterResource(id = R.drawable.ic_check),
-                                modifier = Modifier
-                                    .size(17.dp)
-                                    .align(Alignment.Center),
-                                contentDescription = null,
-                                colorFilter = ColorFilter.tint(colorResource(id = R.color.white))
-                            )
-                        } else {
-                            Text(
-                                text = "${model.progress}%",
-                                modifier = Modifier
-                                    .align(Alignment.Center),
-                                maxLines = 2,
-                                fontSize = 10.sp,
-                                fontWeight = FontWeight.Bold,
-                                overflow = TextOverflow.Ellipsis,
-                            )
+                        .width(95.dp)
+                        .height(155.dp)
+                        .clip(RoundedCornerShape(10.dp))
+                        .background(colorResource(id = R.color.gray300))
+                )
+                val isComplete = model.progress == "100"
+                if (model.progress != null) {
+                    Card(
+                        shape = RoundedCornerShape(100.dp),
+                        modifier = Modifier
+                            .padding(6.dp)
+                            .align(Alignment.BottomEnd)
+                            .width(25.dp)
+                            .height(25.dp),
+                        elevation = 10.dp,
+                        backgroundColor = if (isComplete) colorResource(id = R.color.green_sukhumvit) else MaterialTheme.colors.surface,
+                    ) {
+                        Box {
+                            if (isComplete) {
+                                Image(
+                                    painter = painterResource(id = R.drawable.ic_check),
+                                    modifier = Modifier
+                                        .size(17.dp)
+                                        .align(Alignment.Center),
+                                    contentDescription = null,
+                                    colorFilter = ColorFilter.tint(colorResource(id = R.color.white))
+                                )
+                            } else {
+                                Text(
+                                    text = "${model.progress}%",
+                                    modifier = Modifier
+                                        .align(Alignment.Center),
+                                    maxLines = 2,
+                                    fontSize = 10.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    overflow = TextOverflow.Ellipsis,
+                                )
+                            }
                         }
                     }
                 }
             }
+            Text(
+                text = model.titleTh,
+                modifier = Modifier
+                    .padding(top = 2.dp)
+                    .alpha(if (model.isBlock) 0.6f else 1f),
+                maxLines = 2,
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Bold,
+                overflow = TextOverflow.Ellipsis,
+            )
+            Text(
+                text = stringResource(id = UiArticleCategoryToCategoryLabelMapper.map(model.category)),
+                Modifier.alpha(0.5f),
+                maxLines = 1,
+                fontSize = 12.sp,
+                overflow = TextOverflow.Ellipsis,
+            )
         }
-        Text(
-            text = model.titleTh,
-            modifier = Modifier
-                .padding(top = 2.dp),
-            maxLines = 2,
-            fontSize = 14.sp,
-            fontWeight = FontWeight.Bold,
-            overflow = TextOverflow.Ellipsis,
-        )
-        Text(
-            text = stringResource(id = UiArticleCategoryToCategoryLabelMapper.map(model.category)),
-            Modifier.alpha(0.5f),
-            maxLines = 1,
-            fontSize = 12.sp,
-            overflow = TextOverflow.Ellipsis,
-        )
     }
 }
 

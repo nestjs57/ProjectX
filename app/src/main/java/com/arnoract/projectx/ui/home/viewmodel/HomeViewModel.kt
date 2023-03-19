@@ -35,7 +35,7 @@ class HomeViewModel(
                 }
                 _uiHomeState.value = UiHomeState.Success(
                     comingSoonItem = result.filter { it.isComingSoon }.map {
-                        ArticleToUiArticleVerticalItemMapper.map(it)
+                        ArticleToUiArticleVerticalItemMapper.map(it).copy(isBlock = true)
                     },
                     recommendedItem = result.filter { it.isRecommend }.map {
                         ArticleToUiArticleVerticalItemMapper.map(it)
