@@ -7,7 +7,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
@@ -19,7 +18,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -30,7 +28,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.arnoract.projectx.R
 import com.arnoract.projectx.ui.reader.model.UiParagraph
-import com.arnoract.projectx.ui.util.HighlightText
 import com.google.accompanist.flowlayout.FlowRow
 import kotlinx.coroutines.launch
 
@@ -134,7 +131,7 @@ fun ReaderContent(
                         fontSize = 22.sp,
                         fontWeight = FontWeight.Bold
                     )
-                    Text(if (translate.isBlank()) "" else stringResource(id = R.string.example_sentence_with_colon_label))
+                    //Text(if (translate.isBlank()) "" else stringResource(id = R.string.example_sentence_with_colon_label))
 
                     val coroutineScope = rememberCoroutineScope()
                     val lazyListState = rememberLazyListState()
@@ -142,42 +139,42 @@ fun ReaderContent(
                         lazyListState.animateScrollToItem(0)
                     }
 
-                    Box(modifier = Modifier, contentAlignment = Alignment.CenterEnd) {
-                        LazyRow(
-                            state = lazyListState,
-                            modifier = Modifier.fillMaxSize()
-                        ) {
-                            item {
-                                Column {
-                                    Box(modifier = Modifier.clickable {
-                                        onTextSpeech(example)
-                                    }) {
-                                        HighlightText(
-                                            text = example,
-                                            keyword = vocabulary.replace(":", "").trim()
-                                        )
-                                    }
-                                    HighlightText(exampleTranslate, translate)
-                                }
-                            }
-                            item {
-                                Spacer(modifier = Modifier.width(40.dp))
-                            }
-                        }
-                        Box(
-                            modifier = Modifier
-                                .width(50.dp)
-                                .height(50.dp)
-                                .background(
-                                    brush = Brush.horizontalGradient(
-                                        colors = listOf(
-                                            colorResource(id = R.color.transparent),
-                                            colorResource(id = R.color.white)
-                                        )
-                                    )
-                                )
-                        )
-                    }
+//                    Box(modifier = Modifier, contentAlignment = Alignment.CenterEnd) {
+//                        LazyRow(
+//                            state = lazyListState,
+//                            modifier = Modifier.fillMaxSize()
+//                        ) {
+//                            item {
+//                                Column {
+//                                    Box(modifier = Modifier.clickable {
+//                                        onTextSpeech(example)
+//                                    }) {
+//                                        HighlightText(
+//                                            text = example,
+//                                            keyword = vocabulary.replace(":", "").trim()
+//                                        )
+//                                    }
+//                                    HighlightText(exampleTranslate, translate)
+//                                }
+//                            }
+//                            item {
+//                                Spacer(modifier = Modifier.width(40.dp))
+//                            }
+//                        }
+//                        Box(
+//                            modifier = Modifier
+//                                .width(50.dp)
+//                                .height(50.dp)
+//                                .background(
+//                                    brush = Brush.horizontalGradient(
+//                                        colors = listOf(
+//                                            colorResource(id = R.color.transparent),
+//                                            colorResource(id = R.color.white)
+//                                        )
+//                                    )
+//                                )
+//                        )
+//                    }
                 }
             }
         }
@@ -256,7 +253,14 @@ private fun ToolBar(paragraphNumber: Int, uiParagraphSize: Int, onClickedBack: (
             textAlign = TextAlign.Center,
         )
         IconButton(onClick = { }) {
-            //Icon(imageVector = Icons.Filled.FavoriteBorder, contentDescription = "Menu Btn")
+            Image(
+                painter = painterResource(id = R.drawable.ic_settings_sliders_unselect),
+                contentDescription = null,
+                Modifier
+                    .size(18.dp)
+                    .clickable {
+                    },
+            )
         }
     }
 }
@@ -326,7 +330,7 @@ private fun ParagraphSection(
                             }
                         ),
                     textDecoration = textDecoration,
-                    fontSize = 14.sp,
+                    fontSize = 16.sp,
                     color = if (uiParagraph.isSelected) colorResource(id = R.color.white) else colorResource(
                         id = R.color.black
                     )

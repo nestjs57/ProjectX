@@ -3,8 +3,7 @@ package com.arnoract.projectx.ui.home.view
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.res.colorResource
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -36,7 +35,7 @@ fun BottomBar(navController: NavHostController) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
-    val bottomBarDestination = screens.any {it.route == currentDestination?.route}
+    val bottomBarDestination = screens.any { it.route == currentDestination?.route }
     if (bottomBarDestination) {
         BottomNavigation(
             backgroundColor = colorResource(R.color.white)
