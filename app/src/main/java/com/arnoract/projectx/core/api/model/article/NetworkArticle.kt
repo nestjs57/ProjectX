@@ -19,5 +19,6 @@ data class NetworkArticle(
     @JvmField @PropertyName("isComingSoon")
     val isComingSoon: Boolean? = null,
     val publicDate: Date? = null,
-    val viewCount: Int? = null
+    val viewCount: Int? = null,
+    val translateRawState: String? = null
 )

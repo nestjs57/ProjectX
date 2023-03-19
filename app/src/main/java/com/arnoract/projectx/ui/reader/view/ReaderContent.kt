@@ -7,7 +7,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -25,6 +24,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.arnoract.projectx.R
@@ -38,7 +39,6 @@ import com.arnoract.projectx.ui.reader.model.SettingBackground
 import com.arnoract.projectx.ui.reader.model.SettingFontSize
 import com.arnoract.projectx.ui.reader.model.UiParagraph
 import com.google.accompanist.flowlayout.FlowRow
-import kotlinx.coroutines.launch
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
@@ -46,6 +46,7 @@ fun ReaderContent(
     titleTh: String,
     titleEn: String,
     uiParagraph: List<List<UiParagraph>>,
+    uiTranSlateParagraph: List<String>,
     currentParagraphSelected: Int,
     readerSetting: ReaderSetting?,
     onClickedSelectVocabulary: (UiParagraph) -> Unit,
@@ -77,7 +78,10 @@ fun ReaderContent(
         )
     }
 
-    Column(modifier = Modifier.background(getBackgroundColor(value = readerSetting?.backgroundMode))) {
+    Column(
+        modifier = Modifier
+            .background(getBackgroundColor(value = readerSetting?.backgroundMode))
+    ) {
         val underLineColor =
             if (readerSetting?.backgroundMode == SettingBackground.DAY) colorResource(id = R.color.gray300) else colorResource(
                 id = R.color.transparent
@@ -96,12 +100,30 @@ fun ReaderContent(
                 .height(2.dp)
                 .fillMaxWidth()
         )
+
+        var vocabulary: String by remember {
+            mutableStateOf("")
+        }
+        var translate: String by remember {
+            mutableStateOf("")
+        }
+        var example: String by remember {
+            mutableStateOf("")
+        }
+        var exampleTranslate: String by remember {
+            mutableStateOf("")
+        }
+
+        var isShowTranslate by remember {
+            mutableStateOf(false)
+        }
+
         LazyColumn(
             modifier = Modifier
                 .weight(1f)
                 .fillMaxWidth()
                 .fillMaxHeight()
-                .padding(top = 40.dp, start = 16.dp, end = 16.dp, bottom = 16.dp),
+                .padding(top = 40.dp, bottom = 16.dp, start = 16.dp, end = 16.dp),
         ) {
             item {
                 TitleSection(titleTh, titleEn, readerSetting)
@@ -112,19 +134,6 @@ fun ReaderContent(
             }
 
             item {
-                var vocabulary: String by remember {
-                    mutableStateOf("")
-                }
-                var translate: String by remember {
-                    mutableStateOf("")
-                }
-                var example: String by remember {
-                    mutableStateOf("")
-                }
-                var exampleTranslate: String by remember {
-                    mutableStateOf("")
-                }
-
                 Column {
                     ParagraphSection(uiParagraph[paragraphNumber],
                         setting = readerSetting,
@@ -144,85 +153,93 @@ fun ReaderContent(
                             .fillMaxWidth()
                             .background(colorResource(id = R.color.gray500))
                     )
-                    if (vocabulary.isNotBlank()) {
-                        Row(verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier.clickable {
-                                onTextSpeech(vocabulary)
-                            }) {
+                    val textSize = when (readerSetting?.fontSizeMode) {
+                        SettingFontSize.SMALL -> 12.sp
+                        SettingFontSize.NORMAL -> 14.sp
+                        SettingFontSize.LARGE -> 16.sp
+                        else -> 14.sp
+                    }
+                    if (isShowTranslate) {
+                        Column {
+                            Text(
+                                text = uiTranSlateParagraph[paragraphNumber],
+                                color = getFontColor(value = readerSetting?.backgroundMode),
+                                lineHeight = TextUnit(28f, TextUnitType.Sp),
+                                modifier = Modifier.clickable {
+                                    isShowTranslate = false
+                                },
+                                fontSize = textSize
+                            )
+                            Spacer(modifier = Modifier.height(2.dp))
+                            Text(
+                                text = stringResource(id = R.string.hide_translate_label),
+                                color = getFontColor(value = readerSetting?.backgroundMode),
+                                textDecoration = TextDecoration.Underline,
+                                modifier = Modifier.clickable {
+                                    isShowTranslate = false
+                                },
+                                fontSize = textSize
+                            )
+                        }
+                    } else {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
                             Image(
-                                painter = painterResource(id = R.drawable.ic_volume),
-                                modifier = Modifier.size(22.dp),
+                                painter = painterResource(id = R.drawable.ic_text),
+                                modifier = Modifier.size(21.dp),
                                 contentDescription = null,
                                 colorFilter = ColorFilter.tint(getDrawableTint(value = readerSetting?.backgroundMode))
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
-                                text = vocabulary,
-                                color = getFontColorPurple(readerSetting?.backgroundMode),
-                                fontSize = 22.sp,
-                                fontWeight = FontWeight.Bold,
+                                text = stringResource(id = R.string.show_translate_this_paragraph_label),
+                                color = getFontColor(value = readerSetting?.backgroundMode),
+                                textDecoration = TextDecoration.Underline,
+                                modifier = Modifier.clickable {
+                                    isShowTranslate = true
+                                },
+                                fontSize = textSize
                             )
                         }
                     }
-                    Text(
-                        text = translate,
-                        color = getFontColor(readerSetting?.backgroundMode),
-                        fontSize = 22.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                    //Text(if (translate.isBlank()) "" else stringResource(id = R.string.example_sentence_with_colon_label))
-
-                    val coroutineScope = rememberCoroutineScope()
-                    val lazyListState = rememberLazyListState()
-                    coroutineScope.launch {
-                        lazyListState.animateScrollToItem(0)
-                    }
-
-//                    Box(modifier = Modifier, contentAlignment = Alignment.CenterEnd) {
-//                        LazyRow(
-//                            state = lazyListState,
-//                            modifier = Modifier.fillMaxSize()
-//                        ) {
-//                            item {
-//                                Column {
-//                                    Box(modifier = Modifier.clickable {
-//                                        onTextSpeech(example)
-//                                    }) {
-//                                        HighlightText(
-//                                            text = example,
-//                                            keyword = vocabulary.replace(":", "").trim()
-//                                        )
-//                                    }
-//                                    HighlightText(exampleTranslate, translate)
-//                                }
-//                            }
-//                            item {
-//                                Spacer(modifier = Modifier.width(40.dp))
-//                            }
-//                        }
-//                        Box(
-//                            modifier = Modifier
-//                                .width(50.dp)
-//                                .height(50.dp)
-//                                .background(
-//                                    brush = Brush.horizontalGradient(
-//                                        colors = listOf(
-//                                            colorResource(id = R.color.transparent),
-//                                            colorResource(id = R.color.white)
-//                                        )
-//                                    )
-//                                )
-//                        )
-//                    }
                 }
             }
         }
+
+        if (vocabulary.isNotBlank()) {
+            Row(verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .padding(start = 16.dp, end = 16.dp)
+                    .clickable {
+                        onTextSpeech(vocabulary)
+                    }) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_volume),
+                    modifier = Modifier.size(22.dp),
+                    contentDescription = null,
+                    colorFilter = ColorFilter.tint(getDrawableTint(value = readerSetting?.backgroundMode))
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = vocabulary,
+                    color = getFontColorPurple(readerSetting?.backgroundMode),
+                    fontSize = 22.sp,
+                    fontWeight = FontWeight.Bold,
+                )
+            }
+        }
+        Text(
+            modifier = Modifier.padding(start = 16.dp, end = 16.dp),
+            text = translate,
+            color = getFontColor(readerSetting?.backgroundMode),
+            fontSize = 22.sp,
+            fontWeight = FontWeight.Bold
+        )
 
         val isFirstParagraph = paragraphNumber < 1
         val isLastParagraph = paragraphNumber == uiParagraph.size.minus(1)
         Row(
             modifier = Modifier
-                .padding(16.dp)
+                .padding(top = 16.dp, start = 16.dp, end = 16.dp, bottom = 16.dp)
                 .fillMaxWidth()
                 .height(56.dp),
             verticalAlignment = Alignment.CenterVertically
@@ -232,6 +249,7 @@ fun ReaderContent(
                 .clip(RoundedCornerShape(6.dp))
                 .clickable {
                     if (isFirstParagraph) return@clickable
+                    isShowTranslate = false
                     onClickedPreviousParagraph()
                 }
                 .background(colorResource(id = if (isFirstParagraph) R.color.gray500 else R.color.purple_500))
@@ -249,6 +267,7 @@ fun ReaderContent(
                 .clip(RoundedCornerShape(6.dp))
                 .clickable {
                     if (isLastParagraph) return@clickable
+                    isShowTranslate = false
                     onClickedNextParagraph()
                 }
                 .background(colorResource(id = if (isLastParagraph) R.color.gray500 else R.color.purple_500))

@@ -6,6 +6,7 @@ sealed class UiReaderState {
         val titleTh: String,
         val titleEn: String,
         val uiParagraph: List<List<UiParagraph>>,
+        val uiTranSlateParagraph: List<String>,
         val currentParagraphSelected: Int = 0
     ) : UiReaderState()
 }

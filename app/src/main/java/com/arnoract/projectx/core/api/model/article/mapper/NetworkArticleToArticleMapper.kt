@@ -12,6 +12,7 @@ object NetworkArticleToArticleMapper : Mapper<NetworkArticle?, Article> {
     override fun map(from: NetworkArticle?): Article {
 
         val contentRawState: ArrayList<Paragraph>? = from?.contentRawState?.toArrayClass()
+        val translateRawState: ArrayList<String>? = from?.translateRawState?.toArrayStringClass()
         val paragraphs = mutableListOf<List<Paragraph>>()
 
         contentRawState?.toList()?.groupBy {
@@ -33,13 +34,20 @@ object NetworkArticleToArticleMapper : Mapper<NetworkArticle?, Article> {
             isComingSoon = from?.isComingSoon ?: false,
             publicDate = from?.publicDate ?: Date(),
             viewCount = from?.viewCount ?: 0,
-            paragraphs = paragraphs
+            paragraphTranslate = translateRawState?.toList() ?: listOf(),
+            paragraphsVocabulary = paragraphs
         )
     }
 
     private fun <T : Any?> String.toArrayClass(): ArrayList<T> {
         val gson = Gson()
         val type = object : TypeToken<ArrayList<Paragraph>>() {}.type
+        return gson.fromJson(this, type)
+    }
+
+    private fun <T : Any?> String.toArrayStringClass(): ArrayList<T> {
+        val gson = Gson()
+        val type = object : TypeToken<ArrayList<String>>() {}.type
         return gson.fromJson(this, type)
     }
 }

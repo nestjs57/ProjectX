@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ProjectX</string>
+    <string name="app_name">Cody English</string>
     <string name="title_activity_main">MainActivity</string>
 
     <string name="bottom_bar_home_label">หน้าหลัก</string>
@@ -74,4 +74,6 @@
     <string name="day_label">กลางวัน</string>
     <string name="night_label">กลางคืน</string>
 
+    <string name="hide_translate_label">ปิดคำแปล</string>
+    <string name="show_translate_this_paragraph_label">แสดงคำแปลย่อหน้านี้</string>
 </resources>

@@ -10,11 +10,11 @@ object ParagraphToUiParagraphMapper : Mapper<Paragraph?, UiParagraph> {
         return UiParagraph(
             id = Random.nextInt(1, 999999),
             paragraphNum = from?.paragraphNum ?: 0,
-            vocabulary = from?.vocabulary ?: "",
-            translate = from?.translate ?: "",
-            note = from?.note ?: "",
-            example = from?.example ?: "",
-            example_translate = from?.example_translate ?: ""
+            vocabulary = from?.vocabulary?.trim() ?: "",
+            translate = from?.translate?.trim() ?: "",
+            note = from?.note?.trim() ?: "",
+            example = from?.example?.trim() ?: "",
+            example_translate = from?.example_translate?.trim() ?: ""
         )
     }
 }

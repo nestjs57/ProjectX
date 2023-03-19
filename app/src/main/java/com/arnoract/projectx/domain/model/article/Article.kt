@@ -15,7 +15,8 @@ data class Article(
     val isRecommend: Boolean,
     val publicDate: Date,
     val viewCount: Int,
-    val paragraphs: List<List<Paragraph>>? = null
+    val paragraphTranslate: List<String> = listOf(),
+    val paragraphsVocabulary: List<List<Paragraph>>? = null
 )
 
 data class Paragraph(

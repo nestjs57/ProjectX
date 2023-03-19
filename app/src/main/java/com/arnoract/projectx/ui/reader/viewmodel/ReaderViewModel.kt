@@ -69,9 +69,10 @@ class ReaderViewModel(
                 _uiReaderState.value = UiReaderState.Success(titleTh = result.titleTh,
                     titleEn = result.titleEn,
                     currentParagraphSelected = currentParagraphDb,
-                    uiParagraph = result.paragraphs?.map { param ->
+                    uiParagraph = result.paragraphsVocabulary?.map { param ->
                         param.map { ParagraphToUiParagraphMapper.map(it) }
-                    } ?: listOf())
+                    } ?: listOf(),
+                    uiTranSlateParagraph = result.paragraphTranslate)
             } catch (e: Exception) {
                 _error.emit(e.message ?: "Unknown Error.")
             }
@@ -108,7 +109,8 @@ class ReaderViewModel(
                 titleTh = data.titleTh,
                 titleEn = data.titleEn,
                 uiParagraph = data.uiParagraph,
-                currentParagraphSelected = data.currentParagraphSelected.plus(1)
+                currentParagraphSelected = data.currentParagraphSelected.plus(1),
+                uiTranSlateParagraph = data.uiTranSlateParagraph
             )
             setCurrentProgress(data.currentParagraphSelected.plus(1))
         }
@@ -121,7 +123,8 @@ class ReaderViewModel(
                 titleTh = data.titleTh,
                 titleEn = data.titleEn,
                 uiParagraph = data.uiParagraph,
-                currentParagraphSelected = data.currentParagraphSelected.minus(1)
+                currentParagraphSelected = data.currentParagraphSelected.minus(1),
+                uiTranSlateParagraph = data.uiTranSlateParagraph
             )
             setCurrentProgress(data.currentParagraphSelected.minus(1))
         }

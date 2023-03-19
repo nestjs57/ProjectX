@@ -53,6 +53,7 @@ fun ReaderScreen(id: String, navController: NavHostController) {
                 uiParagraph = state.uiParagraph,
                 readerSetting = setting,
                 currentParagraphSelected = state.currentParagraphSelected,
+                uiTranSlateParagraph = state.uiTranSlateParagraph,
                 onClickedSelectVocabulary = {
                     viewModel.setSelectedParagraph(it)
                 },

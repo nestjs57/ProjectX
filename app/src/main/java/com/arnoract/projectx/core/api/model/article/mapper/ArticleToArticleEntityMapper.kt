@@ -15,7 +15,7 @@ class ArticleToArticleEntityMapper(private val progress: Int) : Mapper<Article, 
             currentParagraph = progress,
             imageUrl = from.imageUrl,
             category = ArticleCategoryToIntArticleMapper.map(from.category),
-            totalParagraph = from.paragraphs?.size ?: 1
+            totalParagraph = from.paragraphsVocabulary?.size ?: 1
         )
     }
 }

@@ -1,18 +1,23 @@
 package com.arnoract.projectx.ui.profile.view
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat.startActivity
 import com.arnoract.projectx.R
 
 @Composable
@@ -53,6 +58,13 @@ fun InformationContent() {
                 .fillMaxWidth(),
             contentAlignment = Alignment.CenterStart
         ) {
+
+            val intent = Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse("https://www.facebook.com/profile.php?id=100090905786664")
+            )
+            val context = LocalContext.current
+
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_facebook),
@@ -65,7 +77,10 @@ fun InformationContent() {
                     fontSize = 18.sp,
                     modifier = Modifier
                         .wrapContentWidth()
-                        .wrapContentHeight(),
+                        .wrapContentHeight()
+                        .clickable {
+                            startActivity(context, intent, null)
+                        },
                     fontWeight = FontWeight.Bold,
                 )
             }
