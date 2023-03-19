@@ -35,7 +35,8 @@ object NetworkArticleToArticleMapper : Mapper<NetworkArticle?, Article> {
             publicDate = from?.publicDate ?: Date(),
             viewCount = from?.viewCount ?: 0,
             paragraphTranslate = translateRawState?.toList() ?: listOf(),
-            paragraphsVocabulary = paragraphs
+            paragraphsVocabulary = paragraphs,
+            isPublic = from?.isPublic ?: false
         )
     }
 

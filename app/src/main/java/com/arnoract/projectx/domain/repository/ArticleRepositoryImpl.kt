@@ -22,7 +22,7 @@ class ArticleRepositoryImpl(
 ) :
     ArticleRepository {
     override suspend fun getArticles(): List<Article> {
-        val result = db.collection("articles").get().await()
+        val result = db.collection("articles").whereEqualTo("isPublic", true).get().await()
         return result.documents.map {
             NetworkArticleToArticleMapper.map(it.toObject<NetworkArticle>()?.copy(id = it.id))
         }
@@ -39,10 +39,10 @@ class ArticleRepositoryImpl(
     }
 
     override suspend fun getArticleByCategoryId(categoryId: String): List<Article> {
-        val result = db.collection("articles").get().await()
+        val result = db.collection("articles").whereEqualTo("isPublic", true).get().await()
         return result.documents.map {
             it.toObject<NetworkArticle>()?.copy(id = it.id)
-        }.filter { it?.category == categoryId.toInt() }.map {
+        }.filter { it?.category == categoryId.toInt() && it.isPublic == true }.map {
             NetworkArticleToArticleMapper.map(it)
         }
     }
