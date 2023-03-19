@@ -9,13 +9,11 @@ import androidx.lifecycle.viewModelScope
 import com.arnoract.projectx.core.CoroutinesDispatcherProvider
 import com.arnoract.projectx.core.successOr
 import com.arnoract.projectx.core.successOrThrow
-import com.arnoract.projectx.domain.usecase.article.GetArticleByIdUseCase
-import com.arnoract.projectx.domain.usecase.article.GetCurrentParagraphFromDbUseCase
-import com.arnoract.projectx.domain.usecase.article.SetCurrentParagraphToDbUseCase
-import com.arnoract.projectx.ui.reader.model.UiParagraph
-import com.arnoract.projectx.ui.reader.model.UiReaderState
+import com.arnoract.projectx.domain.usecase.article.*
+import com.arnoract.projectx.ui.reader.model.*
 import com.arnoract.projectx.ui.reader.model.mapper.ParagraphToUiParagraphMapper
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
@@ -25,6 +23,10 @@ class ReaderViewModel(
     private val getArticleByIdUseCase: GetArticleByIdUseCase,
     private val getCurrentParagraphFromDbUseCase: GetCurrentParagraphFromDbUseCase,
     private val setCurrentParagraphToDbUseCase: SetCurrentParagraphToDbUseCase,
+    private val getFontSizeSettingUseCase: GetFontSizeSettingUseCase,
+    private val setFontSizeSettingUseCase: SetFontSizeSettingUseCase,
+    private val getBackgroundModelSettingUseCase: GetBackgroundModelSettingUseCase,
+    private val setBackgroundModelSettingUseCase: SetBackgroundModelSettingUseCase,
     private val coroutinesDispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel() {
 
@@ -32,12 +34,30 @@ class ReaderViewModel(
     val uiReaderState: LiveData<UiReaderState>
         get() = _uiReaderState
 
+    private val _readerSetting = MutableLiveData<ReaderSetting>()
+    val readerSetting: LiveData<ReaderSetting>
+        get() = _readerSetting
+
+    private val _error = MutableSharedFlow<String>()
+    val error: MutableSharedFlow<String>
+        get() = _error
+
     private var textToSpeech: TextToSpeech? = null
 
     init {
         viewModelScope.launch {
 
             try {
+                val fontSizeSettingPref = withContext(coroutinesDispatcherProvider.io) {
+                    getFontSizeSettingUseCase.invoke(Unit).successOr(SettingFontSize.NORMAL)
+                }
+                val backgroundModeSettingPref = withContext(coroutinesDispatcherProvider.io) {
+                    getBackgroundModelSettingUseCase.invoke(Unit).successOr(SettingBackground.DAY)
+                }
+                _readerSetting.value = ReaderSetting(
+                    fontSizeMode = fontSizeSettingPref,
+                    backgroundMode = backgroundModeSettingPref
+                )
                 _uiReaderState.value = UiReaderState.Loading
                 val result = withContext(coroutinesDispatcherProvider.io) {
                     getArticleByIdUseCase.invoke(id).successOrThrow()
@@ -46,16 +66,14 @@ class ReaderViewModel(
                     getCurrentParagraphFromDbUseCase.invoke(id).successOr(0)
                 }
                 delay(1000)
-                _uiReaderState.value = UiReaderState.Success(
-                    titleTh = result.titleTh,
+                _uiReaderState.value = UiReaderState.Success(titleTh = result.titleTh,
                     titleEn = result.titleEn,
                     currentParagraphSelected = currentParagraphDb,
                     uiParagraph = result.paragraphs?.map { param ->
                         param.map { ParagraphToUiParagraphMapper.map(it) }
-                    } ?: listOf()
-                )
+                    } ?: listOf())
             } catch (e: Exception) {
-
+                _error.emit(e.message ?: "Unknown Error.")
             }
         }
     }
@@ -120,7 +138,7 @@ class ReaderViewModel(
                     ).successOrThrow()
                 }
             } catch (e: Exception) {
-
+                _error.emit(e.message ?: "Unknown Error.")
             }
         }
     }
@@ -135,12 +153,35 @@ class ReaderViewModel(
                     txtToSpeech.language = Locale.ENGLISH
                     txtToSpeech.setSpeechRate(1.0f)
                     txtToSpeech.speak(
-                        word,
-                        TextToSpeech.QUEUE_ADD,
-                        null,
-                        null
+                        word, TextToSpeech.QUEUE_ADD, null, null
                     )
                 }
+            }
+        }
+    }
+
+    fun setFontSizeSetting(value: SettingFontSize) {
+        viewModelScope.launch {
+            try {
+                withContext(coroutinesDispatcherProvider.io) {
+                    setFontSizeSettingUseCase.invoke(value).successOrThrow()
+                }
+                _readerSetting.value = _readerSetting.value?.copy(fontSizeMode = value)
+            } catch (e: Exception) {
+                _error.emit(e.message ?: "Unknown Error.")
+            }
+        }
+    }
+
+    fun setBackgroundModeSetting(value: SettingBackground) {
+        viewModelScope.launch {
+            try {
+                withContext(coroutinesDispatcherProvider.io) {
+                    setBackgroundModelSettingUseCase.invoke(value).successOrThrow()
+                }
+                _readerSetting.value = _readerSetting.value?.copy(backgroundMode = value)
+            } catch (e: Exception) {
+                _error.emit(e.message ?: "Unknown Error.")
             }
         }
     }

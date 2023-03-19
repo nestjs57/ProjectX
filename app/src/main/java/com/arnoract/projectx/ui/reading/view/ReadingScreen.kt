@@ -20,12 +20,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavHostController
 import com.arnoract.projectx.R
+import com.arnoract.projectx.base.OnEvent
 import com.arnoract.projectx.ui.home.view.BottomBarScreen
 import com.arnoract.projectx.ui.reading.model.UiReadingArticleState
 import com.arnoract.projectx.ui.reading.model.UiReadingFilter
 import com.arnoract.projectx.ui.reading.viewmodel.ReadingViewModel
+import com.arnoract.projectx.ui.util.CustomDialog
 import org.koin.androidx.compose.getViewModel
 
 @Composable
@@ -40,12 +43,14 @@ fun ReadingScreen(navController: NavHostController) {
     }
 
     if (isShow) {
-        ModalFilter(filter, onClickedDismiss = {
+        BottomDialogFilterReadingStatus(filter, onClickedDismiss = {
             isShow = false
         }, onClickedFilter = {
             viewModel.setFilter(it)
         })
     }
+
+    SubscribeEvent(viewModel)
 
     Column(modifier = Modifier.padding(16.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -157,6 +162,23 @@ fun ReadingScreen(navController: NavHostController) {
                 }
             }
             else -> {}
+        }
+    }
+}
+
+@Composable
+fun SubscribeEvent(viewModel: ReadingViewModel) {
+    val openDialog = remember { mutableStateOf(false) }
+    val errorMessage = remember { mutableStateOf("") }
+
+    OnEvent(event = viewModel.error, onEvent = {
+        openDialog.value = true
+        errorMessage.value = it
+    })
+
+    if (openDialog.value) {
+        Dialog(onDismissRequest = { openDialog.value = false }) {
+            CustomDialog(openDialogCustom = openDialog, description = errorMessage.value)
         }
     }
 }

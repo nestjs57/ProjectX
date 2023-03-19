@@ -125,4 +125,5 @@ dependencies {
     implementation "com.github.skydoves:landscapist-fresco:2.1.4"
 
     implementation "com.holix.android:bottomsheetdialog-compose:1.2.0"
+    implementation "com.google.accompanist:accompanist-systemuicontroller:0.27.0"
 }

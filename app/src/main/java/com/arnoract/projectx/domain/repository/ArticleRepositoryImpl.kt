@@ -7,6 +7,7 @@ import com.arnoract.projectx.core.api.model.article.mapper.NetworkArticleToArtic
 import com.arnoract.projectx.core.db.dao.ArticleDao
 import com.arnoract.projectx.domain.model.article.Article
 import com.arnoract.projectx.domain.model.article.ReadingArticle
+import com.arnoract.projectx.domain.pref.ReaderPreferenceStorage
 import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
@@ -14,7 +15,11 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.tasks.await
 
-class ArticleRepositoryImpl(private val db: FirebaseFirestore, private val articleDao: ArticleDao) :
+class ArticleRepositoryImpl(
+    private val db: FirebaseFirestore,
+    private val articleDao: ArticleDao,
+    private val readerPreferenceStorage: ReaderPreferenceStorage
+) :
     ArticleRepository {
     override suspend fun getArticles(): List<Article> {
         val result = db.collection("articles").get().await()
@@ -71,5 +76,21 @@ class ArticleRepositoryImpl(private val db: FirebaseFirestore, private val artic
                 )
             )
         }
+    }
+
+    override suspend fun setReaderFontSizeSetting(value: Int) {
+        readerPreferenceStorage.settingFontSize = value
+    }
+
+    override suspend fun getReaderFontSuzeSetting(): Int {
+        return readerPreferenceStorage.settingFontSize
+    }
+
+    override suspend fun setReaderBackgroundModeSetting(value: Int) {
+        readerPreferenceStorage.settingBackgroundMode = value
+    }
+
+    override suspend fun getReaderBackgroundModeSetting(): Int {
+        return readerPreferenceStorage.settingBackgroundMode
     }
 }

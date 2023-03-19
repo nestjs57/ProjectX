@@ -65,5 +65,13 @@
     <string name="only_read_complete_label">อ่านจบแล้ว</string>
     <string name="only_reading_label">ยังอ่านไม่จบ</string>
     <string name="total_label">ทั้งหมด</string>
+    <string name="setting_reading_label">ตั้งค่าการอ่าน</string>
+    <string name="text_size_label">ขนาดตัวหนังสือ</string>
+    <string name="small_label">เล็ก</string>
+    <string name="normal_label">ปกติ</string>
+    <string name="large_label">ใหญ่</string>
+    <string name="color_background_label">สีพื้นหลัง</string>
+    <string name="day_label">กลางวัน</string>
+    <string name="night_label">กลางคืน</string>
 
 </resources>

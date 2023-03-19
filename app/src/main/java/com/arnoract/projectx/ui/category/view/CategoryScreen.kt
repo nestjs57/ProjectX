@@ -1,5 +1,6 @@
 package com.arnoract.projectx.ui.category.view
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
@@ -7,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -25,14 +27,22 @@ fun CategoryScreen(navHostController: NavHostController) {
             .background(colorResource(id = R.color.white))
     ) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            Column() {
-                Text(
-                    text = "เลือกหมวดหมู่ที่สนใจ",
-                    modifier = Modifier,
-                    fontSize = 22.sp,
-                    color = colorResource(id = R.color.black),
-                    fontWeight = FontWeight.Bold
-                )
+            Column {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_layout_fluid),
+                        modifier = Modifier.size(21.dp),
+                        contentDescription = null,
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = "เลือกหมวดหมู่ที่สนใจ",
+                        modifier = Modifier,
+                        fontSize = 22.sp,
+                        color = colorResource(id = R.color.black),
+                        fontWeight = FontWeight.Bold
+                    )
+                }
                 Spacer(modifier = Modifier.height(16.dp))
                 CategorySection(
                     categories = listOf(

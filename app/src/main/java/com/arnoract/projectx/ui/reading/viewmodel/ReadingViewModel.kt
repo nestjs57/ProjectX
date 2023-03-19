@@ -13,6 +13,7 @@ import com.arnoract.projectx.ui.reading.mapper.ReadingArticleToUiArticleVertical
 import com.arnoract.projectx.ui.reading.model.UiReadingArticleState
 import com.arnoract.projectx.ui.reading.model.UiReadingFilter
 import com.arnoract.projectx.util.setValueIfNew
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -33,6 +34,10 @@ class ReadingViewModel(
     val uiReadingFilter: LiveData<UiReadingFilter>
         get() = _uiReadingFilter
 
+    private val _error = MutableSharedFlow<String>()
+    val error: MutableSharedFlow<String>
+        get() = _error
+
     init {
         println()
         viewModelScope.launch {
@@ -52,7 +57,7 @@ class ReadingViewModel(
                         }
                     }
             } catch (e: Exception) {
-
+                _error.emit(e.message ?: "Unknown Error.")
             }
         }
     }

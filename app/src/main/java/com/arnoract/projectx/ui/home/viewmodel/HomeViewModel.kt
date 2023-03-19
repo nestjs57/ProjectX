@@ -9,7 +9,7 @@ import com.arnoract.projectx.core.successOrThrow
 import com.arnoract.projectx.domain.usecase.article.GetArticlesUseCase
 import com.arnoract.projectx.ui.home.model.UiHomeState
 import com.arnoract.projectx.ui.home.model.mapper.ArticleToUiArticleVerticalItemMapper
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -21,6 +21,10 @@ class HomeViewModel(
     private val _uiHomeState = MutableLiveData<UiHomeState>()
     val uiHomeState: LiveData<UiHomeState>
         get() = _uiHomeState
+
+    private val _error = MutableSharedFlow<String>()
+    val error: MutableSharedFlow<String>
+        get() = _error
 
     init {
         viewModelScope.launch {
@@ -41,7 +45,7 @@ class HomeViewModel(
                     }
                 )
             } catch (e: Exception) {
-
+                _error.emit(e.message ?: "Unknown Error.")
             }
         }
     }

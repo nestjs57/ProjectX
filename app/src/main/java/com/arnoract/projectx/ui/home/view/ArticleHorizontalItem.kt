@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
@@ -88,6 +89,7 @@ fun ArticleHorizontalItem(model: UiArticleHorizontalItem, onClickedItem: (String
                             .size(21.dp)
                             .align(Alignment.CenterStart),
                         contentDescription = null,
+                        colorFilter = ColorFilter.tint(colorResource(id = R.color.gray500))
                     )
                 }
                 Spacer(modifier = Modifier.width(4.dp))

@@ -27,6 +27,10 @@ class CategoryDetailViewModel(
     private val _navigateToReader = MutableSharedFlow<String>()
     val navigateToReader: MutableSharedFlow<String> get() = _navigateToReader
 
+    private val _error = MutableSharedFlow<String>()
+    val error: MutableSharedFlow<String>
+        get() = _error
+
     init {
         viewModelScope.launch {
             _uiCategoryDetailState.value = UiCategoryDetailState.Loading
@@ -45,7 +49,7 @@ class CategoryDetailViewModel(
                     )
                 }
             } catch (e: Exception) {
-
+                _error.emit(e.message ?: "Unknown Error.")
             }
         }
     }

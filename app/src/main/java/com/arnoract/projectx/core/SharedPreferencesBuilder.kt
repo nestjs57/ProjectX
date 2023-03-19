@@ -2,13 +2,21 @@ package com.arnoract.projectx.core
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.arnoract.projectx.core.KoinConst
 
 class SharedPreferencesBuilder(val context: Context) {
     fun buildDefault(): SharedPreferences {
-        return context.applicationContext.getSharedPreferences(
-            KoinConst.SharedPreference.DEFAULT,
-            Context.MODE_PRIVATE,
-        )
+        return context.applicationContext.getSharedPreferences("default", Context.MODE_PRIVATE)
+    }
+
+    fun buildUserPreference(): SharedPreferences {
+        return context.applicationContext.getSharedPreferences("preference", Context.MODE_PRIVATE)
+    }
+
+    fun buildFeatureFlagPreference(): SharedPreferences {
+        return context.applicationContext.getSharedPreferences("feature-flag", Context.MODE_PRIVATE)
+    }
+
+    fun buildUiStatePreference(): SharedPreferences {
+        return context.applicationContext.getSharedPreferences("ui-state", Context.MODE_PRIVATE)
     }
 }

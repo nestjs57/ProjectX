@@ -11,6 +11,8 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
@@ -19,6 +21,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavHostController
 import com.arnoract.projectx.R
 import com.arnoract.projectx.base.OnEvent
@@ -27,6 +30,7 @@ import com.arnoract.projectx.ui.category.mapper.CategoryIdToStringCategoryMapper
 import com.arnoract.projectx.ui.category.model.UiCategoryDetailState
 import com.arnoract.projectx.ui.category.viewmodel.CategoryDetailViewModel
 import com.arnoract.projectx.ui.home.view.ArticleHorizontalItem
+import com.arnoract.projectx.ui.util.CustomDialog
 import org.koin.androidx.compose.getViewModel
 import org.koin.core.parameter.parametersOf
 
@@ -38,14 +42,7 @@ fun CategoryDetailScreen(categoryId: String, navController: NavHostController) {
     )
     val uiState by viewModel.uiCategoryDetailState.observeAsState()
 
-    OnEvent(event = viewModel.navigateToReader, onEvent = {
-        navController.navigate(
-            Route.readers.replace(
-                "{id}",
-                it
-            )
-        )
-    })
+    SubscribeEvent(viewModel, navController)
 
     Column {
         Header(navController, categoryId)
@@ -97,5 +94,31 @@ private fun Header(navController: NavHostController, categoryId: String) {
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center,
         )
+    }
+}
+
+@Composable
+fun SubscribeEvent(viewModel: CategoryDetailViewModel, navController: NavHostController) {
+    val openDialog = remember { mutableStateOf(false) }
+    val errorMessage = remember { mutableStateOf("") }
+
+    OnEvent(event = viewModel.error, onEvent = {
+        openDialog.value = true
+        errorMessage.value = it
+    })
+
+    OnEvent(event = viewModel.navigateToReader, onEvent = {
+        navController.navigate(
+            Route.readers.replace(
+                "{id}",
+                it
+            )
+        )
+    })
+
+    if (openDialog.value) {
+        Dialog(onDismissRequest = { openDialog.value = false }) {
+            CustomDialog(openDialogCustom = openDialog, description = errorMessage.value)
+        }
     }
 }

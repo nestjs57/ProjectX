@@ -18,6 +18,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -27,6 +28,14 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.arnoract.projectx.R
+import com.arnoract.projectx.ui.reader.ReaderSettingUtil.getAppBarColor
+import com.arnoract.projectx.ui.reader.ReaderSettingUtil.getBackgroundColor
+import com.arnoract.projectx.ui.reader.ReaderSettingUtil.getDrawableTint
+import com.arnoract.projectx.ui.reader.ReaderSettingUtil.getFontColor
+import com.arnoract.projectx.ui.reader.ReaderSettingUtil.getFontColorPurple
+import com.arnoract.projectx.ui.reader.model.ReaderSetting
+import com.arnoract.projectx.ui.reader.model.SettingBackground
+import com.arnoract.projectx.ui.reader.model.SettingFontSize
 import com.arnoract.projectx.ui.reader.model.UiParagraph
 import com.google.accompanist.flowlayout.FlowRow
 import kotlinx.coroutines.launch
@@ -38,11 +47,14 @@ fun ReaderContent(
     titleEn: String,
     uiParagraph: List<List<UiParagraph>>,
     currentParagraphSelected: Int,
+    readerSetting: ReaderSetting?,
     onClickedSelectVocabulary: (UiParagraph) -> Unit,
     onClickedNextParagraph: () -> Unit,
     onClickedPreviousParagraph: () -> Unit,
     onTextSpeech: (String) -> Unit,
-    onClickedBack: () -> Unit
+    onClickedBack: () -> Unit,
+    onClickedTextSize: (SettingFontSize) -> Unit,
+    onClickedBackgroundModel: (SettingBackground) -> Unit
 ) {
 
     var paragraphNumber: Int by remember {
@@ -50,11 +62,37 @@ fun ReaderContent(
     }
     paragraphNumber = currentParagraphSelected
 
-    Column {
-        ToolBar(paragraphNumber, uiParagraph.size, onClickedBack)
+    var isShow by remember {
+        mutableStateOf(false)
+    }
+
+    if (isShow) {
+        BottomDialogSettingReader(
+            readerSetting,
+            onClickedDismiss = {
+                isShow = false
+            },
+            onClickedTextSize = onClickedTextSize,
+            onClickedBackgroundModel = onClickedBackgroundModel
+        )
+    }
+
+    Column(modifier = Modifier.background(getBackgroundColor(value = readerSetting?.backgroundMode))) {
+        val underLineColor =
+            if (readerSetting?.backgroundMode == SettingBackground.DAY) colorResource(id = R.color.gray300) else colorResource(
+                id = R.color.transparent
+            )
+        ToolBar(
+            paragraphNumber,
+            uiParagraph.size,
+            readerSetting,
+            onClickedBack,
+            onClickedSetting = {
+                isShow = true
+            })
         Spacer(
             modifier = Modifier
-                .background(colorResource(id = R.color.gray300))
+                .background(underLineColor)
                 .height(2.dp)
                 .fillMaxWidth()
         )
@@ -66,7 +104,7 @@ fun ReaderContent(
                 .padding(top = 40.dp, start = 16.dp, end = 16.dp, bottom = 16.dp),
         ) {
             item {
-                TitleSection(titleTh, titleEn)
+                TitleSection(titleTh, titleEn, readerSetting)
             }
 
             item {
@@ -86,8 +124,10 @@ fun ReaderContent(
                 var exampleTranslate: String by remember {
                     mutableStateOf("")
                 }
+
                 Column {
                     ParagraphSection(uiParagraph[paragraphNumber],
+                        setting = readerSetting,
                         onClickedVocabulary = {
                             onClickedSelectVocabulary(it)
                         },
@@ -105,21 +145,20 @@ fun ReaderContent(
                             .background(colorResource(id = R.color.gray500))
                     )
                     if (vocabulary.isNotBlank()) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
+                        Row(verticalAlignment = Alignment.CenterVertically,
                             modifier = Modifier.clickable {
                                 onTextSpeech(vocabulary)
                             }) {
                             Image(
-                                painter = painterResource(id = R.drawable.ic_volume_up),
-                                modifier = Modifier
-                                    .size(22.dp),
+                                painter = painterResource(id = R.drawable.ic_volume),
+                                modifier = Modifier.size(22.dp),
                                 contentDescription = null,
+                                colorFilter = ColorFilter.tint(getDrawableTint(value = readerSetting?.backgroundMode))
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
                                 text = vocabulary,
-                                color = colorResource(id = R.color.purple_500),
+                                color = getFontColorPurple(readerSetting?.backgroundMode),
                                 fontSize = 22.sp,
                                 fontWeight = FontWeight.Bold,
                             )
@@ -127,7 +166,7 @@ fun ReaderContent(
                     }
                     Text(
                         text = translate,
-                        color = colorResource(id = R.color.black),
+                        color = getFontColor(readerSetting?.backgroundMode),
                         fontSize = 22.sp,
                         fontWeight = FontWeight.Bold
                     )
@@ -188,18 +227,15 @@ fun ReaderContent(
                 .height(56.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Box(
-                modifier = Modifier
-                    .height(48.dp)
-                    .clip(RoundedCornerShape(6.dp))
-                    .clickable {
-                        if (isFirstParagraph)
-                            return@clickable
-                        onClickedPreviousParagraph()
-                    }
-                    .background(colorResource(id = if (isFirstParagraph) R.color.gray500 else R.color.purple_500))
-                    .weight(1f), contentAlignment = Alignment.Center
-            ) {
+            Box(modifier = Modifier
+                .height(48.dp)
+                .clip(RoundedCornerShape(6.dp))
+                .clickable {
+                    if (isFirstParagraph) return@clickable
+                    onClickedPreviousParagraph()
+                }
+                .background(colorResource(id = if (isFirstParagraph) R.color.gray500 else R.color.purple_500))
+                .weight(1f), contentAlignment = Alignment.Center) {
                 Text(
                     text = stringResource(id = R.string.previous_label),
                     modifier = Modifier,
@@ -208,17 +244,15 @@ fun ReaderContent(
                 )
             }
             Spacer(modifier = Modifier.width(6.dp))
-            Box(
-                modifier = Modifier
-                    .height(48.dp)
-                    .clip(RoundedCornerShape(6.dp))
-                    .clickable {
-                        if (isLastParagraph) return@clickable
-                        onClickedNextParagraph()
-                    }
-                    .background(colorResource(id = if (isLastParagraph) R.color.gray500 else R.color.purple_500))
-                    .weight(1f), contentAlignment = Alignment.Center
-            ) {
+            Box(modifier = Modifier
+                .height(48.dp)
+                .clip(RoundedCornerShape(6.dp))
+                .clickable {
+                    if (isLastParagraph) return@clickable
+                    onClickedNextParagraph()
+                }
+                .background(colorResource(id = if (isLastParagraph) R.color.gray500 else R.color.purple_500))
+                .weight(1f), contentAlignment = Alignment.Center) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
                         text = stringResource(id = R.string.next_label),
@@ -233,14 +267,25 @@ fun ReaderContent(
 }
 
 @Composable
-private fun ToolBar(paragraphNumber: Int, uiParagraphSize: Int, onClickedBack: () -> Unit) {
+private fun ToolBar(
+    paragraphNumber: Int,
+    uiParagraphSize: Int,
+    setting: ReaderSetting?,
+    onClickedBack: () -> Unit,
+    onClickedSetting: () -> Unit
+) {
     Row(
         modifier = Modifier
-            .height(56.dp),
+            .height(56.dp)
+            .background(getAppBarColor(setting?.backgroundMode)),
         verticalAlignment = Alignment.CenterVertically
     ) {
         IconButton(onClick = onClickedBack) {
-            Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "Menu Btn")
+            Icon(
+                imageVector = Icons.Filled.ArrowBack,
+                contentDescription = "Menu Btn",
+                tint = getDrawableTint(setting?.backgroundMode)
+            )
         }
         Text(
             text = "ย่อหน้า ${paragraphNumber.plus(1)}/${uiParagraphSize}",
@@ -251,7 +296,9 @@ private fun ToolBar(paragraphNumber: Int, uiParagraphSize: Int, onClickedBack: (
                 .weight(1f),
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center,
+            color = getFontColor(setting?.backgroundMode)
         )
+
         IconButton(onClick = { }) {
             Image(
                 painter = painterResource(id = R.drawable.ic_settings_sliders_unselect),
@@ -259,14 +306,16 @@ private fun ToolBar(paragraphNumber: Int, uiParagraphSize: Int, onClickedBack: (
                 Modifier
                     .size(18.dp)
                     .clickable {
+                        onClickedSetting()
                     },
+                colorFilter = ColorFilter.tint(getDrawableTint(value = setting?.backgroundMode))
             )
         }
     }
 }
 
 @Composable
-private fun TitleSection(titleTh: String, titleEn: String) {
+private fun TitleSection(titleTh: String, titleEn: String, readerSetting: ReaderSetting?) {
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         Text(
             text = titleEn,
@@ -275,7 +324,14 @@ private fun TitleSection(titleTh: String, titleEn: String) {
                 .padding(end = 8.dp),
 
             textAlign = TextAlign.Center,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
+            fontSize = when (readerSetting?.fontSizeMode) {
+                SettingFontSize.SMALL -> 12.sp
+                SettingFontSize.NORMAL -> 14.sp
+                SettingFontSize.LARGE -> 16.sp
+                else -> 14.sp
+            },
+            color = getFontColor(readerSetting?.backgroundMode)
         )
     }
 }
@@ -283,13 +339,12 @@ private fun TitleSection(titleTh: String, titleEn: String) {
 @Composable
 private fun ParagraphSection(
     paragraph: List<UiParagraph>,
+    setting: ReaderSetting?,
     onClickedVocabulary: (UiParagraph) -> Unit,
     onTranslate: (UiParagraph?) -> Unit
 ) {
     FlowRow(
-        modifier = Modifier.padding(top = 8.dp),
-        crossAxisSpacing = 8.dp,
-        mainAxisSpacing = 4.dp
+        modifier = Modifier.padding(top = 8.dp), crossAxisSpacing = 8.dp, mainAxisSpacing = 4.dp
     ) {
         if (!paragraph.any { it.isSelected }) {
             onTranslate(null)
@@ -302,8 +357,8 @@ private fun ParagraphSection(
                 modifier = Modifier
                     .clip(RoundedCornerShape(4.dp))
                     .background(
-                        if (uiParagraph.isSelected) colorResource(id = R.color.purple_500) else colorResource(
-                            id = R.color.white
+                        if (uiParagraph.isSelected) colorResource(id = R.color.purple_500) else getBackgroundColor(
+                            setting?.backgroundMode
                         )
                     )
                     .padding(horizontal = 4.dp)
@@ -319,20 +374,22 @@ private fun ParagraphSection(
                 }
                 Text(
                     text = uiParagraph.vocabulary,
-                    modifier = Modifier
-                        .clickable(
-                            indication = null,
-                            interactionSource = MutableInteractionSource(),
-                            onClick = {
-                                if (uiParagraph.translate.isNotBlank()) {
-                                    onClickedVocabulary(uiParagraph)
-                                }
+                    modifier = Modifier.clickable(indication = null,
+                        interactionSource = MutableInteractionSource(),
+                        onClick = {
+                            if (uiParagraph.translate.isNotBlank()) {
+                                onClickedVocabulary(uiParagraph)
                             }
-                        ),
+                        }),
                     textDecoration = textDecoration,
-                    fontSize = 16.sp,
-                    color = if (uiParagraph.isSelected) colorResource(id = R.color.white) else colorResource(
-                        id = R.color.black
+                    fontSize = when (setting?.fontSizeMode) {
+                        SettingFontSize.SMALL -> 12.sp
+                        SettingFontSize.NORMAL -> 14.sp
+                        SettingFontSize.LARGE -> 16.sp
+                        else -> 14.sp
+                    },
+                    color = if (uiParagraph.isSelected) colorResource(id = R.color.white) else getFontColor(
+                        setting?.backgroundMode
                     )
                 )
             }

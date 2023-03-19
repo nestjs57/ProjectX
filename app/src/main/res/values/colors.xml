@@ -51,5 +51,12 @@
     <color name="highlight_text">#EB455F</color>
     <color name="read_finish_button">#A0D995</color>
 
+    <color name="background_dark_mode">#222222</color>
+    <color name="background_modal_dark_mode">#2B2B2B</color>
+
+    <color name="status_bar_dark_mode">#000000</color>
+    <color name="app_bar_dark_mode">#212121</color>
+    <color name="bg_bar_dark_mode">#282828</color>
+    <color name="card_dialog_dark_mode">#424242</color>
 
 </resources>

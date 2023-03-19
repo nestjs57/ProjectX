@@ -1,7 +1,6 @@
 package com.arnoract.projectx
 
 import android.app.Activity
-import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
@@ -12,6 +11,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -19,13 +19,20 @@ import androidx.navigation.compose.rememberNavController
 import com.arnoract.projectx.ui.GRAPH
 import com.arnoract.projectx.ui.home.view.MainScreen
 import com.arnoract.projectx.ui.theme.ProjectXTheme
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            setStatusBarColor(this, Color.WHITE)
+
+            val systemUiController = rememberSystemUiController()
+            systemUiController.setSystemBarsColor(
+                color = colorResource(id = R.color.background_dark_mode),
+                darkIcons = false
+            )
+
             ProjectXTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),

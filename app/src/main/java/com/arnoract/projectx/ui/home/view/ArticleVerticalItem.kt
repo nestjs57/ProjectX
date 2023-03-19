@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
@@ -69,11 +70,12 @@ fun ArticleVerticalItem(
                     Box {
                         if (isComplete) {
                             Image(
-                                painter = painterResource(id = R.drawable.ic_done_al),
+                                painter = painterResource(id = R.drawable.ic_check),
                                 modifier = Modifier
                                     .size(17.dp)
                                     .align(Alignment.Center),
                                 contentDescription = null,
+                                colorFilter = ColorFilter.tint(colorResource(id = R.color.white))
                             )
                         } else {
                             Text(

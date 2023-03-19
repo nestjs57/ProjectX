@@ -14,6 +14,6 @@ import org.koin.dsl.module
 
 val repositoryModule = module {
     single<StationRepository> { StationRepositoryImpl(androidContext()) }
-    single<ArticleRepository> { ArticleRepositoryImpl(Firebase.firestore, get()) }
+    single<ArticleRepository> { ArticleRepositoryImpl(Firebase.firestore, get(), get()) }
     single<UserRepository> { UserRepositoryImpl(Firebase.auth, Firebase.firestore, get()) }
 }

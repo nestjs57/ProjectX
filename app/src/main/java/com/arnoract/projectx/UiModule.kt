@@ -12,7 +12,7 @@ val mainModule = module {
     viewModel { HomeViewModel(get(), get()) }
     viewModel { ReadingViewModel(get(), get(), get()) }
     viewModel { (id: String) ->
-        ReaderViewModel(id, get(), get(), get(), get())
+        ReaderViewModel(id, get(), get(), get(), get(), get(), get(), get(), get())
     }
     viewModel {
         ProfileViewModel(get(), get(), get(), get())

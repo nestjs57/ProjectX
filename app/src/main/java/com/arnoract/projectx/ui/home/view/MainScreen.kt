@@ -2,9 +2,13 @@ package com.arnoract.projectx.ui.home.view
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -62,7 +66,36 @@ fun RowScope.AddItem(
             Text(text = screen.title)
         },
         icon = {
-            Icon(imageVector = screen.icon, contentDescription = "Navigation Icon")
+            when (screen) {
+                BottomBarScreen.Home -> {
+                    Icon(
+                        painterResource(id = R.drawable.ic_home),
+                        contentDescription = "Navigation Icon",
+                        modifier = Modifier.size(20.dp)
+                    )
+                }
+                BottomBarScreen.Category -> {
+                    Icon(
+                        painterResource(id = R.drawable.ic_search_mini),
+                        contentDescription = "Navigation Icon",
+                        modifier = Modifier.size(20.dp)
+                    )
+                }
+                BottomBarScreen.Reading -> {
+                    Icon(
+                        painterResource(id = R.drawable.ic_auto_stories),
+                        contentDescription = "Navigation Icon",
+                        modifier = Modifier.size(20.dp)
+                    )
+                }
+                BottomBarScreen.Profile -> {
+                    Icon(
+                        painterResource(id = R.drawable.ic_profile_with_heart),
+                        contentDescription = "Navigation Icon",
+                        modifier = Modifier.size(20.dp)
+                    )
+                }
+            }
         },
         selected = currentDestination?.hierarchy?.any {
             it.route == screen.route
