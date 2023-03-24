@@ -34,15 +34,18 @@ class HomeViewModel(
                     getArticlesUseCase.invoke(Unit).successOrThrow()
                 }
                 _uiHomeState.value = UiHomeState.Success(
-                    comingSoonItem = result.filter { it.isComingSoon }.map {
-                        ArticleToUiArticleVerticalItemMapper.map(it).copy(isBlock = true)
-                    },
-                    recommendedItem = result.filter { it.isRecommend }.map {
+                    comingSoonItem = result.sortedBy { it.publicDate }.filter { it.isComingSoon }
+                        .map {
+                            ArticleToUiArticleVerticalItemMapper.map(it).copy(isBlock = true)
+                        },
+                    recommendedItem = result.sortedBy { it.publicDate }
+                        .filter { it.isRecommend && !it.isComingSoon }.map {
                         ArticleToUiArticleVerticalItemMapper.map(it)
                     },
-                    recentlyPublished = result.sortedBy { it.publicDate }.map {
-                        ArticleToUiArticleVerticalItemMapper.map(it)
-                    }
+                    recentlyPublished = result.sortedBy { it.publicDate }
+                        .filter { !it.isComingSoon }.map {
+                            ArticleToUiArticleVerticalItemMapper.map(it)
+                        }
                 )
             } catch (e: Exception) {
                 _error.emit(e.message ?: "Unknown Error.")

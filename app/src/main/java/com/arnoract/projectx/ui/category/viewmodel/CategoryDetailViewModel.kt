@@ -43,7 +43,7 @@ class CategoryDetailViewModel(
                     _uiCategoryDetailState.value = UiCategoryDetailState.Empty
                 } else {
                     _uiCategoryDetailState.value = UiCategoryDetailState.Success(
-                        data = result.map {
+                        data = result.sortedBy { it.publicDate }.filter { !it.isComingSoon }.map {
                             ArticleToUiArticleHorizontalItemMapper.map(it)
                         },
                     )

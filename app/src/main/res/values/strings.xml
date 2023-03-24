@@ -60,6 +60,7 @@
     <string name="look_likes_no_login_label">ดูเหมือนว่าคุณจะยังไม่ได้เข้าสู่ระบบ</string>
     <string name="go_to_profile_page_label">ไปยังหน้าผู้ใช้</string>
     <string name="empty_reading_label">บทความที่กรองหรือกำลังอ่าน\nของคุณว่างเปล่า</string>
+    <string name="empty_category_label">ไม่พบบทความในหมวดหมู่นี้\nทีมงานกำลังทยอยเพิ่มบทความอยู่\nขออภัยในความไม่สะดวก</string>
 
     <string name="filter_label">ตัวกรอง</string>
     <string name="only_read_complete_label">อ่านจบแล้ว</string>

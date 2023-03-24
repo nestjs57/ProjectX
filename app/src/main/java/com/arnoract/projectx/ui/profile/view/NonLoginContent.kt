@@ -23,7 +23,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.arnoract.projectx.BuildConfig
 import com.arnoract.projectx.R
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -39,7 +38,7 @@ fun NonLoginContent(onClickedSignIn: (String) -> Unit) {
 
         val context = LocalContext.current
         val token = stringResource(R.string.default_web_client_id)
-        val launcher = registerGoogleActivityResultLauncher(){
+        val launcher = registerGoogleActivityResultLauncher {
             onClickedSignIn(it)
         }
         Box(
@@ -60,7 +59,7 @@ fun NonLoginContent(onClickedSignIn: (String) -> Unit) {
                 .background(colorResource(id = R.color.purple_500)),
             contentAlignment = Alignment.Center
         ) {
-            Row() {
+            Row {
                 Text(
                     text = "",
                     modifier = Modifier.weight(1f),
@@ -90,7 +89,7 @@ fun NonLoginContent(onClickedSignIn: (String) -> Unit) {
         }
         Spacer(modifier = Modifier.weight(1f))
         Text(
-            text = "v.1.0.0",
+            text = "v.1.0.0 Beta",
             fontSize = 18.sp,
             modifier = Modifier
                 .wrapContentWidth()
@@ -116,7 +115,7 @@ private fun registerGoogleActivityResultLauncher(onClickedSignIn: (String) -> Un
 @Preview(showBackground = true)
 @Composable
 fun NonLoginContentPreview() {
-    NonLoginContent() {
+    NonLoginContent {
 
     }
 }
