@@ -2,6 +2,7 @@ package com.arnoract.projectx
 
 import com.arnoract.projectx.ui.category.viewmodel.CategoryDetailViewModel
 import com.arnoract.projectx.ui.home.viewmodel.HomeViewModel
+import com.arnoract.projectx.ui.lesson.viewmodel.LessonSentenceViewModel
 import com.arnoract.projectx.ui.profile.ProfileViewModel
 import com.arnoract.projectx.ui.reader.viewmodel.ReaderViewModel
 import com.arnoract.projectx.ui.reading.viewmodel.ReadingViewModel
@@ -19,5 +20,8 @@ val mainModule = module {
     }
     viewModel { (categoryId: String) ->
         CategoryDetailViewModel(categoryId, get(), get())
+    }
+    viewModel {
+        LessonSentenceViewModel(get(), get())
     }
 }

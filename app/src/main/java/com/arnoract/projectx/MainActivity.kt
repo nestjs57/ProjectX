@@ -4,6 +4,7 @@ import android.app.Activity
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,13 +21,32 @@ import com.arnoract.projectx.ui.GRAPH
 import com.arnoract.projectx.ui.home.view.MainScreen
 import com.arnoract.projectx.ui.theme.ProjectXTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.MobileAds
+import com.google.android.gms.ads.OnUserEarnedRewardListener
+import com.google.android.gms.ads.rewarded.RewardedAd
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
+
 
 class MainActivity : ComponentActivity() {
 
+    private var rewardedAd: RewardedAd? = null
+    private var adRequest: AdRequest? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent {
 
+        MobileAds.initialize(this)
+
+//        adRequest = AdRequest.Builder().build().apply {
+//            //isTestDevice(this@MainActivity)
+//        }
+//
+//        loadAds()
+
+        setContent {
+            MobileAds.initialize(this) {}
             val systemUiController = rememberSystemUiController()
             systemUiController.setSystemBarsColor(
                 color = colorResource(id = R.color.background_dark_mode),
@@ -50,6 +70,51 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    private fun loadAds() {
+        RewardedAd.load(
+            this,
+            "ca-app-pub-3940256099942544/5224354917",
+            adRequest!!,
+            object : RewardedAdLoadCallback() {
+                override fun onAdFailedToLoad(adError: LoadAdError) {
+                    rewardedAd = null
+                    Toast.makeText(
+                        this@MainActivity,
+                        "${adError.message}",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+
+                override fun onAdLoaded(ad: RewardedAd) {
+                    rewardedAd = ad
+                    Toast.makeText(
+                        this@MainActivity,
+                        "onAdLoaded",
+                        Toast.LENGTH_LONG
+                    ).show()
+
+                    rewardedAd?.let { ad ->
+                        ad.show(this@MainActivity, OnUserEarnedRewardListener { rewardItem ->
+                            // Handle the reward.
+                            val rewardAmount = rewardItem.amount
+                            val rewardType = rewardItem.type
+                            Toast.makeText(
+                                this@MainActivity,
+                                "rewardItem",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        })
+                    } ?: run {
+                        Toast.makeText(
+                            this@MainActivity,
+                            "showed failed",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
+            })
     }
 }
 

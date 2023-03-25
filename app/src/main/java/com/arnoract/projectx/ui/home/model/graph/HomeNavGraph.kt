@@ -6,9 +6,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.arnoract.projectx.ui.GRAPH
 import com.arnoract.projectx.ui.category.graph.categoryNavGraph
-import com.arnoract.projectx.ui.category.view.CategoryScreen
 import com.arnoract.projectx.ui.home.view.BottomBarScreen
 import com.arnoract.projectx.ui.home.view.HomeScreen
+import com.arnoract.projectx.ui.lesson.ui.LessonSentenceScreen
 import com.arnoract.projectx.ui.profile.ProfileScreen
 import com.arnoract.projectx.ui.reader.graph.readerNavGraph
 import com.arnoract.projectx.ui.reading.view.ReadingScreen
@@ -24,7 +24,7 @@ fun HomeNavGraph(navController: NavHostController) {
             HomeScreen(navController)
         }
         composable(route = BottomBarScreen.Category.route) {
-            CategoryScreen(navController)
+            LessonSentenceScreen(navController)
         }
         composable(route = BottomBarScreen.Reading.route) {
             ReadingScreen(navController)

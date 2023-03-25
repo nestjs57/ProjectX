@@ -25,9 +25,11 @@ import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun HomeScreen(navHostController: NavHostController) {
+
     val viewModel = getViewModel<HomeViewModel>()
 
     SubscribeEvent(viewModel)
+
 
     Box(
         modifier = Modifier
@@ -58,7 +60,7 @@ fun HomeScreen(navHostController: NavHostController) {
 }
 
 @Composable
-fun SubscribeEvent(viewModel: HomeViewModel) {
+private fun SubscribeEvent(viewModel: HomeViewModel) {
     val openDialog = remember { mutableStateOf(false) }
     val errorMessage = remember { mutableStateOf("") }
 

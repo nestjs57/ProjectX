@@ -20,7 +20,7 @@ sealed class BottomBarScreen(
 
     object Category : BottomBarScreen(
         route = "category",
-        title = "หมวดหมู่",
+        title = "บทเรียน",
         icon = Icons.Default.Search
     )
 
