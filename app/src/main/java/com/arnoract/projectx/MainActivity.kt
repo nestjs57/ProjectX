@@ -75,7 +75,7 @@ class MainActivity : ComponentActivity() {
     private fun loadAds() {
         RewardedAd.load(
             this,
-            "ca-app-pub-3940256099942544/5224354917",
+            "ca-app-pub-9170460661148665/2980058922",
             adRequest!!,
             object : RewardedAdLoadCallback() {
                 override fun onAdFailedToLoad(adError: LoadAdError) {

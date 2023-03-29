@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.arnoract.projectx.R
 import com.arnoract.projectx.ui.lesson.model.UiLessonSentence
+import com.arnoract.projectx.ui.lesson.viewmodel.LessonSentenceViewModel
 import java.util.*
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -23,7 +24,8 @@ import java.util.*
 fun LessonSentenceContent(
     comingSoon: List<UiLessonSentence>,
     recentlyPublished: List<UiLessonSentence>,
-    navController: NavHostController
+    navController: NavHostController,
+    viewModel: LessonSentenceViewModel
 ) {
     Box(modifier = Modifier.padding(16.dp)) {
         LazyColumn {
@@ -50,7 +52,9 @@ fun LessonSentenceContent(
                     items(comingSoon.size) {
                         LessonSentenceItem(
                             comingSoon[it]
-                        )
+                        ) {
+
+                        }
                     }
                 }
             }
@@ -77,7 +81,9 @@ fun LessonSentenceContent(
                 items(recentlyPublished.size) {
                     LessonSentenceItem(
                         recentlyPublished[it]
-                    )
+                    ) {
+                        viewModel.onClickedLessonItem(recentlyPublished[it])
+                    }
                 }
             }
         }

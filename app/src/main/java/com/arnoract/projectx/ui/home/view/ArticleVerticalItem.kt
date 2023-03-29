@@ -27,6 +27,8 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.arnoract.projectx.R
+import com.arnoract.projectx.base.getHeightItemLibrary
+import com.arnoract.projectx.base.getWidthItemLibrary
 import com.arnoract.projectx.ui.home.model.UiArticleCategory
 import com.arnoract.projectx.ui.home.model.UiArticleVerticalItem
 import com.arnoract.projectx.ui.home.model.mapper.UiArticleCategoryToCategoryLabelMapper
@@ -35,11 +37,12 @@ import com.arnoract.projectx.ui.home.model.mapper.UiArticleCategoryToCategoryLab
 fun ArticleVerticalItem(
     model: UiArticleVerticalItem,
     modifier: Modifier = Modifier,
+    isSupportGridLayout: Boolean = true,
     onClickedItem: () -> Unit
 ) {
     Box(modifier = Modifier) {
         Column(modifier = modifier
-            .width(95.dp)
+            .width(if (isSupportGridLayout) getWidthItemLibrary().dp else 95.dp)
             .clip(RoundedCornerShape(6.dp))
             .clickable {
                 if (!model.isBlock) {
@@ -53,8 +56,8 @@ fun ArticleVerticalItem(
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
-                        .width(95.dp)
-                        .height(155.dp)
+                        .width(if (isSupportGridLayout) getWidthItemLibrary().dp else 95.dp)
+                        .height(getHeightItemLibrary().dp)
                         .clip(RoundedCornerShape(10.dp))
                         .background(colorResource(id = R.color.gray300))
                 )

@@ -2,10 +2,13 @@ package com.arnoract.projectx.domain
 
 import com.arnoract.projectx.domain.main.GetStationsUseCase
 import com.arnoract.projectx.domain.usecase.article.*
+import com.arnoract.projectx.domain.usecase.lesson.AccessContentWithCoinUseCase
+import com.arnoract.projectx.domain.usecase.lesson.GetLessonSentenceByIdUseCase
 import com.arnoract.projectx.domain.usecase.lesson.GetLessonSentencesUseCase
 import com.arnoract.projectx.domain.usecase.profile.GetProfileUseCase
 import com.arnoract.projectx.domain.usecase.profile.LoginWithGoogleUseCase
 import com.arnoract.projectx.domain.usecase.profile.SignOutWithGoogleUseCase
+import com.arnoract.projectx.domain.usecase.profile.UpdateGoldCoinUseCase
 import org.koin.dsl.module
 
 val useCaseModule = module {
@@ -25,4 +28,7 @@ val useCaseModule = module {
     factory { GetFontSizeSettingUseCase(get()) }
     factory { GetBackgroundModelSettingUseCase(get()) }
     factory { GetLessonSentencesUseCase(get()) }
+    factory { UpdateGoldCoinUseCase(get()) }
+    factory { AccessContentWithCoinUseCase(get()) }
+    factory { GetLessonSentenceByIdUseCase(get()) }
 }

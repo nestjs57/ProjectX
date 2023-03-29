@@ -34,15 +34,16 @@ class HomeViewModel(
                     getArticlesUseCase.invoke(Unit).successOrThrow()
                 }
                 _uiHomeState.value = UiHomeState.Success(
-                    comingSoonItem = result.sortedBy { it.publicDate }.filter { it.isComingSoon }
+                    comingSoonItem = result.sortedByDescending { it.publicDate }
+                        .filter { it.isComingSoon }
                         .map {
                             ArticleToUiArticleVerticalItemMapper.map(it).copy(isBlock = true)
                         },
-                    recommendedItem = result.sortedBy { it.publicDate }
+                    recommendedItem = result.sortedByDescending { it.publicDate }
                         .filter { it.isRecommend && !it.isComingSoon }.map {
-                        ArticleToUiArticleVerticalItemMapper.map(it)
-                    },
-                    recentlyPublished = result.sortedBy { it.publicDate }
+                            ArticleToUiArticleVerticalItemMapper.map(it)
+                        },
+                    recentlyPublished = result.sortedByDescending { it.publicDate }
                         .filter { !it.isComingSoon }.map {
                             ArticleToUiArticleVerticalItemMapper.map(it)
                         }

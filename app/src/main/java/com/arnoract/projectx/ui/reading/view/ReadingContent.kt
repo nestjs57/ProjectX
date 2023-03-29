@@ -22,11 +22,11 @@ fun ReadingContent(
     Spacer(modifier = Modifier.height(16.dp))
     LazyVerticalGrid(
         columns = GridCells.Fixed(3),
-        verticalArrangement = Arrangement.spacedBy(10.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         items(data.size) {
             Row {
-                ArticleVerticalItem(model = data[it]) {
+                ArticleVerticalItem(model = data[it], isSupportGridLayout = true) {
                     navController.navigate(
                         Route.readers.replace(
                             "{id}", data[it].id

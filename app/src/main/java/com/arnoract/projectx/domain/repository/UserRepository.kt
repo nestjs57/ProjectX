@@ -7,5 +7,6 @@ interface UserRepository {
     suspend fun getUser(): User
     suspend fun loginWithGoogle(token: String)
     suspend fun createGoogleAccount(user: User)
+    suspend fun updateGoldCoinAfterGetReward(coin: Int): Int
     suspend fun signOut()
 }

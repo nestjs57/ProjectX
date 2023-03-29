@@ -15,5 +15,6 @@ data class NetworkLessonSentence(
     @JvmField @PropertyName("isPublic") val isPublic: Boolean? = null,
     val imageUrl: String? = null,
     val publicDate: Date? = null,
-    val contentRawState: String? = null
+    val contentRawState: String? = null,
+    val priceCoin: Int? = 0
 )

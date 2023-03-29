@@ -11,4 +11,8 @@ val sharedPreferencesModule = module {
     single(named(KoinConst.SharedPreference.READER_PREFERENCE)) {
         SharedPreferencesBuilder(androidApplication()).buildUserPreference()
     }
+    single(named(KoinConst.SharedPreference.USER_PREFERENCE)) {
+        SharedPreferencesBuilder(androidApplication()).buildUserPreference()
+    }
+
 }

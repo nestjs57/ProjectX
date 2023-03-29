@@ -21,7 +21,8 @@ object NetworkLessonSentenceToLessonSentenceMapper :
             isPublic = from?.isPublic ?: false,
             imageUrl = from?.imageUrl ?: "",
             publicDate = from?.publicDate ?: Date(),
-            sentences = from?.contentRawState?.toArrayClass()
+            sentences = from?.contentRawState?.toArrayClass(),
+            priceCoin = from?.priceCoin ?: 0
         )
     }
 

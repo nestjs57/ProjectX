@@ -59,4 +59,6 @@
     <color name="bg_bar_dark_mode">#282828</color>
     <color name="card_dialog_dark_mode">#424242</color>
 
+    <color name="gold">#FAC213</color>
+
 </resources>

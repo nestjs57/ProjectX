@@ -5,6 +5,14 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        release {
+            storeFile file('C:\\Users\\USER\\Desktop\\upload-jks\\upload .jks')
+            storePassword 'Nine1412'
+            keyAlias 'key0'
+            keyPassword 'Nine1412'
+        }
+    }
     compileSdk 33
 
     defaultConfig {
@@ -12,8 +20,8 @@ android {
         minSdk 26
         minSdk 26
         targetSdk 33
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1.0.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -25,6 +33,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
     compileOptions {

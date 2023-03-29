@@ -8,6 +8,7 @@ import com.arnoract.projectx.ui.GRAPH
 import com.arnoract.projectx.ui.category.graph.categoryNavGraph
 import com.arnoract.projectx.ui.home.view.BottomBarScreen
 import com.arnoract.projectx.ui.home.view.HomeScreen
+import com.arnoract.projectx.ui.lesson.graph.lessonSentenceNavGraph
 import com.arnoract.projectx.ui.lesson.ui.LessonSentenceScreen
 import com.arnoract.projectx.ui.profile.ProfileScreen
 import com.arnoract.projectx.ui.reader.graph.readerNavGraph
@@ -33,6 +34,7 @@ fun HomeNavGraph(navController: NavHostController) {
             ProfileScreen()
         }
         readerNavGraph(navController)
+        lessonSentenceNavGraph(navController)
         categoryNavGraph(navController)
     }
 }

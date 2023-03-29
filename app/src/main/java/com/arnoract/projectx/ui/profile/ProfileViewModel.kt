@@ -7,9 +7,11 @@ import androidx.lifecycle.viewModelScope
 import com.arnoract.projectx.core.CoroutinesDispatcherProvider
 import com.arnoract.projectx.core.successOrThrow
 import com.arnoract.projectx.domain.exception.UnAuthorizeException
+import com.arnoract.projectx.domain.model.profile.User
 import com.arnoract.projectx.domain.usecase.profile.GetProfileUseCase
 import com.arnoract.projectx.domain.usecase.profile.LoginWithGoogleUseCase
 import com.arnoract.projectx.domain.usecase.profile.SignOutWithGoogleUseCase
+import com.arnoract.projectx.domain.usecase.profile.UpdateGoldCoinUseCase
 import com.arnoract.projectx.ui.profile.model.UiProfileState
 import com.arnoract.projectx.ui.profile.model.mapper.UserToUiUserMapper
 import kotlinx.coroutines.delay
@@ -21,6 +23,7 @@ class ProfileViewModel(
     private val getProfileUseCase: GetProfileUseCase,
     private val loginWithGoogleUseCase: LoginWithGoogleUseCase,
     private val signOutWithGoogleUseCase: SignOutWithGoogleUseCase,
+    private val updateGoldCoinUseCase: UpdateGoldCoinUseCase,
     private val coroutinesDispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel() {
 
@@ -31,6 +34,20 @@ class ProfileViewModel(
     private val _error = MutableSharedFlow<String>()
     val error: MutableSharedFlow<String>
         get() = _error
+
+    private val _loadADs = MutableSharedFlow<Unit>()
+    val loadAds: MutableSharedFlow<Unit>
+        get() = _loadADs
+
+    private val _isShowDialogLoading = MutableSharedFlow<Boolean>()
+    val isShowDialogLoading: MutableSharedFlow<Boolean>
+        get() = _isShowDialogLoading
+
+    private val _showDialogGetReward = MutableSharedFlow<Int>()
+    val showDialogGetReward: MutableSharedFlow<Int>
+        get() = _showDialogGetReward
+
+    private var _user = MutableLiveData<User>()
 
     init {
         getProfile()
@@ -43,7 +60,8 @@ class ProfileViewModel(
                 val result = withContext(coroutinesDispatcherProvider.io) {
                     getProfileUseCase.invoke(Unit).successOrThrow()
                 }
-                _profileState.value = UiProfileState.LoggedIn(UserToUiUserMapper.map(result))
+                _user.value = result
+                _profileState.value = UiProfileState.LoggedIn(UserToUiUserMapper.map(_user.value))
             } catch (e: UnAuthorizeException) {
                 _profileState.value = UiProfileState.NonLogin
             } catch (e: Exception) {
@@ -76,6 +94,45 @@ class ProfileViewModel(
                 }
                 getProfile()
             } catch (e: Exception) {
+                _error.emit(e.message ?: "Unknown Error.")
+            }
+        }
+    }
+
+    fun onClickedGetGoldCoin() {
+        viewModelScope.launch {
+            _loadADs.emit(Unit)
+        }
+    }
+
+    fun setIsShowDialogLoading(isShow: Boolean) {
+        viewModelScope.launch {
+            _isShowDialogLoading.emit(isShow)
+        }
+    }
+
+    fun setErrorDialog(error: String) {
+        viewModelScope.launch {
+            _error.emit(error)
+        }
+    }
+
+    fun onShowDialogGetRewardItem(rewardAmount: Int) {
+        viewModelScope.launch {
+            updateGoldCoin(rewardAmount)
+            _showDialogGetReward.emit(rewardAmount)
+        }
+    }
+
+    private fun updateGoldCoin(reward: Int) {
+        viewModelScope.launch {
+            try {
+                val result = withContext(coroutinesDispatcherProvider.io) {
+                    updateGoldCoinUseCase.invoke(reward).successOrThrow()
+                }
+                _user.value = _user.value?.copy(coin = result)
+                _profileState.value = UiProfileState.LoggedIn(UserToUiUserMapper.map(_user.value))
+            } catch (e: java.lang.Exception) {
                 _error.emit(e.message ?: "Unknown Error.")
             }
         }

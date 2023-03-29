@@ -12,7 +12,8 @@ data class LessonSentence(
     val isPublic: Boolean,
     val imageUrl: String,
     val publicDate: Date,
-    val sentences: List<Sentence>? = listOf()
+    val sentences: List<Sentence>? = listOf(),
+    val priceCoin: Int
 )
 
 data class Sentence(

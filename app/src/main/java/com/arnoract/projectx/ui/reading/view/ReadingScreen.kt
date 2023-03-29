@@ -97,19 +97,20 @@ fun ReadingScreen(navController: NavHostController) {
                     contentAlignment = Alignment.Center
                 ) {
                     Column(
-                        horizontalAlignment = Alignment.CenterHorizontally
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier.padding(horizontal = 32.dp)
                     ) {
                         Image(
                             painter = painterResource(id = R.drawable.ic_freelancer_amico),
                             modifier = Modifier
-                                .size(250.dp),
+                                .size(230.dp),
                             contentDescription = null,
                         )
                         Text(
-                            text = stringResource(id = R.string.look_likes_no_login_label),
-                            fontSize = 20.sp,
+                            text = stringResource(id = R.string.desc_dialog_require_login_label),
+                            fontSize = 18.sp,
                             overflow = TextOverflow.Ellipsis,
-                            fontWeight = FontWeight.Bold
+                            textAlign = TextAlign.Center
                         )
                         Spacer(modifier = Modifier.height(16.dp))
                         Box(
@@ -148,14 +149,13 @@ fun ReadingScreen(navController: NavHostController) {
                         Image(
                             painter = painterResource(id = R.drawable.ic_kids_reading_amico),
                             modifier = Modifier
-                                .size(250.dp),
+                                .size(230.dp),
                             contentDescription = null,
                         )
                         Text(
                             text = stringResource(id = R.string.empty_reading_label),
-                            fontSize = 20.sp,
+                            fontSize = 18.sp,
                             overflow = TextOverflow.Ellipsis,
-                            fontWeight = FontWeight.Bold,
                             textAlign = TextAlign.Center
                         )
                     }
