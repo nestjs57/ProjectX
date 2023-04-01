@@ -27,7 +27,11 @@ fun LessonSentenceContent(
     navController: NavHostController,
     viewModel: LessonSentenceViewModel
 ) {
-    Box(modifier = Modifier.padding(16.dp)) {
+    Box(
+        modifier = Modifier
+            .padding(horizontal = 16.dp)
+            .padding(top = 16.dp, bottom = 56.dp)
+    ) {
         LazyColumn {
             if (comingSoon.isNotEmpty()) {
                 stickyHeader {
@@ -86,6 +90,8 @@ fun LessonSentenceContent(
                     }
                 }
             }
+
+            item { Spacer(modifier = Modifier.height(16.dp)) }
         }
     }
 }

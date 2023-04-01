@@ -52,7 +52,11 @@ fun ReadingScreen(navController: NavHostController) {
 
     SubscribeEvent(viewModel)
 
-    Column(modifier = Modifier.padding(16.dp)) {
+    Column(
+        modifier = Modifier
+            .padding(top = 16.dp, bottom = 56.dp)
+            .padding(horizontal = 16.dp)
+    ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
                 text = stringResource(id = R.string.filter_label), fontSize = 18.sp

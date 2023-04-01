@@ -131,6 +131,7 @@ private fun loadAds(content: Context, viewModel: ProfileViewModel) {
         object : RewardedAdLoadCallback() {
             override fun onAdFailedToLoad(adError: LoadAdError) {
                 rewardedAd = null
+                viewModel.setIsShowDialogLoading(false)
                 viewModel.setErrorDialog(content.getString(R.string.no_ads_label))
             }
 

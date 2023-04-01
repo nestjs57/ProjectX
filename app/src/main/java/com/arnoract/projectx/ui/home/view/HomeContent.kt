@@ -1,6 +1,8 @@
 package com.arnoract.projectx.ui.home.view
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -9,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.arnoract.projectx.R
 import com.arnoract.projectx.ui.home.model.UiArticleVerticalItem
@@ -46,5 +49,6 @@ fun HomeContent(
             )
             RecentlyPublishedSection(navHostController, recentlyPublished)
         }
+        Spacer(modifier = Modifier.height(16.dp))
     }
 }
