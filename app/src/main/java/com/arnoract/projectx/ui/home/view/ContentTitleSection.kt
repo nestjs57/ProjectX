@@ -1,6 +1,7 @@
 package com.arnoract.projectx.ui.home.view
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
@@ -19,7 +20,9 @@ import androidx.compose.ui.unit.sp
 fun ContentTitleSection(
     modifier: Modifier = Modifier,
     icon: Painter,
-    value: String
+    value: String,
+    isShowSeeAll: Boolean = false,
+    onClickedSeeMore: () -> Unit
 ) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Image(
@@ -30,11 +33,23 @@ fun ContentTitleSection(
         Spacer(modifier = Modifier.width(8.dp))
         Text(
             text = value,
-            modifier = modifier,
+            modifier = modifier.weight(1f),
             maxLines = 2,
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold,
             overflow = TextOverflow.Ellipsis,
         )
+        if (isShowSeeAll) {
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                text = "ดูทั้งหมด",
+                modifier = Modifier.clickable {
+                    onClickedSeeMore()
+                },
+                maxLines = 2,
+                fontSize = 16.sp,
+                overflow = TextOverflow.Ellipsis,
+            )
+        }
     }
 }

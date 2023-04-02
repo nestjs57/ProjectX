@@ -37,7 +37,7 @@ object CategoryIdToStringCategoryMapper : Mapper<String, Int> {
                 R.string.society_category_one_line_label
             }
             else -> {
-                0
+                R.string.total_label
             }
         }
     }

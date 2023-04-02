@@ -42,7 +42,13 @@ class ArticleRepositoryImpl(
         val result = db.collection("articles").whereEqualTo("isPublic", true).get().await()
         return result.documents.map {
             it.toObject<NetworkArticle>()?.copy(id = it.id)
-        }.filter { it?.category == categoryId.toInt() && it.isPublic == true }.map {
+        }.filter {
+            if (categoryId.toInt() == 0) {
+                true
+            } else {
+                it?.category == categoryId.toInt() && it.isPublic == true
+            }
+        }.map {
             NetworkArticleToArticleMapper.map(it)
         }
     }

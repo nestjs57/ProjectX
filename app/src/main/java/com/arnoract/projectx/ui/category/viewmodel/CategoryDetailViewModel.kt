@@ -34,7 +34,7 @@ class CategoryDetailViewModel(
     init {
         viewModelScope.launch {
             _uiCategoryDetailState.value = UiCategoryDetailState.Loading
-            delay(1000)
+            delay(500)
             try {
                 val result = withContext(coroutinesDispatcherProvider.io) {
                     getArticleByCategoryIdUseCase.invoke(categoryId).successOr(listOf())
