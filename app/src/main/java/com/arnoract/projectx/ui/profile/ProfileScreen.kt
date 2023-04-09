@@ -16,6 +16,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.arnoract.projectx.R
+import com.arnoract.projectx.SubscriptionViewModel
 import com.arnoract.projectx.base.OnEvent
 import com.arnoract.projectx.base.getActivity
 import com.arnoract.projectx.ui.profile.model.UiProfileState
@@ -24,6 +25,7 @@ import com.arnoract.projectx.ui.profile.view.NonLoginContent
 import com.arnoract.projectx.ui.util.CustomDialog
 import com.arnoract.projectx.ui.util.GetRewardSuccessDialog
 import com.arnoract.projectx.ui.util.LoadingAdsDialog
+import com.arnoract.projectx.ui.util.SubscriptionSuccessDialog
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.rewarded.RewardedAd
@@ -35,8 +37,10 @@ private var adRequest: AdRequest? = null
 private var isEnableShowAds: Boolean = true
 
 @Composable
-fun ProfileScreen() {
+fun ProfileScreen(subscriptionViewModel: SubscriptionViewModel) {
     val viewModel = getViewModel<ProfileViewModel>()
+
+    val mContext = LocalContext.current
 
     val profileState by viewModel.profileState.observeAsState()
     when (val state: UiProfileState = profileState ?: return) {
@@ -51,27 +55,36 @@ fun ProfileScreen() {
             }
         }
         is UiProfileState.LoggedIn -> {
-            LoggedInContent(state.data, onClickedSignOut = {
-                viewModel.signOutWithGoogle()
-            }, onClickedGetGoldCoin = {
-                viewModel.onClickedGetGoldCoin()
-            })
+            subscriptionViewModel.refreshIsSubscribed()
+            LoggedInContent(
+                state.data,
+                subscriptionViewModel.isSubscribed.observeAsState(),
+                onClickedSignOut = {
+                    viewModel.signOutWithGoogle()
+                }) {
+                subscriptionViewModel.openPaywall(mContext.getActivity()!!)
+            }
         }
     }
-    SubscribeEvent(viewModel)
+    SubscribeEvent(subscriptionViewModel, viewModel)
 }
 
 @Composable
-fun SubscribeEvent(viewModel: ProfileViewModel) {
+fun SubscribeEvent(subscriptionViewModel: SubscriptionViewModel, viewModel: ProfileViewModel) {
     val openDialog = remember { mutableStateOf(false) }
     val openDialogLoading = remember { mutableStateOf(false) }
     val openDialogGetGoldCoinSuccess = remember { mutableStateOf(false) }
+    val openDialogSubscriptionSuccess = remember { mutableStateOf(false) }
 
     val errorMessage = remember { mutableStateOf("") }
     val currentReward = remember {
         mutableStateOf(0)
     }
     val context = LocalContext.current
+
+    OnEvent(event = subscriptionViewModel.subscribedSuccess, onEvent = {
+        openDialogSubscriptionSuccess.value = true
+    })
 
     OnEvent(event = viewModel.error, onEvent = {
         openDialog.value = true
@@ -94,6 +107,14 @@ fun SubscribeEvent(viewModel: ProfileViewModel) {
     if (openDialog.value) {
         Dialog(onDismissRequest = { openDialog.value = false }) {
             CustomDialog(openDialogCustom = openDialog, description = errorMessage.value)
+        }
+    }
+
+    if (openDialogSubscriptionSuccess.value) {
+        Dialog(onDismissRequest = { openDialogGetGoldCoinSuccess.value = false }) {
+            SubscriptionSuccessDialog(
+                openDialogCustom = openDialogSubscriptionSuccess
+            )
         }
     }
 

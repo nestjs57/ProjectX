@@ -17,19 +17,21 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavHostController
 import com.arnoract.projectx.R
+import com.arnoract.projectx.SubscriptionViewModel
 import com.arnoract.projectx.base.OnEvent
+import com.arnoract.projectx.base.Route
 import com.arnoract.projectx.ui.home.model.UiHomeState
 import com.arnoract.projectx.ui.home.viewmodel.HomeViewModel
 import com.arnoract.projectx.ui.util.CustomDialog
+import com.arnoract.projectx.ui.util.RequirePremiumDialog
 import org.koin.androidx.compose.getViewModel
 
 @Composable
-fun HomeScreen(navHostController: NavHostController) {
+fun HomeScreen(navHostController: NavHostController, subscriptionViewModel: SubscriptionViewModel) {
 
     val viewModel = getViewModel<HomeViewModel>()
 
-    SubscribeEvent(viewModel)
-
+    SubscribeEvent(navHostController, viewModel)
 
     Box(
         modifier = Modifier
@@ -46,6 +48,7 @@ fun HomeScreen(navHostController: NavHostController) {
             }
             is UiHomeState.Success -> {
                 HomeContent(
+                    viewModel,
                     navHostController,
                     state.comingSoonItem,
                     state.recommendedItem,
@@ -60,14 +63,38 @@ fun HomeScreen(navHostController: NavHostController) {
 }
 
 @Composable
-private fun SubscribeEvent(viewModel: HomeViewModel) {
+private fun SubscribeEvent(navHostController: NavHostController, viewModel: HomeViewModel) {
     val openDialog = remember { mutableStateOf(false) }
+    val openRequirePremiumDialog = remember { mutableStateOf(false) }
     val errorMessage = remember { mutableStateOf("") }
+
+    OnEvent(event = viewModel.showDialogErrorNoPremium, onEvent = {
+        openRequirePremiumDialog.value = true
+    })
+
+    OnEvent(event = viewModel.navigateToReader, onEvent = {
+        navHostController.navigate(
+            Route.readers.replace(
+                "{id}", it
+            )
+        )
+    })
 
     OnEvent(event = viewModel.error, onEvent = {
         openDialog.value = true
         errorMessage.value = it
     })
+
+    if (openRequirePremiumDialog.value) {
+        Dialog(onDismissRequest = { openRequirePremiumDialog.value = false }) {
+            RequirePremiumDialog(openDialogCustom = openRequirePremiumDialog) {
+                openRequirePremiumDialog.value = false
+                navHostController.navigate(BottomBarScreen.Profile.route) {
+                    launchSingleTop = true
+                }
+            }
+        }
+    }
 
     if (openDialog.value) {
         Dialog(onDismissRequest = { openDialog.value = false }) {

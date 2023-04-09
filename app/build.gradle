@@ -21,8 +21,8 @@ android {
         minSdk 26
         minSdk 26
         targetSdk 33
-        versionCode 5
-        versionName "1.0.2"
+        versionCode 18
+        versionName "1.0.2.18"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -141,4 +141,8 @@ dependencies {
 
     implementation 'com.google.firebase:firebase-crashlytics-ktx'
     implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation("com.android.billingclient:billing:5.1.0")
+
+    implementation("com.android.billingclient:billing:5.1.0")
+    implementation("com.android.billingclient:billing-ktx:5.1.0")
 }

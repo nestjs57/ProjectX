@@ -7,11 +7,12 @@ import com.arnoract.projectx.ui.lesson.viewmodel.LessonSentenceViewModel
 import com.arnoract.projectx.ui.profile.ProfileViewModel
 import com.arnoract.projectx.ui.reader.viewmodel.ReaderViewModel
 import com.arnoract.projectx.ui.reading.viewmodel.ReadingViewModel
+import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val mainModule = module {
-    viewModel { HomeViewModel(get(), get()) }
+    viewModel { HomeViewModel(get(), get(), get()) }
     viewModel { ReadingViewModel(get(), get(), get()) }
     viewModel { (id: String) ->
         ReaderViewModel(id, get(), get(), get(), get(), get(), get(), get(), get())
@@ -20,12 +21,21 @@ val mainModule = module {
         ProfileViewModel(get(), get(), get(), get(), get())
     }
     viewModel { (categoryId: String) ->
-        CategoryDetailViewModel(categoryId, get(), get())
+        CategoryDetailViewModel(categoryId, get(), get(), get())
     }
     viewModel {
         LessonSentenceViewModel(get(), get(), get(), get())
     }
     viewModel { (id: String) ->
         LessonSentenceDetailViewModel(id, get(), get())
+    }
+    viewModel {
+        SubscriptionViewModel(get())
+    }
+    single {
+        SubscriptionViewModelDelegateImpl(androidContext())
+    }
+    viewModel {
+        MainViewModel(get())
     }
 }

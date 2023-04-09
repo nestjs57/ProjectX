@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.arnoract.projectx.SubscriptionViewModelDelegate
+import com.arnoract.projectx.SubscriptionViewModelDelegateImpl
 import com.arnoract.projectx.core.CoroutinesDispatcherProvider
 import com.arnoract.projectx.core.successOrThrow
 import com.arnoract.projectx.domain.usecase.article.GetArticlesUseCase
@@ -15,8 +17,9 @@ import kotlinx.coroutines.withContext
 
 class HomeViewModel(
     private val getArticlesUseCase: GetArticlesUseCase,
+    private val subscriptionViewModelDelegateImpl: SubscriptionViewModelDelegateImpl,
     private val coroutinesDispatcherProvider: CoroutinesDispatcherProvider
-) : ViewModel() {
+) : ViewModel(), SubscriptionViewModelDelegate by subscriptionViewModelDelegateImpl {
 
     private val _uiHomeState = MutableLiveData<UiHomeState>()
     val uiHomeState: LiveData<UiHomeState>
@@ -25,6 +28,12 @@ class HomeViewModel(
     private val _error = MutableSharedFlow<String>()
     val error: MutableSharedFlow<String>
         get() = _error
+
+    private val _navigateToReader = MutableSharedFlow<String>()
+    val navigateToReader: MutableSharedFlow<String> get() = _navigateToReader
+
+    private val _showDialogErrorNoPremium = MutableSharedFlow<Unit>()
+    val showDialogErrorNoPremium: MutableSharedFlow<Unit> get() = _showDialogErrorNoPremium
 
     init {
         viewModelScope.launch {
@@ -37,19 +46,33 @@ class HomeViewModel(
                     comingSoonItem = result.sortedByDescending { it.publicDate }
                         .filter { it.isComingSoon }
                         .map {
-                            ArticleToUiArticleVerticalItemMapper.map(it).copy(isBlock = true)
+                            ArticleToUiArticleVerticalItemMapper.map(it)
+                                .copy(isBlock = true, isEnablePremium = true)
                         },
                     recommendedItem = result.sortedByDescending { it.publicDate }
                         .filter { it.isRecommend && !it.isComingSoon }.map {
                             ArticleToUiArticleVerticalItemMapper.map(it)
+                                .copy(isEnablePremium = true)
                         },
                     recentlyPublished = result.sortedByDescending { it.publicDate }
                         .filter { !it.isComingSoon }.map {
                             ArticleToUiArticleVerticalItemMapper.map(it)
+                                .copy(isEnablePremium = true)
                         }
                 )
             } catch (e: Exception) {
                 _error.emit(e.message ?: "Unknown Error.")
+            }
+        }
+    }
+
+    fun onNavigateToReading(id: String) {
+        viewModelScope.launch {
+            val isSubscription = getIsSubscription()
+            if (isSubscription) {
+                _navigateToReader.emit(id)
+            } else {
+                _showDialogErrorNoPremium.emit(Unit)
             }
         }
     }

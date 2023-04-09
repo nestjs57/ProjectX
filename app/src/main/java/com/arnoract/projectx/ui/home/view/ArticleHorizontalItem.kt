@@ -31,11 +31,14 @@ import com.arnoract.projectx.ui.home.model.mapper.UiArticleCategoryToCategoryLab
 import com.arnoract.projectx.util.FormatUtils.formatNumberWithOrWithOutDecimal
 
 @Composable
-fun ArticleHorizontalItem(model: UiArticleHorizontalItem, onClickedItem: (String) -> Unit) {
+fun ArticleHorizontalItem(
+    model: UiArticleHorizontalItem,
+    onClickedItem: (UiArticleHorizontalItem) -> Unit
+) {
     Row(modifier = Modifier
         .padding(bottom = 16.dp)
         .clickable {
-            onClickedItem(model.id)
+            onClickedItem(model)
         }) {
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current).data(model.imageUrl)
@@ -116,6 +119,7 @@ private fun ArticleHorizontalItemPreview() {
         descriptionTh = "ตำนานของการกักขังชั่วขณะของเมือง ซึ่งการหลบหนีเป็นไปไม่ได้และการเบี่ยงเบนจากสภาพที่เป็นอยู่ก็พบกับการกล่าวซ้ำอย่างไม...",
         descriptionEn = "",
         viewCount = 30,
-        category = UiArticleCategory.POSITIVE_THINKING
+        category = UiArticleCategory.POSITIVE_THINKING,
+        isPremium = false
     ), {})
 }

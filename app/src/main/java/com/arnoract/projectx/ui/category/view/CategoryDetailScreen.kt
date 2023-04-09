@@ -33,7 +33,9 @@ import com.arnoract.projectx.ui.category.mapper.CategoryIdToStringCategoryMapper
 import com.arnoract.projectx.ui.category.model.UiCategoryDetailState
 import com.arnoract.projectx.ui.category.viewmodel.CategoryDetailViewModel
 import com.arnoract.projectx.ui.home.view.ArticleHorizontalItem
+import com.arnoract.projectx.ui.home.view.BottomBarScreen
 import com.arnoract.projectx.ui.util.CustomDialog
+import com.arnoract.projectx.ui.util.RequirePremiumDialog
 import org.koin.androidx.compose.getViewModel
 import org.koin.core.parameter.parametersOf
 
@@ -125,6 +127,11 @@ private fun Header(navController: NavHostController, categoryId: String) {
 fun SubscribeEvent(viewModel: CategoryDetailViewModel, navController: NavHostController) {
     val openDialog = remember { mutableStateOf(false) }
     val errorMessage = remember { mutableStateOf("") }
+    val openRequirePremiumDialog = remember { mutableStateOf(false) }
+
+    OnEvent(event = viewModel.showDialogErrorNoPremium, onEvent = {
+        openRequirePremiumDialog.value = true
+    })
 
     OnEvent(event = viewModel.error, onEvent = {
         openDialog.value = true
@@ -139,6 +146,18 @@ fun SubscribeEvent(viewModel: CategoryDetailViewModel, navController: NavHostCon
             )
         )
     })
+
+    if (openRequirePremiumDialog.value) {
+        Dialog(onDismissRequest = { openRequirePremiumDialog.value = false }) {
+            RequirePremiumDialog(openDialogCustom = openRequirePremiumDialog) {
+                openRequirePremiumDialog.value = false
+                navController.popBackStack()
+                navController.navigate(BottomBarScreen.Profile.route) {
+                    launchSingleTop = true
+                }
+            }
+        }
+    }
 
     if (openDialog.value) {
         Dialog(onDismissRequest = { openDialog.value = false }) {

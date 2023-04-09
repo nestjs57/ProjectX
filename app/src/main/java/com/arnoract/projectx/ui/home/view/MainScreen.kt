@@ -16,15 +16,19 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.arnoract.projectx.R
+import com.arnoract.projectx.SubscriptionViewModel
 import com.arnoract.projectx.ui.home.model.graph.HomeNavGraph
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun MainScreen(navController: NavHostController = rememberNavController()) {
+fun MainScreen(
+    subscriptionViewModel: SubscriptionViewModel,
+    navController: NavHostController = rememberNavController()
+) {
     Scaffold(
         bottomBar = { BottomBar(navController = navController) }
     ) {
-        HomeNavGraph(navController = navController)
+        HomeNavGraph(navController = navController, subscriptionViewModel)
     }
 }
 

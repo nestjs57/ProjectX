@@ -14,6 +14,7 @@ import com.arnoract.projectx.domain.usecase.profile.SignOutWithGoogleUseCase
 import com.arnoract.projectx.domain.usecase.profile.UpdateGoldCoinUseCase
 import com.arnoract.projectx.ui.profile.model.UiProfileState
 import com.arnoract.projectx.ui.profile.model.mapper.UserToUiUserMapper
+import com.arnoract.projectx.util.setValueIfNew
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
@@ -55,15 +56,15 @@ class ProfileViewModel(
 
     private fun getProfile() {
         viewModelScope.launch {
-            _profileState.value = UiProfileState.Loading
+            _profileState.setValueIfNew(UiProfileState.Loading)
             try {
                 val result = withContext(coroutinesDispatcherProvider.io) {
                     getProfileUseCase.invoke(Unit).successOrThrow()
                 }
                 _user.value = result
-                _profileState.value = UiProfileState.LoggedIn(UserToUiUserMapper.map(_user.value))
+                _profileState.setValueIfNew(UiProfileState.LoggedIn(UserToUiUserMapper.map(_user.value)))
             } catch (e: UnAuthorizeException) {
-                _profileState.value = UiProfileState.NonLogin
+                _profileState.setValueIfNew(UiProfileState.NonLogin)
             } catch (e: Exception) {
                 _error.emit(e.message ?: "Unknown Error.")
             }

@@ -16,9 +16,11 @@ import androidx.navigation.NavHostController
 import com.arnoract.projectx.R
 import com.arnoract.projectx.base.Route
 import com.arnoract.projectx.ui.home.model.UiArticleVerticalItem
+import com.arnoract.projectx.ui.home.viewmodel.HomeViewModel
 
 @Composable
 fun HomeContent(
+    viewModel: HomeViewModel,
     navHostController: NavHostController,
     comingSoon: List<UiArticleVerticalItem>,
     recommendedItem: List<UiArticleVerticalItem>,
@@ -46,7 +48,7 @@ fun HomeContent(
 
                 }
             )
-            RecommendedSection(navHostController, recommendedItem)
+            RecommendedSection(navHostController, recommendedItem, viewModel)
         }
         if (recentlyPublished.isNotEmpty()) {
             ContentTitleSection(
@@ -63,7 +65,7 @@ fun HomeContent(
                     )
                 }
             )
-            RecentlyPublishedSection(navHostController, recentlyPublished)
+            RecentlyPublishedSection(navHostController, recentlyPublished, viewModel)
         }
         Spacer(modifier = Modifier.height(16.dp))
     }

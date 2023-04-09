@@ -8,5 +8,6 @@ data class UiArticleHorizontalItem(
     val category: UiArticleCategory?,
     val descriptionTh: String,
     val descriptionEn: String,
-    val viewCount: Int
+    val viewCount: Int,
+    val isPremium: Boolean
 )

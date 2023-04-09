@@ -3,7 +3,6 @@ package com.arnoract.projectx.ui.home.model.mapper
 import com.arnoract.projectx.core.Mapper
 import com.arnoract.projectx.domain.model.article.Article
 import com.arnoract.projectx.ui.home.model.UiArticleHorizontalItem
-import com.arnoract.projectx.ui.home.model.mapper.ArticleCategoryToUiArticleCategoryMapper
 
 object ArticleToUiArticleHorizontalItemMapper : Mapper<Article, UiArticleHorizontalItem> {
     override fun map(from: Article): UiArticleHorizontalItem {
@@ -15,7 +14,8 @@ object ArticleToUiArticleHorizontalItemMapper : Mapper<Article, UiArticleHorizon
             category = ArticleCategoryToUiArticleCategoryMapper.map(from.category),
             descriptionTh = from.descriptionTh,
             descriptionEn = from.descriptionEn,
-            viewCount = from.viewCount
+            viewCount = from.viewCount,
+            isPremium = from.isPremium
         )
     }
 }

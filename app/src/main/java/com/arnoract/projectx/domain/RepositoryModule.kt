@@ -14,4 +14,5 @@ val repositoryModule = module {
     single<ArticleRepository> { ArticleRepositoryImpl(Firebase.firestore, get(), get()) }
     single<UserRepository> { UserRepositoryImpl(Firebase.auth, Firebase.firestore, get(), get()) }
     single<LessonRepository> { LessonRepositoryImpl(Firebase.firestore, get()) }
+    single<SubscriptionRepository> { SubscriptionRepositoryImpl(androidContext()) }
 }

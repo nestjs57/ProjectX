@@ -13,6 +13,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -49,50 +51,89 @@ fun ArticleVerticalItem(
                     onClickedItem()
                 }
             }) {
-            Box(modifier = Modifier.alpha(if (model.isBlock) 0.6f else 1f)) {
-                AsyncImage(
-                    model = ImageRequest.Builder(LocalContext.current).data(model.imageUrl)
-                        .crossfade(true).build(),
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .width(if (isSupportGridLayout) getWidthItemLibrary().dp else 95.dp)
-                        .height(getHeightItemLibrary().dp)
-                        .clip(RoundedCornerShape(10.dp))
-                        .background(colorResource(id = R.color.gray300))
-                )
-                val isComplete = model.progress == "100"
-                if (model.progress != null) {
-                    Card(
-                        shape = RoundedCornerShape(100.dp),
+            Box(modifier = Modifier.alpha(1f)) {
+                Box {
+                    AsyncImage(
+                        model = ImageRequest.Builder(LocalContext.current).data(model.imageUrl)
+                            .crossfade(true).build(),
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop,
                         modifier = Modifier
-                            .padding(6.dp)
-                            .align(Alignment.BottomEnd)
-                            .width(25.dp)
-                            .height(25.dp),
-                        elevation = 10.dp,
-                        backgroundColor = if (isComplete) colorResource(id = R.color.green_sukhumvit) else MaterialTheme.colors.surface,
-                    ) {
-                        Box {
-                            if (isComplete) {
-                                Image(
-                                    painter = painterResource(id = R.drawable.ic_check),
-                                    modifier = Modifier
-                                        .size(17.dp)
-                                        .align(Alignment.Center),
-                                    contentDescription = null,
-                                    colorFilter = ColorFilter.tint(colorResource(id = R.color.white))
+                            .width(if (isSupportGridLayout) getWidthItemLibrary().dp else 95.dp)
+                            .height(getHeightItemLibrary().dp)
+                            .clip(RoundedCornerShape(10.dp))
+                            .background(colorResource(id = R.color.gray300))
+                    )
+                    if (model.isBlock) {
+                        Box(
+                            modifier = Modifier
+                                .width(if (isSupportGridLayout) getWidthItemLibrary().dp else 95.dp)
+                                .height(getHeightItemLibrary().dp)
+                                .fillMaxSize()
+                                .background(
+                                    color = Color.Black.copy(alpha = 0.4f),
+                                    shape = RoundedCornerShape(10.dp)
                                 )
-                            } else {
-                                Text(
-                                    text = "${model.progress}%",
-                                    modifier = Modifier
-                                        .align(Alignment.Center),
-                                    maxLines = 2,
-                                    fontSize = 10.sp,
-                                    fontWeight = FontWeight.Bold,
-                                    overflow = TextOverflow.Ellipsis,
-                                )
+                        ) {
+                            // Your content here
+                        }
+                    }
+                }
+
+                val isComplete = model.progress == "100"
+                if (model.isEnablePremium) {
+                    if (model.isPremium) {
+                        Box(
+                            modifier = Modifier
+                                .padding(6.dp)
+                                .align(Alignment.BottomEnd)
+                                .width(25.dp)
+                                .height(25.dp)
+                                .shadow(10.dp)
+                                .clip(RoundedCornerShape(100.dp))
+                                .background(colorResource(id = R.color.white)),
+                        ) {
+                            Image(
+                                painter = painterResource(id = R.drawable.crown),
+                                modifier = Modifier
+                                    .size(15.dp)
+                                    .align(Alignment.Center),
+                                contentDescription = null,
+                            )
+                        }
+                    }
+                } else {
+                    if (model.progress != null) {
+                        Card(
+                            shape = RoundedCornerShape(100.dp),
+                            modifier = Modifier
+                                .padding(6.dp)
+                                .align(Alignment.BottomEnd)
+                                .width(25.dp)
+                                .height(25.dp),
+                            elevation = 10.dp,
+                            backgroundColor = if (isComplete) colorResource(id = R.color.green_sukhumvit) else MaterialTheme.colors.surface,
+                        ) {
+                            Box {
+                                if (isComplete) {
+                                    Image(
+                                        painter = painterResource(id = R.drawable.ic_check),
+                                        modifier = Modifier
+                                            .size(17.dp)
+                                            .align(Alignment.Center),
+                                        contentDescription = null,
+                                        colorFilter = ColorFilter.tint(colorResource(id = R.color.white))
+                                    )
+                                } else {
+                                    Text(
+                                        text = "${model.progress}%",
+                                        modifier = Modifier.align(Alignment.Center),
+                                        maxLines = 2,
+                                        fontSize = 10.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        overflow = TextOverflow.Ellipsis,
+                                    )
+                                }
                             }
                         }
                     }
@@ -117,6 +158,16 @@ fun ArticleVerticalItem(
             )
         }
     }
+}
+
+@Composable
+private fun CardPremium() {
+
+}
+
+@Composable
+private fun CardProgress() {
+
 }
 
 @Preview(showBackground = true)

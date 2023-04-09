@@ -59,8 +59,8 @@
     <string name="read_finish_label">อ่านจบแล้ว</string>
     <string name="look_likes_no_login_label">ดูเหมือนว่าคุณจะยังไม่ได้เข้าสู่ระบบ</string>
     <string name="go_to_profile_page_label">ไปยังหน้าผู้ใช้</string>
-    <string name="empty_reading_label">บทความที่กรองหรือกำลังอ่าน\nของคุณว่างเปล่า</string>
-    <string name="empty_category_label">ไม่พบบทความในหมวดหมู่นี้\nทีมงานกำลังทยอยเพิ่มบทความอยู่\nขออภัยในความไม่สะดวก</string>
+    <string name="empty_reading_label">ไม่พบบทความที่คุณกรอง\nหรือกำลังอ่านอยู่ในขณะนี้</string>
+    <string name="empty_category_label">ขออภัยในความไม่สะดวก\nทีมงานกำลังเพิ่มบทความ\nในหมวดหมู่นี้อย่างต่อเนื่อง</string>
 
     <string name="filter_label">ตัวกรอง</string>
     <string name="only_read_complete_label">อ่านจบแล้ว</string>
@@ -80,7 +80,7 @@
 
     <string name="lesson_coming_soon_label">บทเรียนเร็วๆนี้</string>
     <string name="recently_published_label">เผยแพร่ล่าสุด</string>
-    <string name="get_coin_free_label">รับเหรียญฟรี</string>
+    <string name="get_coin_free_label">สมัครรายเดือน</string>
     <string name="fail_to_show_ads_label">ขออภัย ไม่สามารถแสดงโฆษณาได้\nกรุณาลองใหม่ภายหลัง\nหรือติดต่อทีมงานของเราที่\nเมนูติดต่อเรา</string>
     <string name="no_ads_label">ขออภัย ขณะนี้ยังไม่โฆษณา\nกรุณาลองใหม่ภายหลัง 1–2 นาที</string>
 
@@ -96,8 +96,11 @@
     <string name="confirm_label">ยืนยัน</string>
     <string name="access_to_content_title_label">การเข้าถึงเนื้อหา</string>
     <string name="you_must_use_label">คุณจะต้องใช้</string>
+    <string name="you_subscription_success_label">คุณเป็นสมาชิก Premium เสร็จเรียบร้อย คุณสามารถเข้าถึงเนื้อหาและบทเรียนทั้งหมดได้แล้วตอนนี้ !</string>
     <string name="for_access_to_content_press_confirm_to_use_coin_label">เพื่อเข้าถึงเนื้อหา กดยืนยันเพื่อใช้เหรียญทอง</string>
     <string name="desc_dialog_require_login_label">สวัสดี! ก่อนที่คุณจะเริ่มต้นโปรดลงชื่อเข้าใช้บัญชีของคุณเพื่อเข้าถึงคุณสมบัติทั้งหมด</string>
 
+    <string name="premium_content_title_label">บทความ Premium</string>
+    <string name="premium_content_description_label">พิเศษสำหรับสมาชิกที่สมัครสมาชิกแบบ premium รายเดือน กรุณาสมัครสมาชิกเพื่อเข้าถึงเนื้อหานี้</string>
 
 </resources>

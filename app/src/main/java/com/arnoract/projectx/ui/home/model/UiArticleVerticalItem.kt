@@ -7,5 +7,7 @@ data class UiArticleVerticalItem(
     val titleEn: String,
     val category: UiArticleCategory?,
     val progress: String? = null,
-    val isBlock: Boolean = false
+    val isBlock: Boolean = false,
+    val isPremium: Boolean = false,
+    val isEnablePremium: Boolean = false
 )

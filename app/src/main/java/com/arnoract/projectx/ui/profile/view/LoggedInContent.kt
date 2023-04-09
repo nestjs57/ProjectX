@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -16,6 +17,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -24,7 +26,12 @@ import com.arnoract.projectx.R
 import com.arnoract.projectx.ui.profile.model.UiUser
 
 @Composable
-fun LoggedInContent(data: UiUser, onClickedSignOut: () -> Unit, onClickedGetGoldCoin: () -> Unit) {
+fun LoggedInContent(
+    data: UiUser,
+    isSubscribed: State<Boolean?>,
+    onClickedSignOut: () -> Unit,
+    onClickedGetGoldCoin: () -> Unit
+) {
     Column(
         modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 64.dp),
         horizontalAlignment = Alignment.Start
@@ -80,62 +87,62 @@ fun LoggedInContent(data: UiUser, onClickedSignOut: () -> Unit, onClickedGetGold
                 .height(1.dp)
                 .fillMaxWidth()
         )
-//        Row(verticalAlignment = Alignment.CenterVertically) {
-//            Image(
-//                painter = painterResource(id = R.drawable.ic_coin),
-//                modifier = Modifier.size(20.dp),
-//                contentDescription = null,
-//            )
-//            Spacer(modifier = Modifier.width(8.dp))
-//            Text(
-//                text = data.coin,
-//                fontSize = 18.sp,
-//                textAlign = TextAlign.Start,
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .wrapContentHeight()
-//                    .weight(1f)
-//                    .clickable {
-//                        onClickedSignOut()
-//                    },
-//                fontWeight = FontWeight.Bold,
-//                color = colorResource(id = R.color.black)
-//            )
-//            Box(modifier = Modifier
-//                .height(28.dp)
-//                .clip(RoundedCornerShape(6.dp))
-//                .clickable {
-//                    onClickedGetGoldCoin()
-//                }
-//                .background(colorResource(id = R.color.gold)),
-//                contentAlignment = Alignment.Center) {
-//                Row(
-//                    modifier = Modifier.padding(horizontal = 8.dp),
-//                    verticalAlignment = Alignment.CenterVertically
-//                ) {
-//                    Image(
-//                        painter = painterResource(id = R.drawable.ic_ads),
-//                        modifier = Modifier.size(17.dp),
-//                        contentDescription = null,
-//                        colorFilter = ColorFilter.tint(colorResource(id = R.color.black))
-//                    )
-//                    Spacer(modifier = Modifier.width(8.dp))
-//                    Text(
-//                        text = stringResource(id = R.string.get_coin_free_label),
-//                        modifier = Modifier,
-//                        fontSize = 14.sp,
-//                        color = colorResource(id = R.color.black),
-//                    )
-//                }
-//            }
-//        }
-//        Spacer(
-//            modifier = Modifier
-//                .padding(bottom = 8.dp)
-//                .background(colorResource(id = R.color.white))
-//                .height(1.dp)
-//                .fillMaxWidth()
-//        )
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Image(
+                painter = painterResource(id = if (isSubscribed.value == true) R.drawable.crown else R.drawable.ic_coin),
+                modifier = Modifier.size(20.dp),
+                contentDescription = null,
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            val textStatus = if (isSubscribed.value == true) "Premium" else "Free"
+            Text(
+                text = textStatus,
+                fontSize = 18.sp,
+                textAlign = TextAlign.Start,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+                    .weight(1f),
+                fontWeight = FontWeight.Bold,
+                color = colorResource(id = if (isSubscribed.value == true) R.color.gold_bts else R.color.black)
+            )
+            if (isSubscribed.value == false) {
+                Box(modifier = Modifier
+                    .height(28.dp)
+                    .clip(RoundedCornerShape(6.dp))
+                    .clickable {
+                        onClickedGetGoldCoin()
+                    }
+                    .background(colorResource(id = R.color.gold)),
+                    contentAlignment = Alignment.Center) {
+                    Row(
+                        modifier = Modifier.padding(horizontal = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_ads),
+                            modifier = Modifier.size(17.dp),
+                            contentDescription = null,
+                            colorFilter = ColorFilter.tint(colorResource(id = R.color.black))
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = stringResource(id = R.string.get_coin_free_label),
+                            modifier = Modifier,
+                            fontSize = 14.sp,
+                            color = colorResource(id = R.color.black),
+                        )
+                    }
+                }
+            }
+        }
+        Spacer(
+            modifier = Modifier
+                .padding(bottom = 8.dp)
+                .background(colorResource(id = R.color.white))
+                .height(1.dp)
+                .fillMaxWidth()
+        )
         InformationContent()
         Row(verticalAlignment = Alignment.CenterVertically) {
             Image(

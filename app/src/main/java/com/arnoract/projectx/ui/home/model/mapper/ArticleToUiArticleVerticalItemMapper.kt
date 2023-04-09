@@ -2,8 +2,6 @@ package com.arnoract.projectx.ui.home.model.mapper
 
 import com.arnoract.projectx.core.Mapper
 import com.arnoract.projectx.domain.model.article.Article
-import com.arnoract.projectx.domain.model.article.ArticleCategory
-import com.arnoract.projectx.ui.home.model.UiArticleCategory
 import com.arnoract.projectx.ui.home.model.UiArticleVerticalItem
 
 object ArticleToUiArticleVerticalItemMapper : Mapper<Article, UiArticleVerticalItem> {
@@ -14,6 +12,7 @@ object ArticleToUiArticleVerticalItemMapper : Mapper<Article, UiArticleVerticalI
             titleTh = from.titleTh,
             titleEn = from.titleEn,
             category = ArticleCategoryToUiArticleCategoryMapper.map(from.category),
+            isPremium = from.isPremium
         )
     }
 }
