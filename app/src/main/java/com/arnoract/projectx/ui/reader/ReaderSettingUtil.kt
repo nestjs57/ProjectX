@@ -53,6 +53,22 @@ object ReaderSettingUtil {
         }
     }
 
+    fun getFontColorString(value: SettingBackground?): String {
+        return when (value) {
+            SettingBackground.DAY -> "#282828"
+            SettingBackground.NIGHT -> "#FFFFFF"
+            else -> "#282828"
+        }
+    }
+
+    fun getBackgroundModalColorString(value: SettingBackground?): String {
+        return when (value) {
+            SettingBackground.DAY -> "#FFFFFF"
+            SettingBackground.NIGHT -> "#282828"
+            else -> "#FFFFFF"
+        }
+    }
+
     @Composable
     fun getDrawableTint(value: SettingBackground?): Color {
         return when (value) {

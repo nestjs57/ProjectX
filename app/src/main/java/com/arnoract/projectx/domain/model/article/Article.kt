@@ -17,7 +17,8 @@ data class Article(
     val viewCount: Int,
     val paragraphTranslate: List<String> = listOf(),
     val paragraphsVocabulary: List<List<Paragraph>>? = null,
-    val isPublic: Boolean
+    val isPublic: Boolean,
+    val contentRawStateHTML: List<String> = listOf()
 )
 
 data class Paragraph(

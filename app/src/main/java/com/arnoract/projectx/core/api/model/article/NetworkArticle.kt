@@ -22,5 +22,6 @@ data class NetworkArticle(
     val viewCount: Int? = null,
     val translateRawState: String? = null,
     @JvmField @PropertyName("isPublic")
-    val isPublic: Boolean? = false
+    val isPublic: Boolean? = false,
+    val contentRawStateHTML: String? = null
 )

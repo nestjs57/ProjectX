@@ -10,12 +10,15 @@ import com.arnoract.projectx.core.CoroutinesDispatcherProvider
 import com.arnoract.projectx.core.successOr
 import com.arnoract.projectx.core.successOrThrow
 import com.arnoract.projectx.domain.usecase.article.*
+import com.arnoract.projectx.ui.reader.ReaderSettingUtil.getBackgroundModalColorString
+import com.arnoract.projectx.ui.reader.ReaderSettingUtil.getFontColorString
 import com.arnoract.projectx.ui.reader.model.*
 import com.arnoract.projectx.ui.reader.model.mapper.ParagraphToUiParagraphMapper
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.net.URL
 import java.util.*
 
 class ReaderViewModel(
@@ -72,7 +75,8 @@ class ReaderViewModel(
                     uiParagraph = result.paragraphsVocabulary?.map { param ->
                         param.map { ParagraphToUiParagraphMapper.map(it) }
                     } ?: listOf(),
-                    uiTranSlateParagraph = result.paragraphTranslate)
+                    uiTranSlateParagraph = result.paragraphTranslate,
+                    contentRawStateHTML = result.contentRawStateHTML)
             } catch (e: Exception) {
                 _error.emit(e.message ?: "Unknown Error.")
             }
@@ -110,7 +114,8 @@ class ReaderViewModel(
                 titleEn = data.titleEn,
                 uiParagraph = data.uiParagraph,
                 currentParagraphSelected = data.currentParagraphSelected.plus(1),
-                uiTranSlateParagraph = data.uiTranSlateParagraph
+                uiTranSlateParagraph = data.uiTranSlateParagraph,
+                contentRawStateHTML = data.contentRawStateHTML
             )
             setCurrentProgress(data.currentParagraphSelected.plus(1))
         }
@@ -124,7 +129,8 @@ class ReaderViewModel(
                 titleEn = data.titleEn,
                 uiParagraph = data.uiParagraph,
                 currentParagraphSelected = data.currentParagraphSelected.minus(1),
-                uiTranSlateParagraph = data.uiTranSlateParagraph
+                uiTranSlateParagraph = data.uiTranSlateParagraph,
+                contentRawStateHTML = data.contentRawStateHTML
             )
             setCurrentProgress(data.currentParagraphSelected.minus(1))
         }
@@ -186,6 +192,25 @@ class ReaderViewModel(
             } catch (e: Exception) {
                 _error.emit(e.message ?: "Unknown Error.")
             }
+        }
+    }
+
+    val openWebView = MutableSharedFlow<String>()
+
+    fun onOpenWenView(url: String) {
+        viewModelScope.launch {
+            val result = withContext(coroutinesDispatcherProvider.io) {
+                val text = URL(url).readText()
+                val color = getFontColorString(_readerSetting.value?.backgroundMode)
+                val backgroundColor =
+                    getBackgroundModalColorString(_readerSetting.value?.backgroundMode)
+                val fontUrl = "file:///android_res/font/db_heavent_now_regular.ttf"
+                val htmlWithFont =
+                    "<html><head><style>@font-face {font-family: 'CustomFont'; src: url('$fontUrl');} body {color: $color; font-family: 'CustomFont'; background-color: $backgroundColor;}</style></head><body>$text</body></html>"
+                htmlWithFont
+            }
+
+            openWebView.emit(result)
         }
     }
 }

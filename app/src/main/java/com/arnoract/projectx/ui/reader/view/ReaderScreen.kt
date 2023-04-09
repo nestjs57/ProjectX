@@ -21,6 +21,7 @@ import com.arnoract.projectx.ui.reader.ReaderSettingUtil.getBackgroundColor
 import com.arnoract.projectx.ui.reader.model.UiReaderState
 import com.arnoract.projectx.ui.reader.viewmodel.ReaderViewModel
 import com.arnoract.projectx.ui.util.CustomDialog
+import com.arnoract.projectx.ui.util.StructureSentenceDialog
 import org.koin.androidx.compose.getViewModel
 import org.koin.core.parameter.parametersOf
 
@@ -54,6 +55,7 @@ fun ReaderScreen(id: String, navController: NavHostController) {
                 readerSetting = setting,
                 currentParagraphSelected = state.currentParagraphSelected,
                 uiTranSlateParagraph = state.uiTranSlateParagraph,
+                uiContentHTML = state.contentRawStateHTML,
                 onClickedSelectVocabulary = {
                     viewModel.setSelectedParagraph(it)
                 },
@@ -74,6 +76,9 @@ fun ReaderScreen(id: String, navController: NavHostController) {
                 },
                 onClickedBackgroundModel = {
                     viewModel.setBackgroundModeSetting(it)
+                },
+                onClickedStructureSentence = {
+                    viewModel.onOpenWenView(it)
                 }
             )
         }
@@ -86,12 +91,32 @@ fun ReaderScreen(id: String, navController: NavHostController) {
 @Composable
 fun SubscribeEvent(viewModel: ReaderViewModel) {
     val openDialog = remember { mutableStateOf(false) }
+    val openStructureSentenceDialog = remember { mutableStateOf(false) }
+
+
     val errorMessage = remember { mutableStateOf("") }
+    val openWebViewUrl = remember {
+        mutableStateOf("")
+    }
 
     OnEvent(event = viewModel.error, onEvent = {
         openDialog.value = true
         errorMessage.value = it
     })
+
+    OnEvent(event = viewModel.openWebView, onEvent = {
+        openStructureSentenceDialog.value = true
+        openWebViewUrl.value = it
+    })
+
+    if (openStructureSentenceDialog.value) {
+        StructureSentenceDialog(
+            viewModel.readerSetting.value,
+            openWebViewUrl.value
+        ) {
+            openStructureSentenceDialog.value = false
+        }
+    }
 
     if (openDialog.value) {
         Dialog(onDismissRequest = { openDialog.value = false }) {

@@ -3,32 +3,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.arnoract.projectx">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="com.android.vending.BILLING" />
 
     <queries>
         <intent>
-            <action
-                android:name="android.intent.action.TTS_SERVICE" />
+            <action android:name="android.intent.action.TTS_SERVICE" />
         </intent>
     </queries>
-
 
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
-        android:hardwareAccelerated="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
+        android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ProjectX"
         tools:targetApi="31">
+        <activity
+            android:name=".ui.reader.PdfReaderActivity"
+            android:exported="true" />
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-9170460661148665~3254008206" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true"

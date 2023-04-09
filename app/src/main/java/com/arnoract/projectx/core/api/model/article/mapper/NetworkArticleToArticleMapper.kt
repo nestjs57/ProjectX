@@ -13,6 +13,8 @@ object NetworkArticleToArticleMapper : Mapper<NetworkArticle?, Article> {
 
         val contentRawState: ArrayList<Paragraph>? = from?.contentRawState?.toArrayClass()
         val translateRawState: ArrayList<String>? = from?.translateRawState?.toArrayStringClass()
+        val contentRawStateHTML =
+            if (from?.contentRawStateHTML == null) listOf<String>() else from.contentRawStateHTML.toArrayStringClass()
         val paragraphs = mutableListOf<List<Paragraph>>()
 
         contentRawState?.toList()?.groupBy {
@@ -36,7 +38,8 @@ object NetworkArticleToArticleMapper : Mapper<NetworkArticle?, Article> {
             viewCount = from?.viewCount ?: 0,
             paragraphTranslate = translateRawState?.toList() ?: listOf(),
             paragraphsVocabulary = paragraphs,
-            isPublic = from?.isPublic ?: false
+            isPublic = from?.isPublic ?: false,
+            contentRawStateHTML = contentRawStateHTML
         )
     }
 

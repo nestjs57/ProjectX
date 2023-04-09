@@ -30,7 +30,7 @@ val mainModule = module {
         LessonSentenceDetailViewModel(id, get(), get())
     }
     viewModel {
-        SubscriptionViewModel(get())
+        SubscriptionViewModel(get(), get())
     }
     single {
         SubscriptionViewModelDelegateImpl(androidContext())

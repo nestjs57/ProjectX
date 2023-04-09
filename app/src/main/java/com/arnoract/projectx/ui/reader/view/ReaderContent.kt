@@ -45,6 +45,7 @@ fun ReaderContent(
     titleEn: String,
     uiParagraph: List<List<UiParagraph>>,
     uiTranSlateParagraph: List<String>,
+    uiContentHTML: List<String>,
     currentParagraphSelected: Int,
     readerSetting: ReaderSetting?,
     onClickedSelectVocabulary: (UiParagraph) -> Unit,
@@ -53,7 +54,8 @@ fun ReaderContent(
     onTextSpeech: (String) -> Unit,
     onClickedBack: () -> Unit,
     onClickedTextSize: (SettingFontSize) -> Unit,
-    onClickedBackgroundModel: (SettingBackground) -> Unit
+    onClickedBackgroundModel: (SettingBackground) -> Unit,
+    onClickedStructureSentence: (String) -> Unit
 ) {
 
     var paragraphNumber: Int by remember {
@@ -81,24 +83,20 @@ fun ReaderContent(
 
     if (isShowDialogTranslateParagraph) {
         BottomDialogTranslateParagraph(
-            titleTh,
-            readerSetting,
-            uiTranSlateParagraph[currentParagraphSelected]
+            titleTh, readerSetting, uiTranSlateParagraph[currentParagraphSelected]
         ) {
             isShowDialogTranslateParagraph = false
         }
     }
 
     Column(
-        modifier = Modifier
-            .background(getBackgroundColor(value = readerSetting?.backgroundMode))
+        modifier = Modifier.background(getBackgroundColor(value = readerSetting?.backgroundMode))
     ) {
         val underLineColor =
             if (readerSetting?.backgroundMode == SettingBackground.DAY) colorResource(id = R.color.gray300) else colorResource(
                 id = R.color.transparent
             )
-        ToolBar(
-            paragraphNumber,
+        ToolBar(paragraphNumber,
             uiParagraph.size,
             readerSetting,
             onClickedBack,
@@ -184,6 +182,33 @@ fun ReaderContent(
                         )
                     }
 
+                    if (uiContentHTML.isNotEmpty()) {
+                        Spacer(
+                            modifier = Modifier
+                                .padding(vertical = 8.dp)
+                                .height(1.dp)
+                                .fillMaxWidth()
+                        )
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Image(
+                                painter = painterResource(id = R.drawable.ic_auto_stories),
+                                modifier = Modifier.size(21.dp),
+                                contentDescription = null,
+                                colorFilter = ColorFilter.tint(getDrawableTint(value = readerSetting?.backgroundMode))
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                text = stringResource(id = R.string.structure_sentence_label),
+                                color = getFontColor(value = readerSetting?.backgroundMode),
+                                textDecoration = TextDecoration.Underline,
+                                modifier = Modifier.clickable {
+                                    onClickedStructureSentence(uiContentHTML[paragraphNumber])
+                                },
+                                fontSize = textSize
+                            )
+                        }
+                    }
+
                     Spacer(
                         modifier = Modifier
                             .padding(vertical = 16.dp)
@@ -194,10 +219,9 @@ fun ReaderContent(
 
                     if (vocabulary.isNotBlank()) {
                         Row(verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier
-                                .clickable {
-                                    onTextSpeech(vocabulary)
-                                }) {
+                            modifier = Modifier.clickable {
+                                onTextSpeech(vocabulary)
+                            }) {
                             Image(
                                 painter = painterResource(id = R.drawable.ic_volume),
                                 modifier = Modifier.size(22.dp),
@@ -229,8 +253,7 @@ fun ReaderContent(
             modifier = Modifier
                 .padding(top = 16.dp, start = 16.dp, end = 16.dp, bottom = 16.dp)
                 .fillMaxWidth()
-                .height(56.dp),
-            verticalAlignment = Alignment.CenterVertically
+                .height(56.dp), verticalAlignment = Alignment.CenterVertically
         ) {
             Box(modifier = Modifier
                 .height(48.dp)

@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.billingclient.api.*
+import com.arnoract.projectx.core.CoroutinesDispatcherProvider
 import com.arnoract.projectx.core.KoinConst
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
@@ -23,7 +24,7 @@ interface SubscriptionViewModelDelegate {
 }
 
 class SubscriptionViewModelDelegateImpl(
-    val context: Context
+    val context: Context,
 ) : SubscriptionViewModelDelegate {
 
     private val _billingClient = MutableLiveData<BillingClient>()
@@ -69,6 +70,7 @@ class SubscriptionViewModelDelegateImpl(
 
 class SubscriptionViewModel(
     private val subscriptionViewModelDelegateImpl: SubscriptionViewModelDelegateImpl,
+    private val coroutinesDispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel(), SubscriptionViewModelDelegate by subscriptionViewModelDelegateImpl {
 
     private val _isSubscribed = MutableLiveData<Boolean>()
