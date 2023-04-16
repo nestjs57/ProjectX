@@ -12,16 +12,16 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val mainModule = module {
-    viewModel { HomeViewModel(get(), get(), get()) }
+    viewModel { HomeViewModel(get(), get(), get(), get()) }
     viewModel { ReadingViewModel(get(), get(), get(), get()) }
     viewModel { (id: String) ->
-        ReaderViewModel(id, get(), get(), get(), get(), get(), get(), get(), get(), get())
+        ReaderViewModel(id, get(), get(), get(), get(), get(), get(), get(), get(), get(), get())
     }
     viewModel {
-        ProfileViewModel(get(), get(), get(), get(), get())
+        ProfileViewModel(get(), get(), get(), get(), get(), get())
     }
     viewModel { (categoryId: String) ->
-        CategoryDetailViewModel(categoryId, get(), get(), get(), get())
+        CategoryDetailViewModel(categoryId, get(), get(), get(), get(), get())
     }
     viewModel {
         LessonSentenceViewModel(get(), get(), get(), get())

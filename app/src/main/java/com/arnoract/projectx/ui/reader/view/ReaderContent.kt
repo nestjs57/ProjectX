@@ -55,6 +55,7 @@ fun ReaderContent(
     currentParagraphSelected: Int,
     readerSetting: ReaderSetting?,
     isSubscription: Boolean,
+    isLogin: Boolean,
     onClickedSelectVocabulary: (UiParagraph) -> Unit,
     onClickedNextParagraph: () -> Unit,
     onClickedPreviousParagraph: () -> Unit,
@@ -190,7 +191,7 @@ fun ReaderContent(
                         )
                     }
 
-                    if (!isSubscription) {
+                    if (!isSubscription || !isLogin) {
                         Spacer(modifier = Modifier.height(16.dp))
                         AdvertView()
                     }

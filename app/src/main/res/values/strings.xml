@@ -113,6 +113,6 @@
     <string name="desc_dialog_require_login_label">สวัสดี! ก่อนที่คุณจะเริ่มต้นโปรดลงชื่อเข้าใช้บัญชีของคุณเพื่อเข้าถึงคุณสมบัติทั้งหมด</string>
 
     <string name="premium_content_title_label">บทความ Premium</string>
+    <string name="version_label">version 1.1.0</string>
     <string name="premium_content_description_label">พิเศษสำหรับสมาชิกที่สมัครสมาชิกแบบ premium รายเดือน กรุณาสมัครสมาชิกเพื่อเข้าถึงเนื้อหานี้</string>
-
 </resources>

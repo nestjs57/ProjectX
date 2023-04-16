@@ -89,7 +89,7 @@ fun NonLoginContent(onClickedSignIn: (String) -> Unit) {
         }
         Spacer(modifier = Modifier.weight(1f))
         Text(
-            text = "v.1.0.7 Beta",
+            text = stringResource(id = R.string.version_label),
             fontSize = 18.sp,
             modifier = Modifier
                 .wrapContentWidth()

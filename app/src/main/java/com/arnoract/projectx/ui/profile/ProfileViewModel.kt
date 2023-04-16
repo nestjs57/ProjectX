@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.arnoract.projectx.SubscriptionViewModelDelegate
+import com.arnoract.projectx.SubscriptionViewModelDelegateImpl
 import com.arnoract.projectx.core.CoroutinesDispatcherProvider
 import com.arnoract.projectx.core.successOrThrow
 import com.arnoract.projectx.domain.exception.UnAuthorizeException
@@ -25,8 +27,9 @@ class ProfileViewModel(
     private val loginWithGoogleUseCase: LoginWithGoogleUseCase,
     private val signOutWithGoogleUseCase: SignOutWithGoogleUseCase,
     private val updateGoldCoinUseCase: UpdateGoldCoinUseCase,
+    private val subscriptionViewModelDelegateImpl: SubscriptionViewModelDelegateImpl,
     private val coroutinesDispatcherProvider: CoroutinesDispatcherProvider
-) : ViewModel() {
+) : ViewModel(), SubscriptionViewModelDelegate by subscriptionViewModelDelegateImpl {
 
     private val _profileState = MutableLiveData<UiProfileState?>()
     val profileState: LiveData<UiProfileState?>
@@ -61,18 +64,28 @@ class ProfileViewModel(
     private fun getProfile() {
         viewModelScope.launch {
             _profileState.setValueIfNew(UiProfileState.Loading)
+            val isSubscription = getIsSubscription()
             try {
                 val result = withContext(coroutinesDispatcherProvider.io) {
                     getProfileUseCase.invoke(Unit).successOrThrow()
                 }
                 _user.value = result
-                _profileState.setValueIfNew(UiProfileState.LoggedIn(UserToUiUserMapper.map(_user.value)))
+                _profileState.setValueIfNew(
+                    UiProfileState.LoggedIn(
+                        UserToUiUserMapper.map(_user.value),
+                        isSubscription = isSubscription
+                    )
+                )
             } catch (e: UnAuthorizeException) {
                 _profileState.setValueIfNew(UiProfileState.NonLogin)
             } catch (e: Exception) {
                 _error.emit(e.message ?: "Unknown Error.")
             }
         }
+    }
+
+    fun refreshData() {
+        getProfile()
     }
 
     fun signInWithGoogleToken(token: String) {
@@ -131,12 +144,14 @@ class ProfileViewModel(
 
     private fun updateGoldCoin(reward: Int) {
         viewModelScope.launch {
+            val isSubscription = getIsSubscription()
             try {
                 val result = withContext(coroutinesDispatcherProvider.io) {
                     updateGoldCoinUseCase.invoke(reward).successOrThrow()
                 }
                 _user.value = _user.value?.copy(coin = result)
-                _profileState.value = UiProfileState.LoggedIn(UserToUiUserMapper.map(_user.value))
+                _profileState.value =
+                    UiProfileState.LoggedIn(UserToUiUserMapper.map(_user.value), isSubscription)
             } catch (e: java.lang.Exception) {
                 _error.emit(e.message ?: "Unknown Error.")
             }

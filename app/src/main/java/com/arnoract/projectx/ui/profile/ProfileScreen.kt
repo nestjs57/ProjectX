@@ -50,10 +50,9 @@ fun ProfileScreen(subscriptionViewModel: SubscriptionViewModel) {
             }
         }
         is UiProfileState.LoggedIn -> {
-            subscriptionViewModel.refreshIsSubscribed()
             LoggedInContent(
                 state.data,
-                subscriptionViewModel.isSubscribed.observeAsState(),
+                state.isSubscription,
                 onClickedSignOut = {
                     viewModel.signOutWithGoogle()
                 }) {
@@ -79,6 +78,7 @@ fun SubscribeEvent(subscriptionViewModel: SubscriptionViewModel, viewModel: Prof
     val context = LocalContext.current
 
     OnEvent(event = subscriptionViewModel.subscribedSuccess, onEvent = {
+        viewModel.refreshData()
         openDialogSubscriptionSuccess.value = true
     })
 

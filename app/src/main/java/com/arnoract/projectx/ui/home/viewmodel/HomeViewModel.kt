@@ -9,6 +9,7 @@ import com.arnoract.projectx.SubscriptionViewModelDelegateImpl
 import com.arnoract.projectx.core.CoroutinesDispatcherProvider
 import com.arnoract.projectx.core.successOrThrow
 import com.arnoract.projectx.domain.usecase.article.GetArticlesUseCase
+import com.arnoract.projectx.domain.usecase.article.GetIsLoginUseCase
 import com.arnoract.projectx.ui.home.model.UiHomeState
 import com.arnoract.projectx.ui.home.model.mapper.ArticleToUiArticleVerticalItemMapper
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -17,6 +18,7 @@ import kotlinx.coroutines.withContext
 
 class HomeViewModel(
     private val getArticlesUseCase: GetArticlesUseCase,
+    private val getIsLoginUseCase: GetIsLoginUseCase,
     private val subscriptionViewModelDelegateImpl: SubscriptionViewModelDelegateImpl,
     private val coroutinesDispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel(), SubscriptionViewModelDelegate by subscriptionViewModelDelegateImpl {
@@ -68,8 +70,11 @@ class HomeViewModel(
 
     fun onNavigateToReading(id: String) {
         viewModelScope.launch {
+            val resultIsLogin = withContext(coroutinesDispatcherProvider.io) {
+                getIsLoginUseCase.invoke(Unit).successOrThrow()
+            }
             val isSubscription = getIsSubscription()
-            if (isSubscription) {
+            if (isSubscription && resultIsLogin) {
                 _navigateToReader.emit(id)
             } else {
                 _showDialogErrorNoPremium.emit(Unit)

@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -28,7 +27,7 @@ import com.arnoract.projectx.ui.profile.model.UiUser
 @Composable
 fun LoggedInContent(
     data: UiUser,
-    isSubscribed: State<Boolean?>,
+    isSubscribed: Boolean,
     onClickedSignOut: () -> Unit,
     onClickedGetGoldCoin: () -> Unit
 ) {
@@ -95,7 +94,7 @@ fun LoggedInContent(
             )
             Spacer(modifier = Modifier.width(8.dp))
             val textStatus =
-                if (isSubscribed.value == true) stringResource(id = R.string.member_premium_label) else stringResource(
+                if (isSubscribed) stringResource(id = R.string.member_premium_label) else stringResource(
                     id = R.string.member_normal_label
                 )
             Text(
@@ -107,9 +106,9 @@ fun LoggedInContent(
                     .wrapContentHeight()
                     .weight(1f),
                 fontWeight = FontWeight.Bold,
-                color = colorResource(id = if (isSubscribed.value == true) R.color.gold_bts else R.color.black)
+                color = colorResource(id = if (isSubscribed) R.color.gold_bts else R.color.black)
             )
-            if (isSubscribed.value == false) {
+            if (!isSubscribed) {
                 Box(modifier = Modifier
                     .height(28.dp)
                     .clip(RoundedCornerShape(6.dp))
@@ -166,6 +165,18 @@ fun LoggedInContent(
                     },
                 fontWeight = FontWeight.Bold,
                 color = colorResource(id = R.color.red_srt)
+            )
+        }
+        Spacer(modifier = Modifier.weight(1f))
+        Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+            Text(
+                text = stringResource(id = R.string.version_label),
+                fontSize = 18.sp,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .wrapContentWidth()
+                    .wrapContentHeight(),
+                fontWeight = FontWeight.Bold,
             )
         }
     }

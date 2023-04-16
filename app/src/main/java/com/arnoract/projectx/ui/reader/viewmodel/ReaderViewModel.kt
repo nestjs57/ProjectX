@@ -33,6 +33,7 @@ class ReaderViewModel(
     private val setFontSizeSettingUseCase: SetFontSizeSettingUseCase,
     private val getBackgroundModelSettingUseCase: GetBackgroundModelSettingUseCase,
     private val setBackgroundModelSettingUseCase: SetBackgroundModelSettingUseCase,
+    private val getIsLoginUseCase: GetIsLoginUseCase,
     private val subscriptionViewModelDelegateImpl: SubscriptionViewModelDelegateImpl,
     private val coroutinesDispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel(), SubscriptionViewModelDelegate by subscriptionViewModelDelegateImpl {
@@ -52,11 +53,15 @@ class ReaderViewModel(
     private var textToSpeech: TextToSpeech? = null
 
     private val _isSubscription = MutableLiveData<Boolean?>()
+    private val _isLogin = MutableLiveData<Boolean?>()
 
     init {
         viewModelScope.launch {
             _isSubscription.value = getIsSubscription()
             try {
+                _isLogin.value = withContext(coroutinesDispatcherProvider.io) {
+                    getIsLoginUseCase.invoke(Unit).successOrThrow()
+                }
                 val fontSizeSettingPref = withContext(coroutinesDispatcherProvider.io) {
                     getFontSizeSettingUseCase.invoke(Unit).successOr(SettingFontSize.NORMAL)
                 }
@@ -87,7 +92,8 @@ class ReaderViewModel(
                     } ?: listOf(),
                     uiTranSlateParagraph = result.paragraphTranslate,
                     contentRawStateHTML = result.contentRawStateHTML,
-                    isSubscription = _isSubscription.value ?: false)
+                    isSubscription = _isSubscription.value ?: false,
+                    isLogin = _isLogin.value ?: false)
             } catch (e: Exception) {
                 _error.emit(e.message ?: "Unknown Error.")
             }
@@ -128,7 +134,8 @@ class ReaderViewModel(
                 currentParagraphSelected = data.currentParagraphSelected.plus(1),
                 uiTranSlateParagraph = data.uiTranSlateParagraph,
                 contentRawStateHTML = data.contentRawStateHTML,
-                isSubscription = _isSubscription.value ?: false
+                isSubscription = _isSubscription.value ?: false,
+                isLogin = _isLogin.value ?: false
             )
             setCurrentProgress(data.currentParagraphSelected.plus(1))
         }
@@ -144,7 +151,8 @@ class ReaderViewModel(
                 currentParagraphSelected = data.currentParagraphSelected.minus(1),
                 uiTranSlateParagraph = data.uiTranSlateParagraph,
                 contentRawStateHTML = data.contentRawStateHTML,
-                isSubscription = _isSubscription.value ?: false
+                isSubscription = _isSubscription.value ?: false,
+                isLogin = _isLogin.value ?: false
             )
             setCurrentProgress(data.currentParagraphSelected.minus(1))
         }

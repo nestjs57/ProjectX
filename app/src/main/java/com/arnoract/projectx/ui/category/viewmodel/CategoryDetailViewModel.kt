@@ -8,8 +8,10 @@ import com.arnoract.projectx.SubscriptionViewModelDelegate
 import com.arnoract.projectx.SubscriptionViewModelDelegateImpl
 import com.arnoract.projectx.core.CoroutinesDispatcherProvider
 import com.arnoract.projectx.core.successOr
+import com.arnoract.projectx.core.successOrThrow
 import com.arnoract.projectx.domain.model.article.ReadingArticle
 import com.arnoract.projectx.domain.usecase.article.GetArticleByCategoryIdUseCase
+import com.arnoract.projectx.domain.usecase.article.GetIsLoginUseCase
 import com.arnoract.projectx.domain.usecase.article.GetReadingArticleUseCase
 import com.arnoract.projectx.ui.category.model.UiCategoryDetailState
 import com.arnoract.projectx.ui.category.model.UiCategoryFilter
@@ -26,6 +28,7 @@ class CategoryDetailViewModel(
     private val getArticleByCategoryIdUseCase: GetArticleByCategoryIdUseCase,
     private val getReadingArticleUseCase: GetReadingArticleUseCase,
     private val subscriptionViewModelDelegateImpl: SubscriptionViewModelDelegateImpl,
+    private val getIsLoginUseCase: GetIsLoginUseCase,
     private val coroutinesDispatcherProvider: CoroutinesDispatcherProvider,
 ) : ViewModel(), SubscriptionViewModelDelegate by subscriptionViewModelDelegateImpl {
 
@@ -89,7 +92,10 @@ class CategoryDetailViewModel(
     fun onNavigateToReader(article: UiArticleHorizontalItem) {
         viewModelScope.launch {
             if (article.isPremium) {
-                if (getIsSubscription()) {
+                val resultIsLogin = withContext(coroutinesDispatcherProvider.io) {
+                    getIsLoginUseCase.invoke(Unit).successOrThrow()
+                }
+                if (getIsSubscription() && resultIsLogin) {
                     onNavigateToReader(article.id)
                 } else {
                     _showDialogErrorNoPremium.emit(Unit)
