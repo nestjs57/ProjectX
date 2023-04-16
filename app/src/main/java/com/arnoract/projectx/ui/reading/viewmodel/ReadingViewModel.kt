@@ -42,7 +42,6 @@ class ReadingViewModel(
         get() = _error
 
     init {
-        println()
         viewModelScope.launch {
             try {
                 _uiReadingState.value = UiReadingArticleState.Loading
