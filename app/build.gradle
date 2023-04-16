@@ -19,10 +19,9 @@ android {
     defaultConfig {
         applicationId "com.arnoract.projectx"
         minSdk 26
-        minSdk 26
         targetSdk 33
-        versionCode 19
-        versionName "1.0.3.0"
+        versionCode 23
+        versionName "1.0.7"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -146,5 +145,5 @@ dependencies {
     implementation("com.android.billingclient:billing:5.1.0")
     implementation("com.android.billingclient:billing-ktx:5.1.0")
     implementation 'org.jsoup:jsoup:1.14.3'
-
+    implementation("androidx.core:core-splashscreen:1.0.0")
 }

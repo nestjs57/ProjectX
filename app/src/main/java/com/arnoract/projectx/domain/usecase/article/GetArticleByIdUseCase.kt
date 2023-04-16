@@ -8,12 +8,18 @@ import com.arnoract.projectx.domain.repository.UserRepository
 class GetArticleByIdUseCase(
     private val articleRepository: ArticleRepository,
     private val userRepository: UserRepository
-) : UseCase<String, Article>() {
-    override suspend fun execute(parameters: String): Article {
-        val article = articleRepository.getArticleById(parameters)
-        if (userRepository.getIsLogin()) {
+) : UseCase<GetArticleByIdUseCase.Params, Article>() {
+    override suspend fun execute(parameters: Params): Article {
+        val article = articleRepository.getArticleById(parameters.id)
+        val isLogin = userRepository.getIsLogin()
+        if (isLogin && parameters.isSubscription) {
             articleRepository.createReadingArticleToDb(article)
         }
         return article
     }
+
+    data class Params(
+        val id: String,
+        val isSubscription: Boolean
+    )
 }

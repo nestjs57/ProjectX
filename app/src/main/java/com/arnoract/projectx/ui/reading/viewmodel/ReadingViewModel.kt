@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.arnoract.projectx.SubscriptionViewModelDelegate
+import com.arnoract.projectx.SubscriptionViewModelDelegateImpl
 import com.arnoract.projectx.core.CoroutinesDispatcherProvider
 import com.arnoract.projectx.core.successOr
 import com.arnoract.projectx.domain.model.article.ReadingArticle
@@ -21,8 +23,9 @@ import kotlinx.coroutines.withContext
 class ReadingViewModel(
     private val observeReadingArticleUseCase: ObserveReadingArticleUseCase,
     private val getIsLoginUseCase: GetIsLoginUseCase,
+    private val subscriptionViewModelDelegateImpl: SubscriptionViewModelDelegateImpl,
     private val coroutinesDispatcherProvider: CoroutinesDispatcherProvider
-) : ViewModel() {
+) : ViewModel(), SubscriptionViewModelDelegate by subscriptionViewModelDelegateImpl {
 
     private var readingArticles = listOf<ReadingArticle>()
 
@@ -79,14 +82,20 @@ class ReadingViewModel(
             }
         }
 
-        if (newData.isEmpty()) {
-            _uiReadingState.value = UiReadingArticleState.Empty
-        } else {
-            _uiReadingState.setValueIfNew(UiReadingArticleState.Success(data = newData.map { readingArticle ->
-                ReadingArticleToUiArticleVerticalItemMapper.map(
-                    readingArticle
-                )
-            }))
+        viewModelScope.launch {
+            if (!getIsSubscription()) {
+                _uiReadingState.value = UiReadingArticleState.NoSubscription
+            } else {
+                if (newData.isEmpty()) {
+                    _uiReadingState.value = UiReadingArticleState.Empty
+                } else {
+                    _uiReadingState.setValueIfNew(UiReadingArticleState.Success(data = newData.map { readingArticle ->
+                        ReadingArticleToUiArticleVerticalItemMapper.map(
+                            readingArticle
+                        )
+                    }))
+                }
+            }
         }
     }
 }

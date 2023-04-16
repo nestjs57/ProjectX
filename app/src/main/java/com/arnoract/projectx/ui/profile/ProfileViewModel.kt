@@ -48,6 +48,10 @@ class ProfileViewModel(
     val showDialogGetReward: MutableSharedFlow<Int>
         get() = _showDialogGetReward
 
+    private val _showDialogPaywallSubscription = MutableSharedFlow<Unit>()
+    val showDialogPaywallSubscription: MutableSharedFlow<Unit>
+        get() = _showDialogPaywallSubscription
+
     private var _user = MutableLiveData<User>()
 
     init {
@@ -136,6 +140,12 @@ class ProfileViewModel(
             } catch (e: java.lang.Exception) {
                 _error.emit(e.message ?: "Unknown Error.")
             }
+        }
+    }
+
+    fun onOpenPaywallSubscription() {
+        viewModelScope.launch {
+            _showDialogPaywallSubscription.emit(Unit)
         }
     }
 }

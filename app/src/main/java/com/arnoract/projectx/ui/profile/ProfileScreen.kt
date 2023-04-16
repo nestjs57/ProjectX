@@ -22,10 +22,7 @@ import com.arnoract.projectx.base.getActivity
 import com.arnoract.projectx.ui.profile.model.UiProfileState
 import com.arnoract.projectx.ui.profile.view.LoggedInContent
 import com.arnoract.projectx.ui.profile.view.NonLoginContent
-import com.arnoract.projectx.ui.util.CustomDialog
-import com.arnoract.projectx.ui.util.GetRewardSuccessDialog
-import com.arnoract.projectx.ui.util.LoadingAdsDialog
-import com.arnoract.projectx.ui.util.SubscriptionSuccessDialog
+import com.arnoract.projectx.ui.util.*
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.rewarded.RewardedAd
@@ -39,8 +36,6 @@ private var isEnableShowAds: Boolean = true
 @Composable
 fun ProfileScreen(subscriptionViewModel: SubscriptionViewModel) {
     val viewModel = getViewModel<ProfileViewModel>()
-
-    val mContext = LocalContext.current
 
     val profileState by viewModel.profileState.observeAsState()
     when (val state: UiProfileState = profileState ?: return) {
@@ -62,7 +57,7 @@ fun ProfileScreen(subscriptionViewModel: SubscriptionViewModel) {
                 onClickedSignOut = {
                     viewModel.signOutWithGoogle()
                 }) {
-                subscriptionViewModel.openPaywall(mContext.getActivity()!!)
+                viewModel.onOpenPaywallSubscription()
             }
         }
     }
@@ -77,6 +72,7 @@ fun SubscribeEvent(subscriptionViewModel: SubscriptionViewModel, viewModel: Prof
     val openDialogSubscriptionSuccess = remember { mutableStateOf(false) }
 
     val errorMessage = remember { mutableStateOf("") }
+    val openDialogPaywallSubscription = remember { mutableStateOf(false) }
     val currentReward = remember {
         mutableStateOf(0)
     }
@@ -103,6 +99,18 @@ fun SubscribeEvent(subscriptionViewModel: SubscriptionViewModel, viewModel: Prof
     OnEvent(event = viewModel.isShowDialogLoading, onEvent = {
         openDialogLoading.value = it
     })
+
+    OnEvent(event = viewModel.showDialogPaywallSubscription, onEvent = {
+        openDialogPaywallSubscription.value = true
+    })
+
+    if (openDialogPaywallSubscription.value) {
+        Dialog(onDismissRequest = { openDialogPaywallSubscription.value = false }) {
+            PayWallSubscriptionDialog(openDialogCustom = openDialogPaywallSubscription) {
+                subscriptionViewModel.openPaywall(context.getActivity()!!)
+            }
+        }
+    }
 
     if (openDialog.value) {
         Dialog(onDismissRequest = { openDialog.value = false }) {

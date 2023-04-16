@@ -17,7 +17,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -26,6 +28,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
 import com.arnoract.projectx.R
 import com.arnoract.projectx.ui.reader.ReaderSettingUtil.getAppBarColor
 import com.arnoract.projectx.ui.reader.ReaderSettingUtil.getBackgroundColor
@@ -37,6 +40,9 @@ import com.arnoract.projectx.ui.reader.model.SettingBackground
 import com.arnoract.projectx.ui.reader.model.SettingFontSize
 import com.arnoract.projectx.ui.reader.model.UiParagraph
 import com.google.accompanist.flowlayout.FlowRow
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdSize
+import com.google.android.gms.ads.AdView
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
@@ -48,6 +54,7 @@ fun ReaderContent(
     uiContentHTML: List<String>,
     currentParagraphSelected: Int,
     readerSetting: ReaderSetting?,
+    isSubscription: Boolean,
     onClickedSelectVocabulary: (UiParagraph) -> Unit,
     onClickedNextParagraph: () -> Unit,
     onClickedPreviousParagraph: () -> Unit,
@@ -55,7 +62,8 @@ fun ReaderContent(
     onClickedBack: () -> Unit,
     onClickedTextSize: (SettingFontSize) -> Unit,
     onClickedBackgroundModel: (SettingBackground) -> Unit,
-    onClickedStructureSentence: (String) -> Unit
+    onClickedStructureSentence: (String) -> Unit,
+    onClickedAutoSpeak: () -> Unit
 ) {
 
     var paragraphNumber: Int by remember {
@@ -157,10 +165,10 @@ fun ReaderContent(
                         })
 
                     val textSize = when (readerSetting?.fontSizeMode) {
-                        SettingFontSize.SMALL -> 12.sp
-                        SettingFontSize.NORMAL -> 14.sp
-                        SettingFontSize.LARGE -> 16.sp
-                        else -> 14.sp
+                        SettingFontSize.SMALL -> 14.sp
+                        SettingFontSize.NORMAL -> 16.sp
+                        SettingFontSize.LARGE -> 18.sp
+                        else -> 16.sp
                     }
                     Spacer(modifier = Modifier.height(16.dp))
                     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -182,31 +190,9 @@ fun ReaderContent(
                         )
                     }
 
-                    if (uiContentHTML.isNotEmpty()) {
-                        Spacer(
-                            modifier = Modifier
-                                .padding(vertical = 8.dp)
-                                .height(1.dp)
-                                .fillMaxWidth()
-                        )
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Image(
-                                painter = painterResource(id = R.drawable.ic_auto_stories),
-                                modifier = Modifier.size(21.dp),
-                                contentDescription = null,
-                                colorFilter = ColorFilter.tint(getDrawableTint(value = readerSetting?.backgroundMode))
-                            )
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Text(
-                                text = stringResource(id = R.string.structure_sentence_label),
-                                color = getFontColor(value = readerSetting?.backgroundMode),
-                                textDecoration = TextDecoration.Underline,
-                                modifier = Modifier.clickable {
-                                    onClickedStructureSentence(uiContentHTML[paragraphNumber])
-                                },
-                                fontSize = textSize
-                            )
-                        }
+                    if (!isSubscription) {
+                        Spacer(modifier = Modifier.height(16.dp))
+                        AdvertView()
                     }
 
                     Spacer(
@@ -413,10 +399,10 @@ private fun ParagraphSection(
                         }),
                     textDecoration = textDecoration,
                     fontSize = when (setting?.fontSizeMode) {
-                        SettingFontSize.SMALL -> 12.sp
-                        SettingFontSize.NORMAL -> 14.sp
-                        SettingFontSize.LARGE -> 16.sp
-                        else -> 14.sp
+                        SettingFontSize.SMALL -> 14.sp
+                        SettingFontSize.NORMAL -> 16.sp
+                        SettingFontSize.LARGE -> 18.sp
+                        else -> 16.sp
                     },
                     color = if (uiParagraph.isSelected) colorResource(id = R.color.white) else getFontColor(
                         setting?.backgroundMode
@@ -424,5 +410,32 @@ private fun ParagraphSection(
                 )
             }
         }
+    }
+}
+
+@Composable
+fun AdvertView(modifier: Modifier = Modifier) {
+    val isInEditMode = LocalInspectionMode.current
+    if (isInEditMode) {
+        Text(
+            modifier = modifier
+                .fillMaxWidth()
+                .background(Color.Red)
+                .padding(vertical = 6.dp),
+            textAlign = TextAlign.Center,
+            color = Color.White,
+            text = "Advert Here",
+        )
+    } else {
+        AndroidView(
+            modifier = modifier.fillMaxWidth(),
+            factory = { context ->
+                AdView(context).apply {
+                    setAdSize(AdSize.BANNER)
+                    adUnitId = "ca-app-pub-9170460661148665/1047231390"
+                    loadAd(AdRequest.Builder().build())
+                }
+            }
+        )
     }
 }

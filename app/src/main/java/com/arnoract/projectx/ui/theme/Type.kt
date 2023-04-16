@@ -10,12 +10,20 @@ import androidx.compose.ui.unit.sp
 import com.arnoract.projectx.R
 
 // Set of Material typography styles to start with
+//private val fontFamily = FontFamily(
+//    Font(R.font.db_heavent_now_regular, FontWeight.Light),
+//    Font(R.font.db_heavent_now_regular, FontWeight.Normal),
+//    Font(R.font.db_heavent_now_italic, FontWeight.Normal, FontStyle.Italic),
+//    Font(R.font.db_heavent_now_bold, FontWeight.Medium),
+//    Font(R.font.db_heavent_now_bold, FontWeight.Bold)
+//)
+
 private val fontFamily = FontFamily(
-    Font(R.font.db_heavent_now_regular, FontWeight.Light),
-    Font(R.font.db_heavent_now_regular, FontWeight.Normal),
-    Font(R.font.db_heavent_now_italic, FontWeight.Normal, FontStyle.Italic),
-    Font(R.font.db_heavent_now_bold, FontWeight.Medium),
-    Font(R.font.db_heavent_now_bold, FontWeight.Bold)
+    Font(R.font.mn_paethai_bystorylog_regular, FontWeight.Light),
+    Font(R.font.mn_paethai_bystorylog_regular, FontWeight.Normal),
+    Font(R.font.mn_paethai_bystorylog_ltalic, FontWeight.Normal, FontStyle.Italic),
+    Font(R.font.mn_paethai_bystorylog_demibold, FontWeight.Medium),
+    Font(R.font.mn_paethai_bystorylog_demibold, FontWeight.Bold)
 )
 
 val Typography = Typography(

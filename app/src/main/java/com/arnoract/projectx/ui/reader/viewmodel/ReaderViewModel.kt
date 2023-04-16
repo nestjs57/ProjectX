@@ -6,6 +6,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.arnoract.projectx.SubscriptionViewModelDelegate
+import com.arnoract.projectx.SubscriptionViewModelDelegateImpl
 import com.arnoract.projectx.core.CoroutinesDispatcherProvider
 import com.arnoract.projectx.core.successOr
 import com.arnoract.projectx.core.successOrThrow
@@ -21,6 +23,7 @@ import kotlinx.coroutines.withContext
 import java.net.URL
 import java.util.*
 
+
 class ReaderViewModel(
     private val id: String,
     private val getArticleByIdUseCase: GetArticleByIdUseCase,
@@ -30,8 +33,9 @@ class ReaderViewModel(
     private val setFontSizeSettingUseCase: SetFontSizeSettingUseCase,
     private val getBackgroundModelSettingUseCase: GetBackgroundModelSettingUseCase,
     private val setBackgroundModelSettingUseCase: SetBackgroundModelSettingUseCase,
+    private val subscriptionViewModelDelegateImpl: SubscriptionViewModelDelegateImpl,
     private val coroutinesDispatcherProvider: CoroutinesDispatcherProvider
-) : ViewModel() {
+) : ViewModel(), SubscriptionViewModelDelegate by subscriptionViewModelDelegateImpl {
 
     private val _uiReaderState = MutableLiveData<UiReaderState>()
     val uiReaderState: LiveData<UiReaderState>
@@ -47,9 +51,11 @@ class ReaderViewModel(
 
     private var textToSpeech: TextToSpeech? = null
 
+    private val _isSubscription = MutableLiveData<Boolean?>()
+
     init {
         viewModelScope.launch {
-
+            _isSubscription.value = getIsSubscription()
             try {
                 val fontSizeSettingPref = withContext(coroutinesDispatcherProvider.io) {
                     getFontSizeSettingUseCase.invoke(Unit).successOr(SettingFontSize.NORMAL)
@@ -58,12 +64,16 @@ class ReaderViewModel(
                     getBackgroundModelSettingUseCase.invoke(Unit).successOr(SettingBackground.DAY)
                 }
                 _readerSetting.value = ReaderSetting(
-                    fontSizeMode = fontSizeSettingPref,
-                    backgroundMode = backgroundModeSettingPref
+                    fontSizeMode = fontSizeSettingPref, backgroundMode = backgroundModeSettingPref
                 )
                 _uiReaderState.value = UiReaderState.Loading
                 val result = withContext(coroutinesDispatcherProvider.io) {
-                    getArticleByIdUseCase.invoke(id).successOrThrow()
+                    getArticleByIdUseCase.invoke(
+                        GetArticleByIdUseCase.Params(
+                            id = id,
+                            isSubscription = _isSubscription.value ?: false
+                        )
+                    ).successOrThrow()
                 }
                 val currentParagraphDb = withContext(coroutinesDispatcherProvider.io) {
                     getCurrentParagraphFromDbUseCase.invoke(id).successOr(0)
@@ -76,7 +86,8 @@ class ReaderViewModel(
                         param.map { ParagraphToUiParagraphMapper.map(it) }
                     } ?: listOf(),
                     uiTranSlateParagraph = result.paragraphTranslate,
-                    contentRawStateHTML = result.contentRawStateHTML)
+                    contentRawStateHTML = result.contentRawStateHTML,
+                    isSubscription = _isSubscription.value ?: false)
             } catch (e: Exception) {
                 _error.emit(e.message ?: "Unknown Error.")
             }
@@ -97,6 +108,7 @@ class ReaderViewModel(
                                 }
                             )
                         }
+
                     } else {
                         paragraph
                     }
@@ -115,7 +127,8 @@ class ReaderViewModel(
                 uiParagraph = data.uiParagraph,
                 currentParagraphSelected = data.currentParagraphSelected.plus(1),
                 uiTranSlateParagraph = data.uiTranSlateParagraph,
-                contentRawStateHTML = data.contentRawStateHTML
+                contentRawStateHTML = data.contentRawStateHTML,
+                isSubscription = _isSubscription.value ?: false
             )
             setCurrentProgress(data.currentParagraphSelected.plus(1))
         }
@@ -130,7 +143,8 @@ class ReaderViewModel(
                 uiParagraph = data.uiParagraph,
                 currentParagraphSelected = data.currentParagraphSelected.minus(1),
                 uiTranSlateParagraph = data.uiTranSlateParagraph,
-                contentRawStateHTML = data.contentRawStateHTML
+                contentRawStateHTML = data.contentRawStateHTML,
+                isSubscription = _isSubscription.value ?: false
             )
             setCurrentProgress(data.currentParagraphSelected.minus(1))
         }
@@ -162,7 +176,10 @@ class ReaderViewModel(
                     txtToSpeech.language = Locale.ENGLISH
                     txtToSpeech.setSpeechRate(1.0f)
                     txtToSpeech.speak(
-                        word, TextToSpeech.QUEUE_ADD, null, null
+                        word,
+                        TextToSpeech.QUEUE_FLUSH,
+                        null,
+                        TextToSpeech.ACTION_TTS_QUEUE_PROCESSING_COMPLETED
                     )
                 }
             }

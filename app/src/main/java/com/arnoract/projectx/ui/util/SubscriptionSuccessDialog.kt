@@ -40,7 +40,7 @@ fun SubscriptionSuccessDialog(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.ic_coin),
+                    painter = painterResource(id = R.drawable.crown),
                     modifier = Modifier.size(80.dp),
                     contentDescription = null,
                 )

@@ -10,4 +10,5 @@ sealed class UiReadingArticleState {
 
     object NonLogin : UiReadingArticleState()
     object Empty : UiReadingArticleState()
+    object NoSubscription : UiReadingArticleState()
 }

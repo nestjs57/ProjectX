@@ -1,6 +1,7 @@
 package com.arnoract.projectx.ui.category.view
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.CircularProgressIndicator
@@ -9,11 +10,8 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
@@ -40,17 +38,22 @@ import org.koin.androidx.compose.getViewModel
 import org.koin.core.parameter.parametersOf
 
 @Composable
+fun getCategoryDetailViewModel(categoryId: String): CategoryDetailViewModel {
+    val viewModel = getViewModel<CategoryDetailViewModel> { parametersOf(categoryId) }
+    return remember { viewModel }
+}
+
+@Composable
 fun CategoryDetailScreen(categoryId: String, navController: NavHostController) {
 
-    val viewModel = getViewModel<CategoryDetailViewModel>(
-        parameters = { parametersOf(categoryId) }
-    )
+    val viewModel = getCategoryDetailViewModel(categoryId)
+
     val uiState by viewModel.uiCategoryDetailState.observeAsState()
 
     SubscribeEvent(viewModel, navController)
 
     Column {
-        Header(navController, categoryId)
+        Header(viewModel, navController, categoryId)
         when (val state: UiCategoryDetailState? = uiState) {
             is UiCategoryDetailState.Loading -> {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -58,7 +61,8 @@ fun CategoryDetailScreen(categoryId: String, navController: NavHostController) {
                 }
             }
             is UiCategoryDetailState.Success -> {
-                LazyColumn(modifier = Modifier.padding(16.dp)) {
+                LazyColumn(modifier = Modifier.padding(horizontal = 16.dp)) {
+                    item { Spacer(modifier = Modifier.height(16.dp)) }
                     state.data.forEach {
                         item {
                             ArticleHorizontalItem(
@@ -90,7 +94,6 @@ fun CategoryDetailScreen(categoryId: String, navController: NavHostController) {
                             text = stringResource(id = R.string.empty_category_label),
                             fontSize = 20.sp,
                             overflow = TextOverflow.Ellipsis,
-                            fontWeight = FontWeight.Bold,
                             textAlign = TextAlign.Center
                         )
                     }
@@ -104,7 +107,24 @@ fun CategoryDetailScreen(categoryId: String, navController: NavHostController) {
 }
 
 @Composable
-private fun Header(navController: NavHostController, categoryId: String) {
+private fun Header(
+    viewModel: CategoryDetailViewModel,
+    navController: NavHostController,
+    categoryId: String
+) {
+    val filter by viewModel.uiCategoryFilter.observeAsState()
+    var isShowFilterDialog by remember {
+        mutableStateOf(false)
+    }
+
+    if (isShowFilterDialog) {
+        BottomDialogFilterCategory(filter, onClickedDismiss = {
+            isShowFilterDialog = false
+        }, onClickedFilter = {
+            viewModel.setFilter(it)
+        })
+    }
+
     Row(
         modifier = Modifier
             .height(56.dp),
@@ -120,6 +140,18 @@ private fun Header(navController: NavHostController, categoryId: String) {
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center,
         )
+        Spacer(modifier = Modifier.weight(1f))
+        Image(
+            painter = painterResource(id = R.drawable.ic_filter),
+            modifier = Modifier
+                .size(20.dp)
+                .clickable {
+                    isShowFilterDialog = true
+                },
+            contentDescription = null,
+            alignment = Alignment.Center
+        )
+        Spacer(modifier = Modifier.width(16.dp))
     }
 }
 

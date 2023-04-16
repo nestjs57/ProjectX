@@ -85,11 +85,18 @@ fun BottomDialogSettingReader(
                 Spacer(modifier = Modifier.height(16.dp))
                 TextSizeContent(readerSetting, onClickedTextSize)
                 Spacer(modifier = Modifier.height(16.dp))
+//                SpaceBetween()
+//                Spacer(modifier = Modifier.height(16.dp))
                 BackgroundContent(readerSetting, onClickedBackgroundModel)
                 Spacer(modifier = Modifier.height(16.dp))
             }
         }
     }
+}
+
+@Composable
+private fun SpaceBetween() {
+
 }
 
 @Composable

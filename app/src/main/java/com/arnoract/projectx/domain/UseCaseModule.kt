@@ -23,6 +23,7 @@ val useCaseModule = module {
     factory { GetCurrentParagraphFromDbUseCase(get()) }
     factory { SetCurrentParagraphToDbUseCase(get()) }
     factory { ObserveReadingArticleUseCase(get()) }
+    factory { GetReadingArticleUseCase(get()) }
     factory { SetFontSizeSettingUseCase(get()) }
     factory { SetBackgroundModelSettingUseCase(get()) }
     factory { GetFontSizeSettingUseCase(get()) }

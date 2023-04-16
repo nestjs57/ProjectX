@@ -71,6 +71,13 @@ class ArticleRepositoryImpl(
         }
     }
 
+    override suspend fun getReadingArticles(): List<ReadingArticle> {
+        val data = articleDao.findAll()
+        return data.map {
+            ArticleEntityToArticleMapper.map(it)
+        }
+    }
+
     override suspend fun createReadingArticleToDb(model: Article) {
         val entity = articleDao.findById(model.id ?: "")
         if (entity == null) {

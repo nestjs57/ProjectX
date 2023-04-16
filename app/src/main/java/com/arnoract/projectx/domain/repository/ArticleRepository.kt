@@ -17,6 +17,8 @@ interface ArticleRepository {
 
     fun observeReadingArticles(): Flow<List<ReadingArticle>>
 
+    suspend fun getReadingArticles(): List<ReadingArticle>
+
     suspend fun createReadingArticleToDb(model: Article)
 
     suspend fun setReaderFontSizeSetting(value: Int)

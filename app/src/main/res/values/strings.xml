@@ -60,11 +60,14 @@
     <string name="look_likes_no_login_label">ดูเหมือนว่าคุณจะยังไม่ได้เข้าสู่ระบบ</string>
     <string name="go_to_profile_page_label">ไปยังหน้าผู้ใช้</string>
     <string name="empty_reading_label">ไม่พบบทความที่คุณกรอง\nหรือกำลังอ่านอยู่ในขณะนี้</string>
+    <string name="reading_page_non_subs_label">ขออภัยหากท่านไม่สามารถเข้าถึงเนื้อหานี้ได้\nเนื้อหานี้สำหรับสมาชิก Premium เท่านั้น\nกรุณาสมัครสมาชิกเพื่อเข้าถึงเนื้อหาทั้งหมด</string>
     <string name="empty_category_label">ขออภัยในความไม่สะดวก\nทีมงานกำลังเพิ่มบทความ\nในหมวดหมู่นี้อย่างต่อเนื่อง</string>
 
     <string name="filter_label">ตัวกรอง</string>
     <string name="only_read_complete_label">อ่านจบแล้ว</string>
+    <string name="reading_label">กำลังอ่าน</string>
     <string name="only_reading_label">ยังอ่านไม่จบ</string>
+    <string name="never_read_label">ยังไม่เคยอ่าน</string>
     <string name="total_label">ทั้งหมด</string>
     <string name="setting_reading_label">ตั้งค่าการอ่าน</string>
     <string name="text_size_label">ขนาดตัวหนังสือ</string>
@@ -74,14 +77,22 @@
     <string name="color_background_label">สีพื้นหลัง</string>
     <string name="day_label">กลางวัน</string>
     <string name="night_label">กลางคืน</string>
-    <string name="structure_sentence_label">โครงสร้างประโยค</string>
+    <string name="auto_speak_label">อ่านอัตโนมัติ</string>
 
     <string name="hide_translate_label">ปิดคำแปล</string>
     <string name="show_translate_this_paragraph_label">แสดงคำแปลย่อหน้านี้</string>
 
     <string name="lesson_coming_soon_label">บทเรียนเร็วๆนี้</string>
     <string name="recently_published_label">เผยแพร่ล่าสุด</string>
-    <string name="get_coin_free_label">สมัครรายเดือน</string>
+    <string name="access_all_article_label">เข้าถึงได้ทุกบทความไม่จำกัด</string>
+    <string name="auto_save_article_label">บันทึกการอ่านล่าสุดอัตโนมัติ</string>
+    <string name="no_ads_privileges_label">ไม่มีการแสดงโฆษณา</string>
+    <string name="get_coin_free_label">สมัคร Premium</string>
+    <string name="member_premium_label">สมาชิก Premium</string>
+    <string name="member_normal_label">สมาชิกทั่วไป</string>
+    <string name="member_privileges">สิทธิพิเศษสำหรับสมาชิก</string>
+    <string name="member_privileges_price_can_cancel_every_time">฿55/เดือน (ยกเลิกได้ทุกเมื่อ)</string>
+    <string name="member_privileges_description">"สมัครสมาชิกพรีเมียมเพื่อเข้าถึงเนื้อหาและฟีเจอร์เสริมต่างๆโดยสามารถเข้าถึงทุกบทความและไม่มีโฆษณาปรากฏขึ้น"</string>
     <string name="fail_to_show_ads_label">ขออภัย ไม่สามารถแสดงโฆษณาได้\nกรุณาลองใหม่ภายหลัง\nหรือติดต่อทีมงานของเราที่\nเมนูติดต่อเรา</string>
     <string name="no_ads_label">ขออภัย ขณะนี้ยังไม่โฆษณา\nกรุณาลองใหม่ภายหลัง 1–2 นาที</string>
 

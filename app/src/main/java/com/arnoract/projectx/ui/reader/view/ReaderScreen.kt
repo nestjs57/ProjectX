@@ -56,6 +56,7 @@ fun ReaderScreen(id: String, navController: NavHostController) {
                 currentParagraphSelected = state.currentParagraphSelected,
                 uiTranSlateParagraph = state.uiTranSlateParagraph,
                 uiContentHTML = state.contentRawStateHTML,
+                isSubscription = state.isSubscription,
                 onClickedSelectVocabulary = {
                     viewModel.setSelectedParagraph(it)
                 },
@@ -79,6 +80,9 @@ fun ReaderScreen(id: String, navController: NavHostController) {
                 },
                 onClickedStructureSentence = {
                     viewModel.onOpenWenView(it)
+                },
+                onClickedAutoSpeak = {
+
                 }
             )
         }
@@ -92,7 +96,6 @@ fun ReaderScreen(id: String, navController: NavHostController) {
 fun SubscribeEvent(viewModel: ReaderViewModel) {
     val openDialog = remember { mutableStateOf(false) }
     val openStructureSentenceDialog = remember { mutableStateOf(false) }
-
 
     val errorMessage = remember { mutableStateOf("") }
     val openWebViewUrl = remember {

@@ -89,12 +89,15 @@ fun LoggedInContent(
         )
         Row(verticalAlignment = Alignment.CenterVertically) {
             Image(
-                painter = painterResource(id = if (isSubscribed.value == true) R.drawable.crown else R.drawable.ic_coin),
+                painter = painterResource(id = R.drawable.crown),
                 modifier = Modifier.size(20.dp),
                 contentDescription = null,
             )
             Spacer(modifier = Modifier.width(8.dp))
-            val textStatus = if (isSubscribed.value == true) "Premium" else "Free"
+            val textStatus =
+                if (isSubscribed.value == true) stringResource(id = R.string.member_premium_label) else stringResource(
+                    id = R.string.member_normal_label
+                )
             Text(
                 text = textStatus,
                 fontSize = 18.sp,

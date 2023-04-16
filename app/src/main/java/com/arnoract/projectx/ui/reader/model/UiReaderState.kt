@@ -8,6 +8,7 @@ sealed class UiReaderState {
         val uiParagraph: List<List<UiParagraph>>,
         val uiTranSlateParagraph: List<String>,
         val currentParagraphSelected: Int = 0,
-        val contentRawStateHTML: List<String>
+        val contentRawStateHTML: List<String>,
+        val isSubscription: Boolean
     ) : UiReaderState()
 }

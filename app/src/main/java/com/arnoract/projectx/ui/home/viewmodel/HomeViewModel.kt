@@ -43,7 +43,7 @@ class HomeViewModel(
                     getArticlesUseCase.invoke(Unit).successOrThrow()
                 }
                 _uiHomeState.value = UiHomeState.Success(
-                    comingSoonItem = result.sortedByDescending { it.publicDate }
+                    comingSoonItem = result.sortedBy { it.publicDate }
                         .filter { it.isComingSoon }
                         .map {
                             ArticleToUiArticleVerticalItemMapper.map(it)
@@ -53,12 +53,12 @@ class HomeViewModel(
                         .filter { it.isRecommend && !it.isComingSoon }.map {
                             ArticleToUiArticleVerticalItemMapper.map(it)
                                 .copy(isEnablePremium = true)
-                        },
+                        }.take(5),
                     recentlyPublished = result.sortedByDescending { it.publicDate }
                         .filter { !it.isComingSoon }.map {
                             ArticleToUiArticleVerticalItemMapper.map(it)
                                 .copy(isEnablePremium = true)
-                        }
+                        }.take(5)
                 )
             } catch (e: Exception) {
                 _error.emit(e.message ?: "Unknown Error.")

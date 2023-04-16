@@ -165,6 +165,52 @@ fun ReadingScreen(navController: NavHostController) {
                     }
                 }
             }
+            is UiReadingArticleState.NoSubscription -> {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 64.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_kids_reading_amico),
+                            modifier = Modifier
+                                .size(230.dp),
+                            contentDescription = null,
+                        )
+                        Text(
+                            text = stringResource(id = R.string.reading_page_non_subs_label),
+                            fontSize = 18.sp,
+                            overflow = TextOverflow.Ellipsis,
+                            textAlign = TextAlign.Center
+                        )
+                        Spacer(modifier = Modifier.height(16.dp))
+                        Box(
+                            modifier = Modifier
+                                .height(48.dp)
+                                .width(150.dp)
+                                .clip(RoundedCornerShape(6.dp))
+                                .clickable {
+                                    navController.navigate(BottomBarScreen.Profile.route) {
+                                        launchSingleTop = true
+                                    }
+                                }
+                                .background(colorResource(id = R.color.purple_500)),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = stringResource(id = R.string.go_to_profile_page_label),
+                                modifier = Modifier,
+                                fontSize = 16.sp,
+                                color = colorResource(id = R.color.white),
+                            )
+                        }
+                    }
+                }
+            }
             else -> {}
         }
     }

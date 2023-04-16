@@ -56,7 +56,7 @@ fun StructureSentenceDialog(
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
-                        text = stringResource(id = R.string.structure_sentence_label),
+                        text = stringResource(id = R.string.auto_speak_label),
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.weight(1f),

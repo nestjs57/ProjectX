@@ -7,6 +7,7 @@ data class UiParagraph(
     val translate: String,
     val note: String,
     val isSelected: Boolean = false,
+    val isAutoSpeak: Boolean = false,
     val example: String,
     val example_translate: String
 )
