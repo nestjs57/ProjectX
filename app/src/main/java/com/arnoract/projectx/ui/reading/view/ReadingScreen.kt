@@ -73,6 +73,25 @@ fun ReadingScreen(navController: NavHostController) {
                 fontSize = 18.sp,
                 modifier = Modifier.weight(1f)
             )
+            val isSyncing = viewModel.sycing.observeAsState()
+            if (isSyncing.value == true) {
+                CircularProgressIndicator(
+                    color = colorResource(id = R.color.purple_500),
+                    modifier = Modifier.size(30.dp)
+                )
+            } else {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_cloud_download),
+                    modifier = Modifier
+                        .size(23.dp)
+                        .clickable {
+                            viewModel.onSyncDataReadingUseCase()
+                        },
+                    contentDescription = null,
+                    alignment = Alignment.Center
+                )
+            }
+            Spacer(modifier = Modifier.width(16.dp))
             Image(
                 painter = painterResource(id = R.drawable.ic_filter),
                 modifier = Modifier

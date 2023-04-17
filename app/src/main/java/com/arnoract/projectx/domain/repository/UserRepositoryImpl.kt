@@ -32,7 +32,8 @@ class UserRepositoryImpl(
                 profileUrl = user?.photoUrl.toString(),
                 email = user?.email ?: "",
                 displayName = user?.displayName ?: "",
-                coin = 3
+                coin = 3,
+                readingRawState = ""
             )
         } else {
             NetworkUserToUserMapper.map(result.documents.first().toObject())
@@ -56,6 +57,11 @@ class UserRepositoryImpl(
         db.collection("users").document(userPreferenceStorage.userId ?: "")
             .update("coin", totalCoin).await()
         return totalCoin ?: userPreferenceStorage.coin ?: 0
+    }
+
+    override suspend fun updateReadingRawState(data: String) {
+        db.collection("users").document(userPreferenceStorage.userId ?: "")
+            .update("readingRawState", data).await()
     }
 
     override suspend fun signOut() {

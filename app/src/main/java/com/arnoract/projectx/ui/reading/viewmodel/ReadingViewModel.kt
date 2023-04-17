@@ -8,9 +8,11 @@ import com.arnoract.projectx.SubscriptionViewModelDelegate
 import com.arnoract.projectx.SubscriptionViewModelDelegateImpl
 import com.arnoract.projectx.core.CoroutinesDispatcherProvider
 import com.arnoract.projectx.core.successOr
+import com.arnoract.projectx.core.successOrThrow
 import com.arnoract.projectx.domain.model.article.ReadingArticle
 import com.arnoract.projectx.domain.usecase.article.GetIsLoginUseCase
 import com.arnoract.projectx.domain.usecase.article.ObserveReadingArticleUseCase
+import com.arnoract.projectx.domain.usecase.article.SyncDataReadingUseCase
 import com.arnoract.projectx.ui.reading.mapper.ReadingArticleToUiArticleVerticalItemMapper
 import com.arnoract.projectx.ui.reading.model.UiReadingArticleState
 import com.arnoract.projectx.ui.reading.model.UiReadingFilter
@@ -24,6 +26,7 @@ class ReadingViewModel(
     private val observeReadingArticleUseCase: ObserveReadingArticleUseCase,
     private val getIsLoginUseCase: GetIsLoginUseCase,
     private val subscriptionViewModelDelegateImpl: SubscriptionViewModelDelegateImpl,
+    private val syncDataReadingUseCase: SyncDataReadingUseCase,
     private val coroutinesDispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel(), SubscriptionViewModelDelegate by subscriptionViewModelDelegateImpl {
 
@@ -40,6 +43,9 @@ class ReadingViewModel(
     private val _error = MutableSharedFlow<String>()
     val error: MutableSharedFlow<String>
         get() = _error
+
+    private val _sycing = MutableLiveData<Boolean>()
+    val sycing: LiveData<Boolean> get() = _sycing
 
     init {
         viewModelScope.launch {
@@ -94,6 +100,25 @@ class ReadingViewModel(
                         )
                     }))
                 }
+            }
+        }
+    }
+
+    fun onSyncDataReadingUseCase() {
+        viewModelScope.launch {
+            val isLogin = withContext(coroutinesDispatcherProvider.io) {
+                getIsLoginUseCase.invoke(Unit)
+            }.successOr(false)
+            if (!isLogin) return@launch
+            _sycing.value = true
+            try {
+                withContext(coroutinesDispatcherProvider.io) {
+                    syncDataReadingUseCase.invoke(Unit).successOrThrow()
+                }
+            } catch (e: java.lang.Exception) {
+                error.emit(e.message ?: "")
+            } finally {
+                _sycing.value = false
             }
         }
     }

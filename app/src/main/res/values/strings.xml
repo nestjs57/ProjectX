@@ -60,7 +60,7 @@
     <string name="look_likes_no_login_label">ดูเหมือนว่าคุณจะยังไม่ได้เข้าสู่ระบบ</string>
     <string name="go_to_profile_page_label">ไปยังหน้าผู้ใช้</string>
     <string name="empty_reading_label">ไม่พบบทความที่คุณกรอง\nหรือกำลังอ่านอยู่ในขณะนี้</string>
-    <string name="reading_page_non_subs_label">ขออภัยหากท่านไม่สามารถเข้าถึงเนื้อหานี้ได้\nเนื้อหานี้สำหรับสมาชิก Premium เท่านั้น\nกรุณาสมัครสมาชิกเพื่อเข้าถึงเนื้อหาทั้งหมด</string>
+    <string name="reading_page_non_subs_label">ขออภัยหากท่านไม่สามารถเข้าถึงเนื้อหานี้ได้ เนื้อหานี้สำหรับสมาชิก Premium เท่านั้น กรุณาสมัครสมาชิกเพื่อเข้าถึงเนื้อหาทั้งหมด</string>
     <string name="empty_category_label">ขออภัยในความไม่สะดวก\nทีมงานกำลังเพิ่มบทความ\nในหมวดหมู่นี้อย่างต่อเนื่อง</string>
 
     <string name="filter_label">ตัวกรอง</string>

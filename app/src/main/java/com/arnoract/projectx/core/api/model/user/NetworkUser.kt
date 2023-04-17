@@ -5,5 +5,6 @@ data class NetworkUser(
     val profileUrl: String? = null,
     val email: String? = null,
     val displayName: String? = null,
-    val coin: Int? = null
+    val coin: Int? = null,
+    val readingRawState: String? = null
 )

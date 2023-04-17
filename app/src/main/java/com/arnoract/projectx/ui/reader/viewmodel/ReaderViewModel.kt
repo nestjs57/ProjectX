@@ -35,6 +35,7 @@ class ReaderViewModel(
     private val setBackgroundModelSettingUseCase: SetBackgroundModelSettingUseCase,
     private val getIsLoginUseCase: GetIsLoginUseCase,
     private val subscriptionViewModelDelegateImpl: SubscriptionViewModelDelegateImpl,
+    private val syncDataReadingUseCase: SyncDataReadingUseCase,
     private val coroutinesDispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel(), SubscriptionViewModelDelegate by subscriptionViewModelDelegateImpl {
 
@@ -49,6 +50,10 @@ class ReaderViewModel(
     private val _error = MutableSharedFlow<String>()
     val error: MutableSharedFlow<String>
         get() = _error
+
+    private val _clickedBackEvent = MutableSharedFlow<Unit>()
+    val clickedBackEvent: MutableSharedFlow<Unit>
+        get() = _clickedBackEvent
 
     private var textToSpeech: TextToSpeech? = null
 
@@ -236,6 +241,23 @@ class ReaderViewModel(
             }
 
             openWebView.emit(result)
+        }
+    }
+
+    fun onClickedBack() {
+        viewModelScope.launch {
+            _clickedBackEvent.emit(Unit)
+            val isLogin = withContext(coroutinesDispatcherProvider.io) {
+                getIsLoginUseCase.invoke(Unit)
+            }.successOr(false)
+            if (!isLogin) return@launch
+            try {
+                withContext(coroutinesDispatcherProvider.io) {
+                    syncDataReadingUseCase.invoke(Unit).successOrThrow()
+                }
+            } catch (e: java.lang.Exception) {
+                error.emit(e.message ?: "Unknown Error.")
+            }
         }
     }
 }

@@ -21,6 +21,8 @@ interface ArticleRepository {
 
     suspend fun createReadingArticleToDb(model: Article)
 
+    suspend fun createReadingArticleFromReadingArticleToDb(models: List<ReadingArticle>)
+
     suspend fun setReaderFontSizeSetting(value: Int)
 
     suspend fun getReaderFontSuzeSetting(): Int

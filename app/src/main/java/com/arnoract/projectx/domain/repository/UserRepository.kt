@@ -8,5 +8,6 @@ interface UserRepository {
     suspend fun loginWithGoogle(token: String)
     suspend fun createGoogleAccount(user: User)
     suspend fun updateGoldCoinAfterGetReward(coin: Int): Int
+    suspend fun updateReadingRawState(data: String)
     suspend fun signOut()
 }

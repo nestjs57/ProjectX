@@ -5,5 +5,6 @@ data class User(
     val profileUrl: String,
     val email: String,
     val displayName: String,
-    val coin: Int? = 0
+    val coin: Int? = 0,
+    val readingRawState: String
 )

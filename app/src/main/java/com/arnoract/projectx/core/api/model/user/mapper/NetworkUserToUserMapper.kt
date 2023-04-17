@@ -11,7 +11,8 @@ object NetworkUserToUserMapper : Mapper<NetworkUser?, User> {
             profileUrl = from?.profileUrl ?: "",
             email = from?.email ?: "",
             displayName = from?.displayName ?: "",
-            coin = from?.coin ?: 0
+            coin = from?.coin ?: 0,
+            readingRawState = from?.readingRawState ?: ""
         )
     }
 }

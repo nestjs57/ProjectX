@@ -1,5 +1,6 @@
 package com.arnoract.projectx.ui.reader.view
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -33,7 +34,11 @@ fun ReaderScreen(id: String, navController: NavHostController) {
     val uiState by viewModel.uiReaderState.observeAsState()
     val setting by viewModel.readerSetting.observeAsState()
 
-    SubscribeEvent(viewModel)
+    SubscribeEvent(viewModel, navController)
+
+    BackHandler(enabled = true) {
+        viewModel.onClickedBack()
+    }
 
     val context = LocalContext.current
     when (val state: UiReaderState? = uiState) {
@@ -68,7 +73,7 @@ fun ReaderScreen(id: String, navController: NavHostController) {
                     viewModel.onClickedPreviousParagraph()
                 },
                 onClickedBack = {
-                    navController.popBackStack()
+                    viewModel.onClickedBack()
                 },
                 onTextSpeech = {
                     viewModel.onTextSpeech(context, it)
@@ -94,7 +99,7 @@ fun ReaderScreen(id: String, navController: NavHostController) {
 }
 
 @Composable
-fun SubscribeEvent(viewModel: ReaderViewModel) {
+fun SubscribeEvent(viewModel: ReaderViewModel, navController: NavHostController) {
     val openDialog = remember { mutableStateOf(false) }
     val openStructureSentenceDialog = remember { mutableStateOf(false) }
 
@@ -111,6 +116,10 @@ fun SubscribeEvent(viewModel: ReaderViewModel) {
     OnEvent(event = viewModel.openWebView, onEvent = {
         openStructureSentenceDialog.value = true
         openWebViewUrl.value = it
+    })
+
+    OnEvent(event = viewModel.clickedBackEvent, onEvent = {
+        navController.popBackStack()
     })
 
     if (openStructureSentenceDialog.value) {

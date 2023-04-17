@@ -4,6 +4,7 @@ import com.arnoract.projectx.core.api.model.article.NetworkArticle
 import com.arnoract.projectx.core.api.model.article.mapper.ArticleEntityToArticleMapper
 import com.arnoract.projectx.core.api.model.article.mapper.ArticleToArticleEntityMapper
 import com.arnoract.projectx.core.api.model.article.mapper.NetworkArticleToArticleMapper
+import com.arnoract.projectx.core.api.model.article.mapper.ReadingArticleToArticleEntityMapper
 import com.arnoract.projectx.core.db.dao.ArticleDao
 import com.arnoract.projectx.domain.model.article.Article
 import com.arnoract.projectx.domain.model.article.ReadingArticle
@@ -89,6 +90,13 @@ class ArticleRepositoryImpl(
                 )
             )
         }
+    }
+
+    override suspend fun createReadingArticleFromReadingArticleToDb(models: List<ReadingArticle>) {
+        val articlesEntity = models.map {
+            ReadingArticleToArticleEntityMapper.map(it)
+        }
+        articleDao.insertOrUpdate(articlesEntity)
     }
 
     override suspend fun setReaderFontSizeSetting(value: Int) {

@@ -25,6 +25,7 @@ val useCaseModule = module {
     factory { ObserveReadingArticleUseCase(get()) }
     factory { GetReadingArticleUseCase(get()) }
     factory { SetFontSizeSettingUseCase(get()) }
+    factory { SyncDataReadingUseCase(get(), get()) }
     factory { SetBackgroundModelSettingUseCase(get()) }
     factory { GetFontSizeSettingUseCase(get()) }
     factory { GetBackgroundModelSettingUseCase(get()) }
