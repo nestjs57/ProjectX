@@ -3,6 +3,7 @@ package com.arnoract.projectx.core.api.model.article.mapper
 import com.arnoract.projectx.core.Mapper
 import com.arnoract.projectx.core.db.entity.ArticleEntity
 import com.arnoract.projectx.domain.model.article.ReadingArticle
+import java.util.*
 
 object ReadingArticleToArticleEntityMapper : Mapper<ReadingArticle, ArticleEntity> {
     override fun map(from: ReadingArticle): ArticleEntity {
@@ -15,7 +16,10 @@ object ReadingArticleToArticleEntityMapper : Mapper<ReadingArticle, ArticleEntit
             currentParagraph = from.currentParagraph,
             imageUrl = from.imageUrl,
             category = ArticleCategoryToIntArticleMapper.map(from.category),
-            totalParagraph = from.totalParagraph
+            totalParagraph = from.totalParagraph,
+            firstDate = (from.firstDate ?: Calendar.getInstance().time),
+            lastDate = (from.lastDate ?: Calendar.getInstance().time),
+            totalReadTime = from.totalReadTime
         )
     }
 }

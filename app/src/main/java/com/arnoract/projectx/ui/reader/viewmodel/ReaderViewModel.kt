@@ -35,7 +35,7 @@ class ReaderViewModel(
     private val setBackgroundModelSettingUseCase: SetBackgroundModelSettingUseCase,
     private val getIsLoginUseCase: GetIsLoginUseCase,
     private val subscriptionViewModelDelegateImpl: SubscriptionViewModelDelegateImpl,
-    private val syncDataReadingUseCase: SyncDataReadingUseCase,
+    private val onlySyncDataUseCase: OnlySyncDataUseCase,
     private val coroutinesDispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel(), SubscriptionViewModelDelegate by subscriptionViewModelDelegateImpl {
 
@@ -60,8 +60,11 @@ class ReaderViewModel(
     private val _isSubscription = MutableLiveData<Boolean?>()
     private val _isLogin = MutableLiveData<Boolean?>()
 
+    private val timeStartReading = MutableLiveData<Date>()
+
     init {
         viewModelScope.launch {
+            timeStartReading.value = Calendar.getInstance().time
             _isSubscription.value = getIsSubscription()
             try {
                 _isLogin.value = withContext(coroutinesDispatcherProvider.io) {
@@ -246,6 +249,7 @@ class ReaderViewModel(
 
     fun onClickedBack() {
         viewModelScope.launch {
+            val lastDate = Calendar.getInstance().time
             _clickedBackEvent.emit(Unit)
             val isLogin = withContext(coroutinesDispatcherProvider.io) {
                 getIsLoginUseCase.invoke(Unit)
@@ -253,7 +257,15 @@ class ReaderViewModel(
             if (!isLogin) return@launch
             try {
                 withContext(coroutinesDispatcherProvider.io) {
-                    syncDataReadingUseCase.invoke(Unit).successOrThrow()
+                    onlySyncDataUseCase.invoke(
+                        OnlySyncDataUseCase.Params(
+                            id = id,
+                            progress = (_uiReaderState.value as? UiReaderState.Success)?.currentParagraphSelected
+                                ?: 0,
+                            firstDate = timeStartReading.value ?: Calendar.getInstance().time,
+                            lastDate = lastDate
+                        )
+                    ).successOrThrow()
                 }
             } catch (e: java.lang.Exception) {
                 error.emit(e.message ?: "Unknown Error.")

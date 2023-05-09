@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_100">#EBC7E6</color>
+    <color name="purple_200">#BFACE2</color>
+    <color name="purple_500">#645CBB</color>
+    <color name="purple_700">#A084DC</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="blue_light">#F9FAFF</color>
+    <color name="blue_dark">#365EA1</color>
+    <color name="black">#ffffff</color>
+    <color name="black_transparent">#61232729</color>
+    <color name="gray700">#76797A</color>
+    <color name="gray500">#999C9E</color>
+    <color name="gray300">#DCDFE0</color>
+    <color name="gray200">#EDEFF0</color>
+    <color name="gray100">#F3F4F5</color>
+    <color name="gray50">#FAFAFA</color>
+    <color name="gray2">#4F4F4F</color>
+    <color name="white">#000000</color>
+    <color name="white_transparent">#66FFFFFF</color>
+    <color name="transparent">#00000000</color>
+    <color name="dark_red">#8B0000</color>
+    <color name="primary_red">#e60013</color>
+    <color name="red_orange">#FF6347</color>
+
+    <color name="green_sukhumvit">#74AD46</color>
+    <color name="green_silom">#325C35</color>
+    <color name="blue_mrt">#365EA1</color>
+    <color name="purple_mrt">#65327C</color>
+    <color name="pink_apl">#E75656</color>
+    <color name="gold_bts">#CD9934</color>
+    <color name="red_srt">#F60723</color>
+    <color name="red_light_srt">#D76A6C</color>
+
+    <color name="status_bar_color">#154B4F</color>
+    <color name="primary">#FF6347</color>
+    <color name="opposite_primary">#154B4F</color>
+
+    <color name="bg_category_work_life_balance">#D4E09B</color>
+    <color name="bg_category_social_issues">#F6F4D2</color>
+    <color name="bg_category_self_improvement">#CBDFBD</color>
+    <color name="bg_category_beliefs">#F19C79</color>
+    <color name="bg_category_positive_thinking">#A44A3F</color>
+    <color name="bg_category_relation_ships">#264653</color>
+    <color name="bg_category_video_games">#2A9D8F</color>
+    <color name="bg_category_productivity">#E9C46A</color>
+    <color name="bg_category_communication_skills">#F4A261</color>
+    <color name="bg_category_society">#E76F51</color>
+
+    <color name="highlight_text">#EB455F</color>
+    <color name="read_finish_button">#A0D995</color>
+
+    <color name="background_dark_mode">#222222</color>
+    <color name="background_modal_dark_mode">#2B2B2B</color>
+
+    <color name="status_bar_dark_mode">#000000</color>
+    <color name="app_bar_dark_mode">#212121</color>
+    <color name="bg_bar_dark_mode">#282828</color>
+    <color name="card_dialog_dark_mode">#424242</color>
+
+    <color name="gold">#FAC213</color>
+    <color name="bg_base_dialog">#212121</color>
+
+</resources>

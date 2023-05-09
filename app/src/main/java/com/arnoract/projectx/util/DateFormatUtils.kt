@@ -55,6 +55,26 @@ object DateFormatUtils {
         return format.format(date)
     }
 
+    fun formatHr(
+        date: Date,
+        timeZone: TimeZone
+    ): String {
+        val format = SimpleDateFormat("hh", Locale.getDefault()).apply {
+            this.timeZone = timeZone
+        }
+        return format.format(date)
+    }
+
+    fun formatMinus(
+        date: Date,
+        timeZone: TimeZone
+    ): String {
+        val format = SimpleDateFormat("mm", Locale.getDefault()).apply {
+            this.timeZone = timeZone
+        }
+        return format.format(date)
+    }
+
     fun formatYearMonthDateSlash(date: Date): String {
         val slashDateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
         return slashDateFormat.format(date)

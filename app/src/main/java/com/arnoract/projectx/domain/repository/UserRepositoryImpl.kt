@@ -11,6 +11,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
+import java.util.*
 
 class UserRepositoryImpl(
     private val auth: FirebaseAuth,
@@ -33,7 +34,8 @@ class UserRepositoryImpl(
                 email = user?.email ?: "",
                 displayName = user?.displayName ?: "",
                 coin = 3,
-                readingRawState = ""
+                readingRawState = "",
+                createAt = Date()
             )
         } else {
             NetworkUserToUserMapper.map(result.documents.first().toObject())

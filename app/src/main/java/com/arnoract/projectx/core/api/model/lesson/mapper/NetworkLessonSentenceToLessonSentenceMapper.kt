@@ -1,10 +1,10 @@
 package com.arnoract.projectx.core.api.model.lesson.mapper
 
 import com.arnoract.projectx.core.Mapper
+import com.arnoract.projectx.core.MyGsonBuilder
 import com.arnoract.projectx.core.api.model.lesson.NetworkLessonSentence
 import com.arnoract.projectx.domain.model.lesson.LessonSentence
 import com.arnoract.projectx.domain.model.lesson.Sentence
-import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.util.*
 
@@ -27,7 +27,7 @@ object NetworkLessonSentenceToLessonSentenceMapper :
     }
 
     private fun <T : Any?> String.toArrayClass(): ArrayList<T> {
-        val gson = Gson()
+        val gson = MyGsonBuilder().build()
         val type = object : TypeToken<ArrayList<Sentence>>() {}.type
         return gson.fromJson(this, type)
     }

@@ -1,5 +1,7 @@
 package com.arnoract.projectx.domain.model.article
 
+import java.util.*
+
 data class ReadingArticle(
     val id: String,
     val titleTh: String,
@@ -10,4 +12,7 @@ data class ReadingArticle(
     val totalParagraph: Int,
     val category: ArticleCategory?,
     val imageUrl: String,
+    val firstDate: Date? = null,
+    val lastDate: Date? = null,
+    val totalReadTime: Int
 )

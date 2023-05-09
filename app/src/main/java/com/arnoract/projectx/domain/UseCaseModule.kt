@@ -5,6 +5,7 @@ import com.arnoract.projectx.domain.usecase.article.*
 import com.arnoract.projectx.domain.usecase.lesson.AccessContentWithCoinUseCase
 import com.arnoract.projectx.domain.usecase.lesson.GetLessonSentenceByIdUseCase
 import com.arnoract.projectx.domain.usecase.lesson.GetLessonSentencesUseCase
+import com.arnoract.projectx.domain.usecase.overview.GetOverviewUseCase
 import com.arnoract.projectx.domain.usecase.profile.GetProfileUseCase
 import com.arnoract.projectx.domain.usecase.profile.LoginWithGoogleUseCase
 import com.arnoract.projectx.domain.usecase.profile.SignOutWithGoogleUseCase
@@ -26,6 +27,7 @@ val useCaseModule = module {
     factory { GetReadingArticleUseCase(get()) }
     factory { SetFontSizeSettingUseCase(get()) }
     factory { SyncDataReadingUseCase(get(), get()) }
+    factory { OnlySyncDataUseCase(get(), get()) }
     factory { SetBackgroundModelSettingUseCase(get()) }
     factory { GetFontSizeSettingUseCase(get()) }
     factory { GetBackgroundModelSettingUseCase(get()) }
@@ -33,4 +35,5 @@ val useCaseModule = module {
     factory { UpdateGoldCoinUseCase(get()) }
     factory { AccessContentWithCoinUseCase(get()) }
     factory { GetLessonSentenceByIdUseCase(get()) }
+    factory { GetOverviewUseCase(get()) }
 }

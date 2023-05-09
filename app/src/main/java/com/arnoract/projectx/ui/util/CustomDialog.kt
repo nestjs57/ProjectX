@@ -9,7 +9,6 @@ import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -32,7 +31,7 @@ fun CustomDialog(
     ) {
         Column(
             modifier
-                .background(Color.White)
+                .background(colorResource(id = R.color.bg_base_dialog))
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
@@ -44,12 +43,13 @@ fun CustomDialog(
                     maxLines = 1,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.ExtraBold,
-                    color = Color.Black,
+                    color = colorResource(id = R.color.black),
                     overflow = TextOverflow.Ellipsis
                 )
                 Text(
                     text = description,
                     textAlign = TextAlign.Center,
+                    color = colorResource(id = R.color.black),
                     modifier = Modifier
                         .padding(top = 10.dp, start = 25.dp, end = 25.dp)
                         .fillMaxWidth(),

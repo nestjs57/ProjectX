@@ -13,7 +13,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -35,7 +34,7 @@ fun RequireLoginDialog(
     ) {
         Column(
             modifier
-                .background(Color.White)
+                .background(colorResource(id = R.color.bg_base_dialog))
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
@@ -47,12 +46,13 @@ fun RequireLoginDialog(
                     maxLines = 1,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.ExtraBold,
-                    color = Color.Black,
+                    color = colorResource(id = R.color.black),
                     overflow = TextOverflow.Ellipsis
                 )
                 Text(
                     text = stringResource(id = R.string.desc_dialog_require_login_label),
                     textAlign = TextAlign.Center,
+                    color = colorResource(id = R.color.black),
                     modifier = Modifier
                         .padding(top = 10.dp, start = 25.dp, end = 25.dp)
                         .fillMaxWidth(),

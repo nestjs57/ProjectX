@@ -1,8 +1,8 @@
 package com.arnoract.projectx.domain.main
 
 import android.content.Context
+import com.arnoract.projectx.core.MyGsonBuilder
 import com.arnoract.projectx.domain.model.main.Station
-import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.io.IOException
 
@@ -23,8 +23,7 @@ class StationRepositoryImpl(
     }
 
     private fun <T : Any?> String.toArrayClass(toClass: Class<Station>): ArrayList<T> {
-        val gson = Gson()
-
+        val gson = MyGsonBuilder().build()
         val type = object : TypeToken<ArrayList<Station>>() {}.type
         return gson.fromJson(this, type)
     }

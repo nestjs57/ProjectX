@@ -1,10 +1,10 @@
 package com.arnoract.projectx.core.api.model.article.mapper
 
 import com.arnoract.projectx.core.Mapper
+import com.arnoract.projectx.core.MyGsonBuilder
 import com.arnoract.projectx.core.api.model.article.NetworkArticle
 import com.arnoract.projectx.domain.model.article.Article
 import com.arnoract.projectx.domain.model.article.Paragraph
-import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.util.*
 
@@ -44,13 +44,13 @@ object NetworkArticleToArticleMapper : Mapper<NetworkArticle?, Article> {
     }
 
     private fun <T : Any?> String.toArrayClass(): ArrayList<T> {
-        val gson = Gson()
+        val gson = MyGsonBuilder().build()
         val type = object : TypeToken<ArrayList<Paragraph>>() {}.type
         return gson.fromJson(this, type)
     }
 
     private fun <T : Any?> String.toArrayStringClass(): ArrayList<T> {
-        val gson = Gson()
+        val gson = MyGsonBuilder().build()
         val type = object : TypeToken<ArrayList<String>>() {}.type
         return gson.fromJson(this, type)
     }

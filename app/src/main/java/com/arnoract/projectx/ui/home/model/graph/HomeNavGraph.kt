@@ -11,6 +11,7 @@ import com.arnoract.projectx.ui.category.view.CategoryScreen
 import com.arnoract.projectx.ui.home.view.BottomBarScreen
 import com.arnoract.projectx.ui.home.view.HomeScreen
 import com.arnoract.projectx.ui.lesson.graph.lessonSentenceNavGraph
+import com.arnoract.projectx.ui.overview.OverviewScreen
 import com.arnoract.projectx.ui.profile.ProfileScreen
 import com.arnoract.projectx.ui.reader.graph.readerNavGraph
 import com.arnoract.projectx.ui.reading.view.ReadingScreen
@@ -31,6 +32,9 @@ fun HomeNavGraph(navController: NavHostController, subscriptionViewModel: Subscr
         }
         composable(route = BottomBarScreen.Reading.route) {
             ReadingScreen(navController)
+        }
+        composable(route = BottomBarScreen.History.route) {
+            OverviewScreen(navController)
         }
         composable(route = BottomBarScreen.Profile.route) {
             ProfileScreen(subscriptionViewModel)

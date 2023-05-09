@@ -60,5 +60,9 @@
     <color name="card_dialog_dark_mode">#424242</color>
 
     <color name="gold">#FAC213</color>
+    <color name="bg_base_dialog">#ffffff</color>
+
+    <color name="only_black">#232729</color>
+    <color name="only_white">#FFFFFF</color>
 
 </resources>

@@ -41,7 +41,7 @@ fun ConfirmPurchaseLessonDialog(
         elevation = 8.dp
     ) {
         Column(
-            Modifier.background(Color.White)
+            Modifier.background(colorResource(id = R.color.bg_base_dialog))
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(

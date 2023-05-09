@@ -95,11 +95,6 @@ fun BottomDialogSettingReader(
 }
 
 @Composable
-private fun SpaceBetween() {
-
-}
-
-@Composable
 private fun TextSizeContent(
     readerSetting: ReaderSetting?, onClickedTextSize: (SettingFontSize) -> Unit
 ) {
@@ -215,13 +210,16 @@ private fun BackgroundContent(
                 colorResource(id = if (isDay) R.color.primary_red else R.color.gray500)
             ),
             shape = RoundedCornerShape(10),
-            colors = ButtonDefaults.outlinedButtonColors(contentColor = colorResource(id = R.color.black)),
+            colors = ButtonDefaults.buttonColors(colorResource(id = R.color.only_white)),
             modifier = Modifier.weight(1f),
             onClick = {
                 onClickedBackgroundModel(SettingBackground.DAY)
             },
         ) {
-            Text(text = stringResource(id = R.string.day_label))
+            Text(
+                text = stringResource(id = R.string.day_label),
+                color = colorResource(id = R.color.only_black)
+            )
         }
         Spacer(modifier = Modifier.width(4.dp))
         Button(
@@ -238,7 +236,8 @@ private fun BackgroundContent(
             },
         ) {
             Text(
-                stringResource(id = R.string.night_label), color = colorResource(id = R.color.white)
+                stringResource(id = R.string.night_label),
+                color = colorResource(id = R.color.only_white)
             )
         }
     }

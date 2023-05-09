@@ -17,7 +17,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.colorResource
@@ -26,6 +26,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -132,6 +133,14 @@ fun ReaderContent(
             mutableStateOf("")
         }
 
+        var note: String by remember {
+            mutableStateOf("")
+        }
+
+        var isShowNote by remember {
+            mutableStateOf(false)
+        }
+
         var isShowTranslate by remember {
             mutableStateOf(false)
         }
@@ -157,12 +166,16 @@ fun ReaderContent(
                         setting = readerSetting,
                         onClickedVocabulary = {
                             onClickedSelectVocabulary(it)
+                            if (isShowNote) {
+                                isShowNote = false
+                            }
                         },
                         onTranslate = {
                             vocabulary = if (it?.vocabulary == null) "" else "${it.vocabulary} : "
                             translate = it?.translate ?: ""
                             example = it?.example ?: ""
                             exampleTranslate = it?.example_translate ?: ""
+                            note = it?.note ?: ""
                         })
 
                     val textSize = when (readerSetting?.fontSizeMode) {
@@ -228,8 +241,47 @@ fun ReaderContent(
                         text = translate,
                         color = getFontColor(readerSetting?.backgroundMode),
                         fontSize = 22.sp,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
                     )
+
+                    Text(
+                        text = note,
+                        maxLines = if (isShowNote) Int.MAX_VALUE else 1,
+                        overflow = TextOverflow.Ellipsis,
+                        color = getFontColor(readerSetting?.backgroundMode),
+                        fontSize = 16.sp,
+                        modifier = Modifier.clickable {
+                            isShowNote = !isShowNote
+                        }
+                    )
+
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Spacer(modifier = Modifier.weight(1f))
+                        if (note.isNotBlank()) {
+                            Text(
+                                text = if (isShowNote) "แสดงน้อยลง" else "อ่านเพิ่มเติม",
+                                color = getFontColor(readerSetting?.backgroundMode),
+                                modifier = Modifier.clickable {
+                                    isShowNote = !isShowNote
+                                },
+                                fontSize = 16.sp,
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Image(
+                                painter = painterResource(id = R.drawable.ic_arrow_ios_up),
+                                modifier = Modifier
+                                    .size(18.dp)
+                                    .rotate(if (isShowNote) 0f else 180f)
+                                    .clickable {
+                                        isShowNote = !isShowNote
+                                    },
+                                contentDescription = null,
+                                colorFilter = ColorFilter.tint(getDrawableTint(value = readerSetting?.backgroundMode))
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -256,7 +308,7 @@ fun ReaderContent(
                     text = stringResource(id = R.string.previous_label),
                     modifier = Modifier,
                     fontSize = 16.sp,
-                    color = colorResource(id = R.color.white),
+                    color = colorResource(id = R.color.only_white),
                 )
             }
             Spacer(modifier = Modifier.width(6.dp))
@@ -275,7 +327,7 @@ fun ReaderContent(
                         text = stringResource(id = R.string.next_label),
                         modifier = Modifier,
                         fontSize = 16.sp,
-                        color = colorResource(id = R.color.white),
+                        color = colorResource(id = R.color.only_white),
                     )
                 }
             }
@@ -417,26 +469,14 @@ private fun ParagraphSection(
 @Composable
 fun AdvertView(modifier: Modifier = Modifier) {
     val isInEditMode = LocalInspectionMode.current
-    if (isInEditMode) {
-        Text(
-            modifier = modifier
-                .fillMaxWidth()
-                .background(Color.Red)
-                .padding(vertical = 6.dp),
-            textAlign = TextAlign.Center,
-            color = Color.White,
-            text = "Advert Here",
-        )
-    } else {
-        AndroidView(
-            modifier = modifier.fillMaxWidth(),
-            factory = { context ->
-                AdView(context).apply {
-                    setAdSize(AdSize.BANNER)
-                    adUnitId = "ca-app-pub-9170460661148665/1047231390"
-                    loadAd(AdRequest.Builder().build())
-                }
+    AndroidView(
+        modifier = modifier.fillMaxWidth(),
+        factory = { context ->
+            AdView(context).apply {
+                setAdSize(AdSize.BANNER)
+                adUnitId = "ca-app-pub-9170460661148665/1047231390"
+                loadAd(AdRequest.Builder().build())
             }
-        )
-    }
+        }
+    )
 }

@@ -11,8 +11,8 @@ object ReaderSettingUtil {
     @Composable
     fun getFontColor(value: SettingBackground?): Color {
         return when (value) {
-            SettingBackground.DAY -> colorResource(id = R.color.black)
-            SettingBackground.NIGHT -> colorResource(id = R.color.white)
+            SettingBackground.DAY -> colorResource(id = R.color.only_black)
+            SettingBackground.NIGHT -> colorResource(id = R.color.only_white)
             else -> colorResource(id = R.color.black)
         }
     }
@@ -20,18 +20,18 @@ object ReaderSettingUtil {
     @Composable
     fun getAppBarColor(value: SettingBackground?): Color {
         return when (value) {
-            SettingBackground.DAY -> colorResource(id = R.color.white)
+            SettingBackground.DAY -> colorResource(id = R.color.only_white)
             SettingBackground.NIGHT -> colorResource(id = R.color.app_bar_dark_mode)
-            else -> colorResource(id = R.color.white)
+            else -> colorResource(id = R.color.only_white)
         }
     }
 
     @Composable
     fun getBackgroundColor(value: SettingBackground?): Color {
         return when (value) {
-            SettingBackground.DAY -> colorResource(id = R.color.white)
+            SettingBackground.DAY -> colorResource(id = R.color.only_white)
             SettingBackground.NIGHT -> colorResource(id = R.color.bg_bar_dark_mode)
-            else -> colorResource(id = R.color.white)
+            else -> colorResource(id = R.color.only_white)
         }
     }
 
@@ -47,9 +47,9 @@ object ReaderSettingUtil {
     @Composable
     fun getBackgroundModalColor(value: SettingBackground?): Color {
         return when (value) {
-            SettingBackground.DAY -> colorResource(id = R.color.white)
+            SettingBackground.DAY -> colorResource(id = R.color.only_white)
             SettingBackground.NIGHT -> colorResource(id = R.color.bg_bar_dark_mode)
-            else -> colorResource(id = R.color.white)
+            else -> colorResource(id = R.color.only_white)
         }
     }
 
@@ -72,9 +72,9 @@ object ReaderSettingUtil {
     @Composable
     fun getDrawableTint(value: SettingBackground?): Color {
         return when (value) {
-            SettingBackground.DAY -> colorResource(id = R.color.black)
-            SettingBackground.NIGHT -> colorResource(id = R.color.white)
-            else -> colorResource(id = R.color.black)
+            SettingBackground.DAY -> colorResource(id = R.color.only_black)
+            SettingBackground.NIGHT -> colorResource(id = R.color.only_white)
+            else -> colorResource(id = R.color.only_black)
         }
     }
 }

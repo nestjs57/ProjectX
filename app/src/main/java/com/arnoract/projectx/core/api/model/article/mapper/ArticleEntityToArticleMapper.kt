@@ -15,7 +15,10 @@ object ArticleEntityToArticleMapper : Mapper<ArticleEntity, ReadingArticle> {
             currentParagraph = from.currentParagraph,
             imageUrl = from.imageUrl,
             category = IntCategoryToArticleCategoryMapper.map(from.category),
-            totalParagraph = from.totalParagraph
+            totalParagraph = from.totalParagraph,
+            firstDate = from.firstDate,
+            lastDate = from.lastDate,
+            totalReadTime = from.totalReadTime
         )
     }
 }

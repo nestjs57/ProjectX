@@ -33,11 +33,14 @@ fun PayWallSubscriptionDialog(
 ) {
     Card(
         shape = RoundedCornerShape(10.dp),
-        modifier = Modifier.padding(10.dp, 5.dp, 10.dp, 10.dp),
+        modifier = Modifier
+            .padding(10.dp, 5.dp, 10.dp, 10.dp),
         elevation = 8.dp
     ) {
         Column(
-            Modifier.background(Color.White),
+            Modifier
+                .background(Color.White)
+                .background(colorResource(id = R.color.bg_base_dialog)),
         ) {
             Column(
                 modifier = Modifier.padding(16.dp),
@@ -60,7 +63,7 @@ fun PayWallSubscriptionDialog(
                     maxLines = 1,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.ExtraBold,
-                    color = Color.Black,
+                    color = colorResource(id = R.color.black),
                     overflow = TextOverflow.Ellipsis
                 )
                 Text(

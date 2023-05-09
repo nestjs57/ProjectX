@@ -3,6 +3,7 @@ package com.arnoract.projectx.core.api.model.article.mapper
 import com.arnoract.projectx.core.Mapper
 import com.arnoract.projectx.core.db.entity.ArticleEntity
 import com.arnoract.projectx.domain.model.article.Article
+import java.util.*
 
 class ArticleToArticleEntityMapper(private val progress: Int) : Mapper<Article, ArticleEntity> {
     override fun map(from: Article): ArticleEntity {
@@ -15,7 +16,10 @@ class ArticleToArticleEntityMapper(private val progress: Int) : Mapper<Article, 
             currentParagraph = progress,
             imageUrl = from.imageUrl,
             category = ArticleCategoryToIntArticleMapper.map(from.category),
-            totalParagraph = from.paragraphsVocabulary?.size ?: 1
+            totalParagraph = from.paragraphsVocabulary?.size ?: 1,
+            firstDate = Calendar.getInstance().time,
+            lastDate = Calendar.getInstance().time,
+            totalReadTime = 0
         )
     }
 }

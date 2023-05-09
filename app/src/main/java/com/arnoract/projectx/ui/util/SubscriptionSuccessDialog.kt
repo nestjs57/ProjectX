@@ -11,7 +11,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -33,7 +32,7 @@ fun SubscriptionSuccessDialog(
     ) {
         Column(
             Modifier
-                .background(Color.White)
+                .background(colorResource(id = R.color.bg_base_dialog))
         ) {
             Column(
                 modifier = Modifier.padding(16.dp),
@@ -54,7 +53,7 @@ fun SubscriptionSuccessDialog(
                     maxLines = 1,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.ExtraBold,
-                    color = Color.Black,
+                    color = colorResource(id = R.color.black),
                     overflow = TextOverflow.Ellipsis
                 )
 
@@ -63,6 +62,7 @@ fun SubscriptionSuccessDialog(
                         text = stringResource(id = R.string.you_subscription_success_label),
                         textAlign = TextAlign.Center,
                         modifier = Modifier,
+                        color = colorResource(id = R.color.black),
                         fontSize = 18.sp
                     )
                 }

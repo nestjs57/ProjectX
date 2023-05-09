@@ -84,11 +84,7 @@ class ArticleRepositoryImpl(
         if (entity == null) {
             articleDao.insert(ArticleToArticleEntityMapper(progress = 0).map(model))
         } else {
-            articleDao.update(
-                ArticleToArticleEntityMapper(progress = entity.currentParagraph).map(
-                    model
-                )
-            )
+            articleDao.updateCurrentParagraphById(model.id ?: "", entity.currentParagraph)
         }
     }
 

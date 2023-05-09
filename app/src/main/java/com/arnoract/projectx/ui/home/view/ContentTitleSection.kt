@@ -11,10 +11,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.arnoract.projectx.R
 
 @Composable
 fun ContentTitleSection(
@@ -38,6 +40,7 @@ fun ContentTitleSection(
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold,
             overflow = TextOverflow.Ellipsis,
+            color = colorResource(id = R.color.black),
         )
         if (isShowSeeAll) {
             Spacer(modifier = Modifier.width(8.dp))
@@ -49,6 +52,7 @@ fun ContentTitleSection(
                 maxLines = 2,
                 fontSize = 16.sp,
                 overflow = TextOverflow.Ellipsis,
+                color = colorResource(id = R.color.black),
             )
         }
     }

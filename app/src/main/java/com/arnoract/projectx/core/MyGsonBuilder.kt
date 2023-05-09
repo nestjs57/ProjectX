@@ -15,7 +15,7 @@ class MyGsonBuilder {
     fun build(): Gson {
         val b = GsonBuilder()
         b.serializeNulls()
-        b.registerTypeAdapter(Date::class.java, DateDeserializer())
+        //b.registerTypeAdapter(Date::class.java, DateDeserializer())
         b.registerTypeAdapter(Int::class.javaObjectType, IntObjectTypeAdapter())
         b.registerTypeAdapter(Int::class.javaPrimitiveType, IntPrimitiveDeserializer())
         b.registerTypeAdapter(Long::class.javaObjectType, LongObjectTypeAdapter())
@@ -23,6 +23,7 @@ class MyGsonBuilder {
         b.registerTypeAdapter(Double::class.javaObjectType, DoubleObjectTypeAdapter())
         b.registerTypeAdapter(Double::class.javaPrimitiveType, DoublePrimitiveDeserializer())
         b.registerTypeAdapter(String::class.java, StringTypeAdapter())
+        b.setDateFormat("MMM d, yyyy h:mm:ss a")
         return b.create()
     }
 }

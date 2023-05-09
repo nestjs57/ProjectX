@@ -7,6 +7,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -33,6 +34,7 @@ fun CategoryScreen(navHostController: NavHostController) {
                         painter = painterResource(id = R.drawable.ic_layout_fluid),
                         modifier = Modifier.size(21.dp),
                         contentDescription = null,
+                        colorFilter = ColorFilter.tint(colorResource(id = R.color.black))
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(

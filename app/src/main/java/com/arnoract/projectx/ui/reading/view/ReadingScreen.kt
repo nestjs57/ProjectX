@@ -12,6 +12,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -88,7 +89,8 @@ fun ReadingScreen(navController: NavHostController) {
                             viewModel.onSyncDataReadingUseCase()
                         },
                     contentDescription = null,
-                    alignment = Alignment.Center
+                    alignment = Alignment.Center,
+                    colorFilter = ColorFilter.tint(colorResource(id = R.color.black))
                 )
             }
             Spacer(modifier = Modifier.width(16.dp))

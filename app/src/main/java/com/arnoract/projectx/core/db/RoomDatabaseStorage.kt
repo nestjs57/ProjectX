@@ -8,7 +8,7 @@ import com.arnoract.projectx.core.db.entity.ArticleEntity
 
 @Database(
     entities = [ArticleEntity::class],
-    version = 2
+    version = 4
 )
 @TypeConverters(DateConverter::class, LongListConverter::class)
 abstract class RoomDatabaseStorage : RoomDatabase() {
