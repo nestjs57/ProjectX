@@ -87,7 +87,7 @@ private fun Overview(data: UiOverviewState.Success?) {
                     Text(
                         text = "${data?.hrRead} ชม. ${data?.minusRead} นาที",
                         modifier = Modifier,
-                        fontSize = 20.sp,
+                        fontSize = 18.sp,
                         color = colorResource(id = R.color.black),
                         fontWeight = FontWeight.Bold
                     )
@@ -125,7 +125,7 @@ private fun Overview(data: UiOverviewState.Success?) {
                             data?.totalRead ?: 0
                         ),
                         modifier = Modifier,
-                        fontSize = 20.sp,
+                        fontSize = 18.sp,
                         color = colorResource(id = R.color.black),
                         fontWeight = FontWeight.Bold
                     )
@@ -163,7 +163,7 @@ private fun Overview(data: UiOverviewState.Success?) {
                             data?.readDone ?: 0
                         ),
                         modifier = Modifier,
-                        fontSize = 20.sp,
+                        fontSize = 18.sp,
                         color = colorResource(id = R.color.black),
                         fontWeight = FontWeight.Bold
                     )
@@ -201,7 +201,7 @@ private fun Overview(data: UiOverviewState.Success?) {
                             data?.reading ?: 0
                         ),
                         modifier = Modifier,
-                        fontSize = 20.sp,
+                        fontSize = 18.sp,
                         color = colorResource(id = R.color.black),
                         fontWeight = FontWeight.Bold
                     )

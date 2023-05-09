@@ -44,6 +44,9 @@ class ReadingViewModel(
     val error: MutableSharedFlow<String>
         get() = _error
 
+    private val _openDialogDemoFeature = MutableSharedFlow<Unit>()
+    val openDialogDemoFeature: MutableSharedFlow<Unit> get() = _openDialogDemoFeature
+
     private val _sycing = MutableLiveData<Boolean>()
     val sycing: LiveData<Boolean> get() = _sycing
 
@@ -120,6 +123,12 @@ class ReadingViewModel(
             } finally {
                 _sycing.value = false
             }
+        }
+    }
+
+    fun onOpenDialogDemoFeature() {
+        viewModelScope.launch {
+            _openDialogDemoFeature.emit(Unit)
         }
     }
 }

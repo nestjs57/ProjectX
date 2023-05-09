@@ -13,6 +13,7 @@ import com.arnoract.projectx.domain.usecase.article.ObserveReadingArticleUseCase
 import com.arnoract.projectx.domain.usecase.overview.GetOverviewUseCase
 import com.arnoract.projectx.ui.overview.model.UiOverviewState
 import com.arnoract.projectx.ui.overview.model.mapper.ReadingArticleToVerticalItemMapper
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -28,6 +29,9 @@ class OverviewViewModel(
 
     private val _uiOverviewState = MutableLiveData<UiOverviewState>()
     val uiOverviewState: LiveData<UiOverviewState> get() = _uiOverviewState
+
+    private val _openDialogDemoFeature = MutableSharedFlow<Unit>()
+    val openDialogDemoFeature: MutableSharedFlow<Unit> get() = _openDialogDemoFeature
 
     init {
         viewModelScope.launch {
@@ -73,6 +77,12 @@ class OverviewViewModel(
                         _uiOverviewState.value = UiOverviewState.NonLogin
                     }
                 }
+        }
+    }
+
+    fun onOpenDialogDemoFeature() {
+        viewModelScope.launch {
+            _openDialogDemoFeature.emit(Unit)
         }
     }
 }

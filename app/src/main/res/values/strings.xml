@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Cody English</string>
+    <string name="version_label">version 1.4.1</string>
     <string name="title_activity_main">MainActivity</string>
 
     <string name="bottom_bar_home_label">หน้าหลัก</string>
@@ -122,8 +123,10 @@
     <string name="time_of_read_label">เวลาอ่าน</string>
 
     <string name="premium_content_title_label">บทความ Premium</string>
-    <string name="version_label">version 1.3.0</string>
     <string name="premium_content_description_label">พิเศษสำหรับสมาชิกที่สมัครสมาชิกแบบ premium รายเดือน กรุณาสมัครสมาชิกเพื่อเข้าถึงเนื้อหานี้</string>
 
-
+    <string name="reading_not_conflict_label">อ่านได้ต่อเนื่อง ไม่มีสะดุด</string>
+    <string name="example_label">ตัวอย่าง</string>
+    <string name="mode_exam_vocab_label">โหมดท่องคำศัพท์</string>
+    <string name="stat_and_reading_of_you_label">สถิติการอ่านของคุณ</string>
 </resources>

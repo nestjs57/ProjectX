@@ -8,9 +8,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.*
@@ -203,6 +201,37 @@ fun ReaderContent(
                             fontSize = textSize
                         )
                     }
+
+                    var switchOn by remember {
+                        mutableStateOf(true)
+                    }
+
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Switch(
+                            checked = switchOn,
+                            colors = SwitchDefaults.colors(
+                                checkedThumbColor = colorResource(id = R.color.purple_500),
+                                checkedTrackColor = colorResource(id = R.color.purple_500),
+                                uncheckedThumbColor = colorResource(id = R.color.gray500),
+                                uncheckedTrackColor = colorResource(id = R.color.gray500),
+                            ),
+                            onCheckedChange = { switchOn_ ->
+                                switchOn = switchOn_
+                            }
+                        )
+                        Text(
+                            text = "${stringResource(id = R.string.mode_exam_vocab_label)} ",
+                            color = getFontColor(value = readerSetting?.backgroundMode),
+                            fontSize = textSize
+                        )
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_question),
+                            modifier = Modifier.size(15.dp),
+                            contentDescription = null,
+                            colorFilter = ColorFilter.tint(getDrawableTint(value = readerSetting?.backgroundMode))
+                        )
+                    }
+
 
                     if (!isSubscription || !isLogin) {
                         Spacer(modifier = Modifier.height(16.dp))
@@ -457,7 +486,7 @@ private fun ParagraphSection(
                         SettingFontSize.LARGE -> 18.sp
                         else -> 16.sp
                     },
-                    color = if (uiParagraph.isSelected) colorResource(id = R.color.white) else getFontColor(
+                    color = if (uiParagraph.isSelected) colorResource(id = R.color.only_white) else getFontColor(
                         setting?.backgroundMode
                     )
                 )
