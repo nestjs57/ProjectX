@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Cody English</string>
-    <string name="version_label">version 1.4.1</string>
+    <string name="version_label">version 1.5.1</string>
     <string name="title_activity_main">MainActivity</string>
 
     <string name="bottom_bar_home_label">หน้าหลัก</string>
@@ -9,7 +9,7 @@
     <string name="bottom_bar_profile_label">ผู้ใช้</string>
 
     <string name="coming_soon_label">จะเผยแพร่เร็วๆนี้</string>
-    <string name="recommended_label">แนะนำสำหรับเริ่มต้นอ่านครั้งแรก</string>
+    <string name="recommended_label">แนะนำสำหรับอ่านครั้งแรก</string>
     <string name="public_last_label">เผยแพร่่ล่าสุด</string>
 
     <string name="no_category_label">ไม่มีหมวดหมู่</string>
@@ -129,4 +129,10 @@
     <string name="example_label">ตัวอย่าง</string>
     <string name="mode_exam_vocab_label">โหมดท่องคำศัพท์</string>
     <string name="stat_and_reading_of_you_label">สถิติการอ่านของคุณ</string>
+    <string name="stat_and_reading_of_you_detail_label">เป็นโหมดที่ช่วยให้คุณฝึกการท่องคำศัพท์จากย่อหน้าปัจจุบัน เมื่อเปิดโหมด คุณจะต้องทายความหมายคำศัพท์ที่สุ่มมา ให้ถูกต้องอย่างน้อย 7 ใน 10 ข้อ เพื่อที่จะสามารถอ่านย่อหน้าถัดไปได้ หากตอบผิดเกิน 3 ครั้ง จะเริ่มใหม่และสุ่มคำศัพท์ใหม่</string>
+    <string name="vocabulary_paragraph_at_label">คำศัพท์ย่อหน้าที่</string>
+    <string name="wrong_more_than_three_label">คุณตอบผิดเกิน 3 ครั้ง\nต้องการเริ่มใหม่หรือไม่ ?</string>
+    <string name="re_start_label">เริ่มใหม่</string>
+    <string name="good_job_read_next_paragraph_label">เก่งมาก!\nเรียนรู้ย่อหน้าถัดไป!</string>
+    <string name="read_next_paragraph_label">อ่านย่อหน้าถัดไป</string>
 </resources>

@@ -63,7 +63,9 @@ fun ReaderContent(
     onClickedTextSize: (SettingFontSize) -> Unit,
     onClickedBackgroundModel: (SettingBackground) -> Unit,
     onClickedStructureSentence: (String) -> Unit,
-    onClickedAutoSpeak: () -> Unit
+    onClickedAutoSpeak: () -> Unit,
+    onClickedDetailVocabularyMode: () -> Unit,
+    onToggleModeVocabulary: (Boolean) -> Unit
 ) {
 
     var paragraphNumber: Int by remember {
@@ -217,6 +219,7 @@ fun ReaderContent(
                             ),
                             onCheckedChange = { switchOn_ ->
                                 switchOn = switchOn_
+                                onToggleModeVocabulary(switchOn)
                             }
                         )
                         Text(
@@ -226,7 +229,11 @@ fun ReaderContent(
                         )
                         Image(
                             painter = painterResource(id = R.drawable.ic_question),
-                            modifier = Modifier.size(15.dp),
+                            modifier = Modifier
+                                .size(15.dp)
+                                .clickable {
+                                    onClickedDetailVocabularyMode()
+                                },
                             contentDescription = null,
                             colorFilter = ColorFilter.tint(getDrawableTint(value = readerSetting?.backgroundMode))
                         )

@@ -38,7 +38,7 @@ fun BottomBar(navController: NavHostController) {
         BottomBarScreen.Home,
         BottomBarScreen.Category,
         BottomBarScreen.Reading,
-        BottomBarScreen.History,
+//        BottomBarScreen.History,
         BottomBarScreen.Profile,
     )
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -93,13 +93,13 @@ fun RowScope.AddItem(
                         modifier = Modifier.size(20.dp)
                     )
                 }
-                BottomBarScreen.History -> {
-                    Icon(
-                        painterResource(id = R.drawable.ic_chart_histogram),
-                        contentDescription = "Navigation Icon",
-                        modifier = Modifier.size(20.dp)
-                    )
-                }
+//                BottomBarScreen.History -> {
+//                    Icon(
+//                        painterResource(id = R.drawable.ic_chart_histogram),
+//                        contentDescription = "Navigation Icon",
+//                        modifier = Modifier.size(20.dp)
+//                    )
+//                }
                 BottomBarScreen.Profile -> {
                     Icon(
                         painterResource(id = R.drawable.ic_profile_with_heart),

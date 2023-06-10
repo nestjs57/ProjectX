@@ -30,11 +30,11 @@ sealed class BottomBarScreen(
         icon = Icons.Default.FavoriteBorder
     )
 
-    object History : BottomBarScreen(
-        route = "history",
-        title = "ภาพรวม",
-        icon = Icons.Default.Person
-    )
+//    object History : BottomBarScreen(
+//        route = "history",
+//        title = "ภาพรวม",
+//        icon = Icons.Default.Person
+//    )
 
     object Profile : BottomBarScreen(
         route = "profile",

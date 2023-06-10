@@ -79,65 +79,9 @@ fun LoggedInContent(
                 }
             }
         }
-        Spacer(
-            modifier = Modifier
-                .padding(bottom = 16.dp)
-                .background(colorResource(id = R.color.white))
-                .height(1.dp)
-                .fillMaxWidth()
-        )
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Image(
-                painter = painterResource(id = R.drawable.crown),
-                modifier = Modifier.size(20.dp),
-                contentDescription = null,
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            val textStatus =
-                if (isSubscribed) stringResource(id = R.string.member_premium_label) else stringResource(
-                    id = R.string.member_normal_label
-                )
-            Text(
-                text = textStatus,
-                fontSize = 18.sp,
-                textAlign = TextAlign.Start,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight()
-                    .weight(1f),
-                fontWeight = FontWeight.Bold,
-                color = colorResource(id = if (isSubscribed) R.color.gold_bts else R.color.black)
-            )
-            if (!isSubscribed) {
-                Box(modifier = Modifier
-                    .height(28.dp)
-                    .clip(RoundedCornerShape(6.dp))
-                    .clickable {
-                        onClickedGetGoldCoin()
-                    }
-                    .background(colorResource(id = R.color.gold)),
-                    contentAlignment = Alignment.Center) {
-                    Row(
-                        modifier = Modifier.padding(horizontal = 8.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.ic_ads),
-                            modifier = Modifier.size(17.dp),
-                            contentDescription = null,
-                            colorFilter = ColorFilter.tint(colorResource(id = R.color.black))
-                        )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(
-                            text = stringResource(id = R.string.get_coin_free_label),
-                            modifier = Modifier,
-                            fontSize = 14.sp,
-                            color = colorResource(id = R.color.black),
-                        )
-                    }
-                }
-            }
-        }
+//        SectionSubscription(isSubscribed) {
+//            onClickedGetGoldCoin()
+//        }
         Spacer(
             modifier = Modifier
                 .padding(bottom = 8.dp)
@@ -178,6 +122,69 @@ fun LoggedInContent(
                     .wrapContentHeight(),
                 fontWeight = FontWeight.Bold,
             )
+        }
+    }
+}
+
+@Composable
+fun SectionSubscription(isSubscribed: Boolean, onClickedGetGoldCoin: () -> Unit) {
+    Spacer(
+        modifier = Modifier
+            .padding(bottom = 16.dp)
+            .background(colorResource(id = R.color.white))
+            .height(1.dp)
+            .fillMaxWidth()
+    )
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Image(
+            painter = painterResource(id = R.drawable.crown),
+            modifier = Modifier.size(20.dp),
+            contentDescription = null,
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        val textStatus =
+            if (isSubscribed) stringResource(id = R.string.member_premium_label) else stringResource(
+                id = R.string.member_normal_label
+            )
+        Text(
+            text = textStatus,
+            fontSize = 18.sp,
+            textAlign = TextAlign.Start,
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .weight(1f),
+            fontWeight = FontWeight.Bold,
+            color = colorResource(id = if (isSubscribed) R.color.gold_bts else R.color.black)
+        )
+        if (!isSubscribed) {
+            Box(modifier = Modifier
+                .height(28.dp)
+                .clip(RoundedCornerShape(6.dp))
+                .clickable {
+                    onClickedGetGoldCoin()
+                }
+                .background(colorResource(id = R.color.gold)),
+                contentAlignment = Alignment.Center) {
+                Row(
+                    modifier = Modifier.padding(horizontal = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_ads),
+                        modifier = Modifier.size(17.dp),
+                        contentDescription = null,
+                        colorFilter = ColorFilter.tint(colorResource(id = R.color.black))
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = stringResource(id = R.string.get_coin_free_label),
+                        modifier = Modifier,
+                        fontSize = 14.sp,
+                        color = colorResource(id = R.color.black),
+                    )
+                }
+            }
         }
     }
 }

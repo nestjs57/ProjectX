@@ -62,6 +62,16 @@ class ReaderViewModel(
 
     private val timeStartReading = MutableLiveData<Date>()
 
+    private val _openDetailVocabularyModeEvent = MutableSharedFlow<Unit>()
+    val openDetailVocabularyModeEvent: MutableSharedFlow<Unit>
+        get() = _openDetailVocabularyModeEvent
+
+    private val _openDialogExamVocabulary = MutableSharedFlow<List<UiParagraph>>()
+    val openDialogExamVocabulary: MutableSharedFlow<List<UiParagraph>>
+        get() = _openDialogExamVocabulary
+
+    private val _onToggleModeVocabulary = MutableLiveData(true)
+
     init {
         viewModelScope.launch {
             timeStartReading.value = Calendar.getInstance().time
@@ -132,7 +142,24 @@ class ReaderViewModel(
         }
     }
 
+    fun onToggleModeVocabulary(b: Boolean) {
+        _onToggleModeVocabulary.value = b
+    }
+
     fun onClickedNextParagraph() {
+        if (_onToggleModeVocabulary.value == false) {
+            onNextParagraph()
+        } else {
+            if (_uiReaderState.value is UiReaderState.Success) {
+                val data = (_uiReaderState.value as UiReaderState.Success)
+                viewModelScope.launch {
+                    openDialogExamVocabulary.emit(data.uiParagraph[data.currentParagraphSelected])
+                }
+            }
+        }
+    }
+
+    fun onNextParagraph() {
         if (_uiReaderState.value is UiReaderState.Success) {
             val data = (_uiReaderState.value as UiReaderState.Success)
             _uiReaderState.value = UiReaderState.Success(
@@ -270,6 +297,12 @@ class ReaderViewModel(
             } catch (e: java.lang.Exception) {
                 error.emit(e.message ?: "Unknown Error.")
             }
+        }
+    }
+
+    fun onOpenVocabularyMode() {
+        viewModelScope.launch {
+            _openDetailVocabularyModeEvent.emit(Unit)
         }
     }
 }

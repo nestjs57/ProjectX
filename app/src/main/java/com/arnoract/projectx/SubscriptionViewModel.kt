@@ -40,6 +40,8 @@ class SubscriptionViewModelDelegateImpl(
     }
 
     override suspend fun getIsSubscription(): Boolean = suspendCoroutine { continuation ->
+        continuation.resume(true)
+        return@suspendCoroutine
         _billingClient.value?.startConnection(object : BillingClientStateListener {
             override fun onBillingServiceDisconnected() {}
 

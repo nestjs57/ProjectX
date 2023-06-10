@@ -18,6 +18,15 @@ object ReaderSettingUtil {
     }
 
     @Composable
+    fun getFontColorInt(value: SettingBackground?): Int {
+        return when (value) {
+            SettingBackground.DAY -> R.color.only_black
+            SettingBackground.NIGHT -> R.color.only_white
+            else -> R.color.black
+        }
+    }
+
+    @Composable
     fun getAppBarColor(value: SettingBackground?): Color {
         return when (value) {
             SettingBackground.DAY -> colorResource(id = R.color.only_white)
@@ -32,6 +41,15 @@ object ReaderSettingUtil {
             SettingBackground.DAY -> colorResource(id = R.color.only_white)
             SettingBackground.NIGHT -> colorResource(id = R.color.bg_bar_dark_mode)
             else -> colorResource(id = R.color.only_white)
+        }
+    }
+
+    @Composable
+    fun getBackgroundColorInt(value: SettingBackground?): Int {
+        return when (value) {
+            SettingBackground.DAY -> R.color.only_white
+            SettingBackground.NIGHT -> R.color.bg_bar_dark_mode
+            else -> R.color.only_white
         }
     }
 

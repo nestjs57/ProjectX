@@ -77,16 +77,18 @@ class ReadingViewModel(
         _uiReadingFilter.setValueIfNew(filter)
         val newData: List<ReadingArticle> = when (filter) {
             UiReadingFilter.TOTAL -> {
-                readingArticles
+                readingArticles.sortedByDescending { it.lastDate }
             }
             UiReadingFilter.COMPLETE -> {
-                readingArticles.filter { it.currentParagraph.plus(1) == it.totalParagraph }
+                readingArticles.sortedByDescending { it.lastDate }
+                    .filter { it.currentParagraph.plus(1) == it.totalParagraph }
             }
             UiReadingFilter.READING -> {
-                readingArticles.filter { it.currentParagraph.plus(1) != it.totalParagraph }
+                readingArticles.sortedByDescending { it.lastDate }
+                    .filter { it.currentParagraph.plus(1) != it.totalParagraph }
             }
             else -> {
-                readingArticles
+                readingArticles.sortedByDescending { it.lastDate }
             }
         }
 

@@ -94,6 +94,8 @@ class LessonSentenceViewModel(
 
     fun onClickedLessonItem(model: UiLessonSentence) {
         viewModelScope.launch {
+            _navigateToLessonSentenceDetailEvent.emit(model.id)
+            return@launch
             try {
                 val result = withContext(coroutinesDispatcherProvider.io) {
                     getIsLoginUseCase.invoke(Unit).successOrThrow()

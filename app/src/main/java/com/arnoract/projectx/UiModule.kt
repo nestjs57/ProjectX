@@ -6,6 +6,7 @@ import com.arnoract.projectx.ui.lesson.viewmodel.LessonSentenceDetailViewModel
 import com.arnoract.projectx.ui.lesson.viewmodel.LessonSentenceViewModel
 import com.arnoract.projectx.ui.overview.OverviewViewModel
 import com.arnoract.projectx.ui.profile.ProfileViewModel
+import com.arnoract.projectx.ui.reader.viewmodel.ExamVocabularyViewModel
 import com.arnoract.projectx.ui.reader.viewmodel.ReaderViewModel
 import com.arnoract.projectx.ui.reading.viewmodel.ReadingViewModel
 import org.koin.android.ext.koin.androidContext
@@ -30,6 +31,9 @@ val mainModule = module {
             get(),
             get()
         )
+    }
+    viewModel {
+        ExamVocabularyViewModel()
     }
     viewModel {
         ProfileViewModel(get(), get(), get(), get(), get(), get())
