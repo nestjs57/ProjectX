@@ -40,6 +40,7 @@ fun ArticleVerticalItem(
     model: UiArticleVerticalItem,
     modifier: Modifier = Modifier,
     isSupportGridLayout: Boolean = true,
+    onClickSetting: () -> Unit,
     onClickedItem: () -> Unit
 ) {
     Box(modifier = Modifier) {
@@ -139,16 +140,34 @@ fun ArticleVerticalItem(
                     }
                 }
             }
-            Text(
-                text = model.titleTh,
-                modifier = Modifier
-                    .padding(top = 2.dp)
-                    .alpha(if (model.isBlock) 0.6f else 1f),
-                maxLines = 2,
-                fontSize = 14.sp,
-                fontWeight = FontWeight.Bold,
-                overflow = TextOverflow.Ellipsis,
-            )
+            Row(
+                verticalAlignment = Alignment.Top
+            ) {
+                Text(
+                    text = model.titleTh,
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(top = 2.dp)
+                        .alpha(if (model.isBlock) 0.6f else 1f),
+                    maxLines = 2,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Bold,
+                    overflow = TextOverflow.Ellipsis,
+                )
+                if (model.isShowColonSetting) {
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_colon),
+                        modifier = Modifier
+                            .width(15.dp)
+                            .padding(top = 10.dp)
+                            .wrapContentHeight()
+                            .clickable {
+                                onClickSetting()
+                            },
+                        contentDescription = null,
+                    )
+                }
+            }
             Text(
                 text = stringResource(id = UiArticleCategoryToCategoryLabelMapper.map(model.category)),
                 Modifier.alpha(0.5f),
@@ -158,16 +177,6 @@ fun ArticleVerticalItem(
             )
         }
     }
-}
-
-@Composable
-private fun CardPremium() {
-
-}
-
-@Composable
-private fun CardProgress() {
-
 }
 
 @Preview(showBackground = true)
@@ -180,7 +189,9 @@ private fun BookVerticalItemPreView() {
             titleTh = "ตั้งเป้าหมายไว้ ดิบดี แต่พอทำจริงทำไมยากจัง",
             titleEn = "",
             category = UiArticleCategory.POSITIVE_THINKING
-        )
+        ), onClickSetting = {
+
+        }
     ) {
 
     }

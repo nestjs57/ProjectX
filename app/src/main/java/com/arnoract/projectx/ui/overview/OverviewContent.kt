@@ -227,7 +227,9 @@ private fun LastRead(data: UiOverviewState.Success?, navController: NavHostContr
     LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
         data?.lastReadArticles?.forEachIndexed { _, uiArticleVerticalItem ->
             item {
-                ArticleVerticalItem(uiArticleVerticalItem) {
+                ArticleVerticalItem(uiArticleVerticalItem, onClickSetting = {
+
+                }) {
                     if (uiArticleVerticalItem.isPremium) {
                         //viewModel.onNavigateToReading(uiArticleVerticalItem.id)
                     } else {
@@ -256,7 +258,9 @@ private fun ReadDone(data: UiOverviewState.Success?, navController: NavHostContr
     LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
         data?.readDoneArticles?.forEachIndexed { _, uiArticleVerticalItem ->
             item {
-                ArticleVerticalItem(uiArticleVerticalItem) {
+                ArticleVerticalItem(uiArticleVerticalItem, onClickSetting = {
+
+                }) {
                     if (uiArticleVerticalItem.isPremium) {
                         //viewModel.onNavigateToReading(uiArticleVerticalItem.id)
                     } else {

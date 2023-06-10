@@ -18,7 +18,9 @@ fun RecommendedSection(
     LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
         models.forEachIndexed { _, uiArticleVerticalItem ->
             item {
-                ArticleVerticalItem(uiArticleVerticalItem) {
+                ArticleVerticalItem(uiArticleVerticalItem, onClickSetting = {
+
+                }) {
                     if (uiArticleVerticalItem.isPremium) {
                         viewModel.onNavigateToReading(uiArticleVerticalItem.id)
                     } else {

@@ -26,10 +26,12 @@ import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavHostController
 import com.arnoract.projectx.R
 import com.arnoract.projectx.base.OnEvent
+import com.arnoract.projectx.ui.home.model.UiArticleVerticalItem
 import com.arnoract.projectx.ui.home.view.BottomBarScreen
 import com.arnoract.projectx.ui.reading.model.UiReadingArticleState
 import com.arnoract.projectx.ui.reading.model.UiReadingFilter
 import com.arnoract.projectx.ui.reading.viewmodel.ReadingViewModel
+import com.arnoract.projectx.ui.util.BaseTwoButtonDialog
 import com.arnoract.projectx.ui.util.CustomDialog
 import com.arnoract.projectx.ui.util.ExampleFeatureDialog
 import org.koin.androidx.compose.getViewModel
@@ -241,7 +243,12 @@ fun ReadingScreen(navController: NavHostController) {
 private fun SubscribeEvent(viewModel: ReadingViewModel) {
     val openDialog = remember { mutableStateOf(false) }
     val openDialogDemoFeature = remember { mutableStateOf(false) }
+    val openDialogSetting = remember { mutableStateOf(false) }
+    val openDialogConfirmDelete = remember { mutableStateOf(false) }
     val errorMessage = remember { mutableStateOf("") }
+    val articleSelectedSetting = remember {
+        mutableStateOf<UiArticleVerticalItem?>(null)
+    }
 
     OnEvent(event = viewModel.error, onEvent = {
         openDialog.value = true
@@ -251,6 +258,49 @@ private fun SubscribeEvent(viewModel: ReadingViewModel) {
     OnEvent(event = viewModel.openDialogDemoFeature, onEvent = {
         openDialogDemoFeature.value = true
     })
+
+    OnEvent(event = viewModel.openDialogSetting, onEvent = {
+        articleSelectedSetting.value = it
+        openDialogSetting.value = true
+    })
+
+    OnEvent(event = viewModel.openDialogConfirmRemove, onEvent = {
+        openDialogConfirmDelete.value = true
+    })
+
+    if (openDialogConfirmDelete.value) {
+        Dialog(onDismissRequest = {
+            openDialogConfirmDelete.value = false
+        }) {
+            BaseTwoButtonDialog(
+                title = stringResource(id = R.string.confirm_delete_label),
+                description = stringResource(
+                    id = R.string.confirm_delete_with_label,
+                    "'${articleSelectedSetting.value?.titleTh ?: ""}'"
+                ),
+                onClickLeftButton = {
+                    openDialogConfirmDelete.value = false
+                },
+                onClickRightButton = {
+                    openDialogSetting.value = false
+                    openDialogConfirmDelete.value = false
+                    viewModel.deleteFromReading(articleSelectedSetting.value?.id ?: "")
+                }
+            )
+        }
+    }
+
+    if (openDialogSetting.value) {
+        BottomDialogArticleSetting(
+            title = articleSelectedSetting.value?.titleTh ?: "",
+            id = articleSelectedSetting.value?.id ?: "",
+            onClickedDismiss = {
+                openDialogSetting.value = false
+            },
+            onClickedRemoveArticle = {
+                viewModel.openDialogConfirmDelete()
+            })
+    }
 
     if (openDialogDemoFeature.value) {
         Dialog(onDismissRequest = { openDialogDemoFeature.value = false }) {

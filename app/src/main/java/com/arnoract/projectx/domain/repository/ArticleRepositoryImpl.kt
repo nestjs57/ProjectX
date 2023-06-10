@@ -95,6 +95,10 @@ class ArticleRepositoryImpl(
         articleDao.insertOrUpdate(articlesEntity)
     }
 
+    override suspend fun removeReadingArticleById(id: String) {
+        articleDao.deleteById(id)
+    }
+
     override suspend fun setReaderFontSizeSetting(value: Int) {
         readerPreferenceStorage.settingFontSize = value
     }

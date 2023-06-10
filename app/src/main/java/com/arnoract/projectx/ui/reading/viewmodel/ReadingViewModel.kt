@@ -12,7 +12,9 @@ import com.arnoract.projectx.core.successOrThrow
 import com.arnoract.projectx.domain.model.article.ReadingArticle
 import com.arnoract.projectx.domain.usecase.article.GetIsLoginUseCase
 import com.arnoract.projectx.domain.usecase.article.ObserveReadingArticleUseCase
+import com.arnoract.projectx.domain.usecase.article.RemoveReadingArticleByIdUseCase
 import com.arnoract.projectx.domain.usecase.article.SyncDataReadingUseCase
+import com.arnoract.projectx.ui.home.model.UiArticleVerticalItem
 import com.arnoract.projectx.ui.reading.mapper.ReadingArticleToUiArticleVerticalItemMapper
 import com.arnoract.projectx.ui.reading.model.UiReadingArticleState
 import com.arnoract.projectx.ui.reading.model.UiReadingFilter
@@ -27,6 +29,7 @@ class ReadingViewModel(
     private val getIsLoginUseCase: GetIsLoginUseCase,
     private val subscriptionViewModelDelegateImpl: SubscriptionViewModelDelegateImpl,
     private val syncDataReadingUseCase: SyncDataReadingUseCase,
+    private val removeReadingArticleByIdUseCase: RemoveReadingArticleByIdUseCase,
     private val coroutinesDispatcherProvider: CoroutinesDispatcherProvider
 ) : ViewModel(), SubscriptionViewModelDelegate by subscriptionViewModelDelegateImpl {
 
@@ -46,6 +49,12 @@ class ReadingViewModel(
 
     private val _openDialogDemoFeature = MutableSharedFlow<Unit>()
     val openDialogDemoFeature: MutableSharedFlow<Unit> get() = _openDialogDemoFeature
+
+    private val _openDialogSetting = MutableSharedFlow<UiArticleVerticalItem>()
+    val openDialogSetting: MutableSharedFlow<UiArticleVerticalItem> get() = _openDialogSetting
+
+    private val _openDialogConfirmRemove = MutableSharedFlow<Unit>()
+    val openDialogConfirmRemove: MutableSharedFlow<Unit> get() = _openDialogConfirmRemove
 
     private val _sycing = MutableLiveData<Boolean>()
     val sycing: LiveData<Boolean> get() = _sycing
@@ -102,7 +111,7 @@ class ReadingViewModel(
                     _uiReadingState.setValueIfNew(UiReadingArticleState.Success(data = newData.map { readingArticle ->
                         ReadingArticleToUiArticleVerticalItemMapper.map(
                             readingArticle
-                        )
+                        ).copy(isShowColonSetting = true)
                     }))
                 }
             }
@@ -131,6 +140,30 @@ class ReadingViewModel(
     fun onOpenDialogDemoFeature() {
         viewModelScope.launch {
             _openDialogDemoFeature.emit(Unit)
+        }
+    }
+
+    fun openDialogSetting(data: UiArticleVerticalItem) {
+        viewModelScope.launch {
+            _openDialogSetting.emit(data)
+        }
+    }
+
+    fun openDialogConfirmDelete() {
+        viewModelScope.launch {
+            _openDialogConfirmRemove.emit(Unit)
+        }
+    }
+
+    fun deleteFromReading(id: String) {
+        viewModelScope.launch {
+            try {
+                withContext(coroutinesDispatcherProvider.io) {
+                    removeReadingArticleByIdUseCase.invoke(id).successOrThrow()
+                }
+            } catch (e: java.lang.Exception) {
+                error.emit(e.message ?: "")
+            }
         }
     }
 }

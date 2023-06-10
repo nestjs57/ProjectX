@@ -26,7 +26,12 @@ fun ReadingContent(
     ) {
         items(data.size) {
             Row {
-                ArticleVerticalItem(model = data[it], isSupportGridLayout = true) {
+                ArticleVerticalItem(
+                    model = data[it],
+                    isSupportGridLayout = true,
+                    onClickSetting = {
+                        viewModel.openDialogSetting(data[it])
+                    }) {
                     navController.navigate(
                         Route.readers.replace(
                             "{id}", data[it].id

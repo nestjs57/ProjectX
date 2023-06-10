@@ -18,7 +18,9 @@ fun RecentlyPublishedSection(
     LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
         models.forEachIndexed { _, uiArticleHorizontalItem ->
             item {
-                ArticleVerticalItem(uiArticleHorizontalItem) {
+                ArticleVerticalItem(uiArticleHorizontalItem, onClickSetting = {
+
+                }) {
                     if (uiArticleHorizontalItem.isPremium) {
                         viewModel.onNavigateToReading(uiArticleHorizontalItem.id)
                     } else {

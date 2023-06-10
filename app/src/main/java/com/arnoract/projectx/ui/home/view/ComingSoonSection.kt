@@ -16,7 +16,9 @@ fun ComingSoonSection(
     LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
         models.forEachIndexed { _, uiArticleVerticalItem ->
             item {
-                ArticleVerticalItem(uiArticleVerticalItem) {
+                ArticleVerticalItem(uiArticleVerticalItem, onClickSetting = {
+
+                }) {
                     navHostController.navigate(
                         Route.readers.replace(
                             "{id}",

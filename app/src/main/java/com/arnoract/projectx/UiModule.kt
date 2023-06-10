@@ -15,21 +15,10 @@ import org.koin.dsl.module
 
 val mainModule = module {
     viewModel { HomeViewModel(get(), get(), get(), get()) }
-    viewModel { ReadingViewModel(get(), get(), get(), get(), get()) }
+    viewModel { ReadingViewModel(get(), get(), get(), get(), get(), get()) }
     viewModel { (id: String) ->
         ReaderViewModel(
-            id,
-            get(),
-            get(),
-            get(),
-            get(),
-            get(),
-            get(),
-            get(),
-            get(),
-            get(),
-            get(),
-            get()
+            id, get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get()
         )
     }
     viewModel {

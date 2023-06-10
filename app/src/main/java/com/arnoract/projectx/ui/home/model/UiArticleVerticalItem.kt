@@ -9,5 +9,6 @@ data class UiArticleVerticalItem(
     val progress: String? = null,
     val isBlock: Boolean = false,
     val isPremium: Boolean = false,
-    val isEnablePremium: Boolean = false
+    val isEnablePremium: Boolean = false,
+    val isShowColonSetting: Boolean = false
 )

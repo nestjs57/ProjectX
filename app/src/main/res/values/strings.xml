@@ -61,9 +61,12 @@
     <string name="look_likes_no_login_label">ดูเหมือนว่าคุณจะยังไม่ได้เข้าสู่ระบบ</string>
     <string name="go_to_profile_page_label">ไปยังหน้าผู้ใช้</string>
     <string name="empty_reading_label">ไม่พบบทความที่คุณกรอง\nหรือกำลังอ่านอยู่ในขณะนี้</string>
+    <string name="remove_from_reading_article_label">ลบออกจากกำลังอ่าน</string>
     <string name="reading_page_non_subs_label">ขออภัยหากท่านไม่สามารถเข้าถึงเนื้อหานี้ได้ เนื้อหานี้สำหรับสมาชิก Premium กรุณาสมัครสมาชิกเพื่อเข้าถึงเนื้อหาทั้งหมด</string>
     <string name="overview_page_non_subs_label">ขออภัยหากท่านไม่สามารถเข้าถึงเนื้อหานี้ได้ เนื้อหานี้สำหรับสมาชิก Premium กรุณาสมัครสมาชิกเพื่อเข้าถึงเนื้อหาทที่น่าสนใจของเรา</string>
     <string name="empty_category_label">ขออภัยในความไม่สะดวก\nทีมงานกำลังเพิ่มบทความ\nในหมวดหมู่นี้อย่างต่อเนื่อง</string>
+    <string name="confirm_delete_label">ยืนยันการลบ</string>
+    <string name="confirm_delete_with_label">คุณต้องการลบบทความ %s ออกจากบทความที่กำลังอ่านหรือไม่?</string>
 
     <string name="filter_label">ตัวกรอง</string>
     <string name="only_read_complete_label">อ่านจบแล้ว</string>
