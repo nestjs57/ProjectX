@@ -1,7 +1,22 @@
 package com.arnoract.projectx.domain
 
 import com.arnoract.projectx.domain.main.GetStationsUseCase
-import com.arnoract.projectx.domain.usecase.article.*
+import com.arnoract.projectx.domain.usecase.article.GetArticleByCategoryIdUseCase
+import com.arnoract.projectx.domain.usecase.article.GetArticleByIdUseCase
+import com.arnoract.projectx.domain.usecase.article.GetArticleSetUseCase
+import com.arnoract.projectx.domain.usecase.article.GetArticlesUseCase
+import com.arnoract.projectx.domain.usecase.article.GetBackgroundModelSettingUseCase
+import com.arnoract.projectx.domain.usecase.article.GetCurrentParagraphFromDbUseCase
+import com.arnoract.projectx.domain.usecase.article.GetFontSizeSettingUseCase
+import com.arnoract.projectx.domain.usecase.article.GetIsLoginUseCase
+import com.arnoract.projectx.domain.usecase.article.GetReadingArticleUseCase
+import com.arnoract.projectx.domain.usecase.article.ObserveReadingArticleUseCase
+import com.arnoract.projectx.domain.usecase.article.OnlySyncDataUseCase
+import com.arnoract.projectx.domain.usecase.article.RemoveReadingArticleByIdUseCase
+import com.arnoract.projectx.domain.usecase.article.SetBackgroundModelSettingUseCase
+import com.arnoract.projectx.domain.usecase.article.SetCurrentParagraphToDbUseCase
+import com.arnoract.projectx.domain.usecase.article.SetFontSizeSettingUseCase
+import com.arnoract.projectx.domain.usecase.article.SyncDataReadingUseCase
 import com.arnoract.projectx.domain.usecase.lesson.AccessContentWithCoinUseCase
 import com.arnoract.projectx.domain.usecase.lesson.GetLessonSentenceByIdUseCase
 import com.arnoract.projectx.domain.usecase.lesson.GetLessonSentencesUseCase
@@ -21,6 +36,7 @@ val useCaseModule = module {
     factory { LoginWithGoogleUseCase(get()) }
     factory { SignOutWithGoogleUseCase(get()) }
     factory { GetArticleByCategoryIdUseCase(get()) }
+    factory { GetArticleSetUseCase(get()) }
     factory { GetCurrentParagraphFromDbUseCase(get()) }
     factory { SetCurrentParagraphToDbUseCase(get()) }
     factory { ObserveReadingArticleUseCase(get()) }

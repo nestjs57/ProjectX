@@ -1,6 +1,7 @@
 package com.arnoract.projectx.domain.repository
 
 import com.arnoract.projectx.domain.model.article.Article
+import com.arnoract.projectx.domain.model.article.ArticleSet
 import com.arnoract.projectx.domain.model.article.ReadingArticle
 import kotlinx.coroutines.flow.Flow
 
@@ -32,4 +33,6 @@ interface ArticleRepository {
     suspend fun setReaderBackgroundModeSetting(value: Int)
 
     suspend fun getReaderBackgroundModeSetting(): Int
+
+    suspend fun getArticleSets(): List<ArticleSet>
 }

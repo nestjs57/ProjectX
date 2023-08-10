@@ -1,12 +1,15 @@
 package com.arnoract.projectx.domain.repository
 
 import com.arnoract.projectx.core.api.model.article.NetworkArticle
+import com.arnoract.projectx.core.api.model.article.NetworkArticleSet
 import com.arnoract.projectx.core.api.model.article.mapper.ArticleEntityToArticleMapper
 import com.arnoract.projectx.core.api.model.article.mapper.ArticleToArticleEntityMapper
+import com.arnoract.projectx.core.api.model.article.mapper.NetworkArticleSetToArticleSetMapper
 import com.arnoract.projectx.core.api.model.article.mapper.NetworkArticleToArticleMapper
 import com.arnoract.projectx.core.api.model.article.mapper.ReadingArticleToArticleEntityMapper
 import com.arnoract.projectx.core.db.dao.ArticleDao
 import com.arnoract.projectx.domain.model.article.Article
+import com.arnoract.projectx.domain.model.article.ArticleSet
 import com.arnoract.projectx.domain.model.article.ReadingArticle
 import com.arnoract.projectx.domain.pref.ReaderPreferenceStorage
 import com.google.firebase.firestore.FieldPath
@@ -20,8 +23,7 @@ class ArticleRepositoryImpl(
     private val db: FirebaseFirestore,
     private val articleDao: ArticleDao,
     private val readerPreferenceStorage: ReaderPreferenceStorage
-) :
-    ArticleRepository {
+) : ArticleRepository {
     override suspend fun getArticles(): List<Article> {
         val result = db.collection("articles").whereEqualTo("isPublic", true).get().await()
         return result.documents.map {
@@ -113,5 +115,14 @@ class ArticleRepositoryImpl(
 
     override suspend fun getReaderBackgroundModeSetting(): Int {
         return readerPreferenceStorage.settingBackgroundMode
+    }
+
+    override suspend fun getArticleSets(): List<ArticleSet> {
+        val result = db.collection("articles_set").get().await()
+        return result.documents.map {
+            it.toObject<NetworkArticleSet>()?.copy(id = it.id)
+        }.map {
+            NetworkArticleSetToArticleSetMapper.map(it)
+        }
     }
 }

@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.arnoract.projectx.SubscriptionViewModel
 import com.arnoract.projectx.ui.GRAPH
+import com.arnoract.projectx.ui.article_set.ArticleSetScreen
 import com.arnoract.projectx.ui.category.graph.categoryNavGraph
 import com.arnoract.projectx.ui.category.view.CategoryScreen
 import com.arnoract.projectx.ui.home.view.BottomBarScreen
@@ -32,10 +33,9 @@ fun HomeNavGraph(navController: NavHostController, subscriptionViewModel: Subscr
         composable(route = BottomBarScreen.Reading.route) {
             ReadingScreen(navController)
         }
-//        composable(route = BottomBarScreen.History.route) {
-//            OverviewScreen(navController)
-        //LessonSentenceScreen(navController)
-//        }
+        composable(route = BottomBarScreen.ArticleSet.route) {
+            ArticleSetScreen(navController)
+        }
         composable(route = BottomBarScreen.Profile.route) {
             ProfileScreen(subscriptionViewModel)
         }

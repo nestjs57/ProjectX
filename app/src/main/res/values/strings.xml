@@ -138,4 +138,7 @@
     <string name="re_start_label">เริ่มใหม่</string>
     <string name="good_job_read_next_paragraph_label">เก่งมาก!\nเรียนรู้ย่อหน้าถัดไป!</string>
     <string name="read_next_paragraph_label">อ่านย่อหน้าถัดไป</string>
+
+    <string name="article_set_title_label">เซ็ตบทความ</string>
+
 </resources>
