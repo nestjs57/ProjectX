@@ -18,6 +18,7 @@ import com.arnoract.projectx.domain.usecase.article.ObserveReadingArticleUseCase
 import com.arnoract.projectx.ui.article_set.model.UiArticleSetState
 import com.arnoract.projectx.ui.article_set.model.mapper.ArticleSetToUiArticleSetMapper
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -38,6 +39,10 @@ class ArticleSetViewModel(
     val uiArticleSetState: LiveData<UiArticleSetState>
         get() = _uiArticleSetState
 
+    private val _navigateToArticleSetDetail = MutableSharedFlow<String>()
+    val navigateToArticleSetDetail: SharedFlow<String>
+        get() = _navigateToArticleSetDetail
+
     private val _error = MutableSharedFlow<String>()
     val error: MutableSharedFlow<String>
         get() = _error
@@ -48,6 +53,13 @@ class ArticleSetViewModel(
                 _uiArticleSetState.value = UiArticleSetState.Loading
                 observeReadingArticleUseCase.invoke(Unit, coroutinesDispatcherProvider.io)
                     .collectLatest {
+                        val isLogin = withContext(coroutinesDispatcherProvider.io) {
+                            getIsLoginUseCase.invoke(Unit)
+                        }.successOr(false)
+                        if (!isLogin) {
+                            _uiArticleSetState.value = UiArticleSetState.NonLogin
+                            return@collectLatest
+                        }
                         if (_resultArticleSet.value == null) {
                             val result = withContext(coroutinesDispatcherProvider.io) {
                                 getArticleSetUseCase.invoke(Unit).successOrThrow()
@@ -61,9 +73,6 @@ class ArticleSetViewModel(
 
                             _resultArticles.value = articlesResult
                         }
-                        val isLogin = withContext(coroutinesDispatcherProvider.io) {
-                            getIsLoginUseCase.invoke(Unit)
-                        }.successOr(false)
                         val data = it.successOr(listOf())
                         _uiArticleSetState.value =
                             UiArticleSetState.Success(_resultArticleSet.value?.map { articlesSet ->
@@ -76,6 +85,12 @@ class ArticleSetViewModel(
             } catch (e: Exception) {
                 _error.emit(e.message ?: "Unknown Error.")
             }
+        }
+    }
+
+    fun onNavigateToArticleSetDetail(id: String) {
+        viewModelScope.launch {
+            _navigateToArticleSetDetail.emit(id)
         }
     }
 }

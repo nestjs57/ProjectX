@@ -35,4 +35,6 @@ interface ArticleRepository {
     suspend fun getReaderBackgroundModeSetting(): Int
 
     suspend fun getArticleSets(): List<ArticleSet>
+
+    suspend fun getArticleSetsById(id: String): ArticleSet
 }

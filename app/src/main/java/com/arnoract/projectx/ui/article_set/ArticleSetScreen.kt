@@ -2,6 +2,7 @@ package com.arnoract.projectx.ui.article_set
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,6 +25,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
@@ -31,6 +33,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -38,6 +41,7 @@ import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import com.arnoract.projectx.R
 import com.arnoract.projectx.base.OnEvent
+import com.arnoract.projectx.base.Route
 import com.arnoract.projectx.ui.article_set.model.UiArticleSet
 import com.arnoract.projectx.ui.article_set.model.UiArticleSetState
 import com.arnoract.projectx.ui.home.view.BottomBarScreen
@@ -49,8 +53,7 @@ import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun ArticleSetScreen(
-    navController: NavHostController,
-    mViewModel: ArticleSetViewModel = getViewModel()
+    navController: NavHostController, mViewModel: ArticleSetViewModel = getViewModel()
 ) {
     val mState = mViewModel.uiArticleSetState.observeAsState()
     SubscribeEvent(navController, mViewModel)
@@ -88,13 +91,58 @@ fun ArticleSetScreen(
                 is UiArticleSetState.Success -> {
                     LazyColumn {
                         items(state.data.size) {
-                            ArticleSetItem(state.data[it])
+                            ArticleSetItem(state.data[it], mViewModel)
                         }
                         item {
                             ArticleSetItemComingSoon()
                         }
                         item {
                             Spacer(modifier = Modifier.height(72.dp))
+                        }
+                    }
+                }
+
+                UiArticleSetState.NonLogin -> {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 64.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            modifier = Modifier.padding(horizontal = 32.dp)
+                        ) {
+                            Image(
+                                painter = painterResource(id = R.drawable.ic_non_login_overview),
+                                modifier = Modifier.size(230.dp),
+                                contentDescription = null,
+                            )
+                            Text(
+                                text = stringResource(id = R.string.desc_dialog_require_login_label),
+                                fontSize = 18.sp,
+                                overflow = TextOverflow.Ellipsis,
+                                textAlign = TextAlign.Center
+                            )
+                            Spacer(modifier = Modifier.height(16.dp))
+                            Box(modifier = Modifier
+                                .height(48.dp)
+                                .width(150.dp)
+                                .clip(RoundedCornerShape(6.dp))
+                                .clickable {
+                                    navController.navigate(BottomBarScreen.Profile.route) {
+                                        launchSingleTop = true
+                                    }
+                                }
+                                .background(colorResource(id = R.color.purple_500)),
+                                contentAlignment = Alignment.Center) {
+                                Text(
+                                    text = stringResource(id = R.string.go_to_profile_page_label),
+                                    modifier = Modifier,
+                                    fontSize = 16.sp,
+                                    color = colorResource(id = R.color.white),
+                                )
+                            }
                         }
                     }
                 }
@@ -121,7 +169,7 @@ private fun ArticleSetItemComingSoon() {
             .padding(16.dp)
     ) {
         Text(
-            text = "เซ็ตบทความใหม่เร็วๆนี้...",
+            text = stringResource(id = R.string.article_set_coming_soon_label),
             modifier = Modifier.fillMaxWidth(),
             fontSize = 16.sp,
             textAlign = TextAlign.Center,
@@ -133,13 +181,17 @@ private fun ArticleSetItemComingSoon() {
 }
 
 @Composable
-private fun ArticleSetItem(data: UiArticleSet) {
+private fun ArticleSetItem(data: UiArticleSet, viewModel: ArticleSetViewModel) {
     val color = ColorUtil.hexToColor(data.articleSetBackground)
     Box(
         modifier = Modifier
             .wrapContentHeight()
             .fillMaxWidth()
             .padding(top = 16.dp)
+            .clip(RoundedCornerShape(16.dp))
+            .clickable {
+                viewModel.onNavigateToArticleSetDetail(data.id)
+            }
             .background(
                 color = color, shape = RoundedCornerShape(16.dp)
             )
@@ -162,8 +214,7 @@ private fun ArticleSetItem(data: UiArticleSet) {
                     )
                     Text(
                         text = stringResource(
-                            id = R.string.article_count_label,
-                            data.articleCount
+                            id = R.string.article_count_label, data.articleCount
                         ),
                         modifier = Modifier,
                         fontSize = 14.sp,
@@ -175,15 +226,14 @@ private fun ArticleSetItem(data: UiArticleSet) {
                     painter = painter,
                     contentDescription = null,
                     modifier = Modifier
-                        .width(75.dp)
-                        .height(75.dp),
+                        .width(80.dp)
+                        .height(80.dp),
                     contentScale = ContentScale.Crop
                 )
             }
             Spacer(modifier = Modifier.height(8.dp))
             ProgressView(
-                percent = data.articleSetProgress,
-                textProgress = "${data.articleSetProgress}%"
+                percent = data.articleSetProgress, textProgress = "${data.articleSetProgress}%"
             )
         }
     }
@@ -198,6 +248,14 @@ private fun SubscribeEvent(navHostController: NavHostController, viewModel: Arti
     OnEvent(event = viewModel.error, onEvent = {
         openDialog.value = true
         errorMessage.value = it
+    })
+
+    OnEvent(event = viewModel.navigateToArticleSetDetail, onEvent = {
+        navHostController.navigate(
+            Route.article_set_detail.replace(
+                "{articleSetId}", it
+            )
+        )
     })
 
     if (openRequirePremiumDialog.value) {

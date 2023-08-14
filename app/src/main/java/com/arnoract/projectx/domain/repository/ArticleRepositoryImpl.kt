@@ -125,4 +125,12 @@ class ArticleRepositoryImpl(
             NetworkArticleSetToArticleSetMapper.map(it)
         }
     }
+
+    override suspend fun getArticleSetsById(id: String): ArticleSet {
+        val result =
+            db.collection("articles_set").whereEqualTo(FieldPath.documentId(), id).get().await()
+        return NetworkArticleSetToArticleSetMapper.map(
+            result.documents.firstOrNull()?.toObject<NetworkArticleSet>()?.copy(id = id)
+        )
+    }
 }

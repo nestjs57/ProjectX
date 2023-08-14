@@ -140,5 +140,8 @@
     <string name="read_next_paragraph_label">อ่านย่อหน้าถัดไป</string>
 
     <string name="article_set_title_label">เซ็ตบทความ</string>
+    <string name="article_set_total_in_set_title_label">บทความทั้งหมดในเซ็ต</string>
+    <string name="back_label">ย้อนกลับ</string>
+    <string name="article_set_coming_soon_label">เซ็ตบทความใหม่เร็วๆนี้…</string>
 
 </resources>

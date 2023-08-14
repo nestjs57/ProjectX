@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import com.arnoract.projectx.SubscriptionViewModel
 import com.arnoract.projectx.ui.GRAPH
 import com.arnoract.projectx.ui.article_set.ArticleSetScreen
+import com.arnoract.projectx.ui.article_set.articleSetNavGraph
 import com.arnoract.projectx.ui.category.graph.categoryNavGraph
 import com.arnoract.projectx.ui.category.view.CategoryScreen
 import com.arnoract.projectx.ui.home.view.BottomBarScreen
@@ -40,6 +41,7 @@ fun HomeNavGraph(navController: NavHostController, subscriptionViewModel: Subscr
             ProfileScreen(subscriptionViewModel)
         }
         readerNavGraph(navController)
+        articleSetNavGraph(navController)
         lessonSentenceNavGraph(navController)
         categoryNavGraph(navController)
     }

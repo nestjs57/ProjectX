@@ -1,5 +1,6 @@
 package com.arnoract.projectx
 
+import com.arnoract.projectx.ui.article_set.ArticleSetDetailViewModel
 import com.arnoract.projectx.ui.article_set.ArticleSetViewModel
 import com.arnoract.projectx.ui.category.viewmodel.CategoryDetailViewModel
 import com.arnoract.projectx.ui.home.viewmodel.HomeViewModel
@@ -33,6 +34,9 @@ val mainModule = module {
     }
     viewModel {
         ArticleSetViewModel(get(), get(), get(), get(), get(), get())
+    }
+    viewModel { (articleSetId: String) ->
+        ArticleSetDetailViewModel(articleSetId, get(), get(), get(), get(), get(), get())
     }
     viewModel {
         LessonSentenceViewModel(get(), get(), get(), get())

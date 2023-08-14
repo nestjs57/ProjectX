@@ -3,6 +3,7 @@ package com.arnoract.projectx.domain
 import com.arnoract.projectx.domain.main.GetStationsUseCase
 import com.arnoract.projectx.domain.usecase.article.GetArticleByCategoryIdUseCase
 import com.arnoract.projectx.domain.usecase.article.GetArticleByIdUseCase
+import com.arnoract.projectx.domain.usecase.article.GetArticleSetByIdUseCase
 import com.arnoract.projectx.domain.usecase.article.GetArticleSetUseCase
 import com.arnoract.projectx.domain.usecase.article.GetArticlesUseCase
 import com.arnoract.projectx.domain.usecase.article.GetBackgroundModelSettingUseCase
@@ -37,6 +38,7 @@ val useCaseModule = module {
     factory { SignOutWithGoogleUseCase(get()) }
     factory { GetArticleByCategoryIdUseCase(get()) }
     factory { GetArticleSetUseCase(get()) }
+    factory { GetArticleSetByIdUseCase(get()) }
     factory { GetCurrentParagraphFromDbUseCase(get()) }
     factory { SetCurrentParagraphToDbUseCase(get()) }
     factory { ObserveReadingArticleUseCase(get()) }

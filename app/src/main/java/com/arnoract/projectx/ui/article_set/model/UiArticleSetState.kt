@@ -5,4 +5,6 @@ sealed class UiArticleSetState {
     data class Success(
         val data: List<UiArticleSet>
     ) : UiArticleSetState()
+
+    object NonLogin : UiArticleSetState()
 }
