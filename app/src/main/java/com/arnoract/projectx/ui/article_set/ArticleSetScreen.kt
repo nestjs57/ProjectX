@@ -24,7 +24,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
@@ -159,12 +158,11 @@ fun ArticleSetScreen(
 private fun ArticleSetItemComingSoon() {
     Box(
         modifier = Modifier
-            .alpha(0.5f)
             .wrapContentHeight()
             .fillMaxWidth()
             .padding(top = 16.dp)
             .background(
-                color = colorResource(id = R.color.purple_500), shape = RoundedCornerShape(16.dp)
+                color = colorResource(id = R.color.white), shape = RoundedCornerShape(16.dp)
             )
             .padding(16.dp)
     ) {
@@ -174,7 +172,7 @@ private fun ArticleSetItemComingSoon() {
             fontSize = 16.sp,
             textAlign = TextAlign.Center,
             maxLines = 2,
-            color = colorResource(id = R.color.white),
+            color = colorResource(id = R.color.black),
             fontWeight = FontWeight.Bold
         )
     }
@@ -218,7 +216,7 @@ private fun ArticleSetItem(data: UiArticleSet, viewModel: ArticleSetViewModel) {
                         ),
                         modifier = Modifier,
                         fontSize = 14.sp,
-                        color = colorResource(id = R.color.only_white),
+                        color = colorResource(id = R.color.white),
                     )
                 }
                 val painter = rememberAsyncImagePainter(model = data.articleSetIcon)

@@ -29,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
@@ -60,7 +61,10 @@ fun ArticleSetDetailScreen(
     }
 ) {
     val uiState = mViewModel.uiArticleSetDetailState.observeAsState()
-    val color = ColorUtil.hexToColor(mViewModel.toolbarColor.observeAsState().value ?: "#ffffff")
+    val color: Color =
+        if (mViewModel.toolbarColor.observeAsState().value == null) colorResource(id = R.color.white) else ColorUtil.hexToColor(
+            mViewModel.toolbarColor.observeAsState().value!!
+        )
 
     Column {
         ToolBar(mViewModel, onClickedBack = {
@@ -94,7 +98,7 @@ fun ArticleSetDetailScreen(
                             text = stringResource(id = R.string.article_set_total_in_set_title_label),
                             modifier = Modifier.padding(top = 8.dp, end = 16.dp),
                             fontSize = 22.sp,
-                            color = colorResource(id = R.color.only_black),
+                            color = colorResource(id = R.color.black),
                             fontWeight = FontWeight.Bold
                         )
                         LazyColumn(content = {
@@ -131,7 +135,10 @@ private fun ToolBar(
     viewModel: ArticleSetDetailViewModel,
     onClickedBack: () -> Unit,
 ) {
-    val color = ColorUtil.hexToColor(viewModel.toolbarColor.observeAsState().value ?: "#ffffff")
+    val color: Color =
+        if (viewModel.toolbarColor.observeAsState().value == null) colorResource(id = R.color.white) else ColorUtil.hexToColor(
+            viewModel.toolbarColor.observeAsState().value!!
+        )
     val isLoadSuccess =
         viewModel.uiArticleSetDetailState.observeAsState().value is UiArticleSetDetailState.Success
     Row(
@@ -144,7 +151,7 @@ private fun ToolBar(
             Icon(
                 imageVector = Icons.Filled.ArrowBack,
                 contentDescription = "Menu Btn",
-                tint = colorResource(id = if (isLoadSuccess) R.color.only_white else R.color.only_black)
+                tint = colorResource(id = if (isLoadSuccess) R.color.white else R.color.black)
             )
         }
         Text(
@@ -156,7 +163,7 @@ private fun ToolBar(
                 .weight(1f),
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Start,
-            color = colorResource(id = if (isLoadSuccess) R.color.only_white else R.color.only_black)
+            color = colorResource(id = if (isLoadSuccess) R.color.white else R.color.black)
         )
     }
 }

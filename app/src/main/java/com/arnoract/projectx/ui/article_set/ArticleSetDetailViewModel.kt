@@ -39,8 +39,8 @@ class ArticleSetDetailViewModel(
     val uiArticleSetDetailState: LiveData<UiArticleSetDetailState?>
         get() = _uiArticleSetDetailState
 
-    private val _toolbarColor = MutableLiveData<String>("#ffffff")
-    val toolbarColor: LiveData<String>
+    private val _toolbarColor = MutableLiveData<String?>()
+    val toolbarColor: LiveData<String?>
         get() = _toolbarColor
 
     private val _error = MutableSharedFlow<String>()
